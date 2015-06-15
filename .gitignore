@@ -4,7 +4,12 @@
 /MSVS/**/bin
 # obj/ folder
 /MSVS/**/obj
-# nuget packages folder
+# nuget packages
 /MSVS/**/packages
-# temp files (tilde-trailed)
-**/*.*~
+# temp files
+*~
+*.bak
+# local preferences
+*.suo
+*.user
+
