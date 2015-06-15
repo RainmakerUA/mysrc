@@ -1,0 +1,10 @@
+﻿
+# Visual Studio ignorings
+# bin/ folder
+/MSVS/**/bin
+# obj/ folder
+/MSVS/**/obj
+# nuget packages folder
+/MSVS/**/packages
+# temp files (tilde-trailed)
+**/*.*~
