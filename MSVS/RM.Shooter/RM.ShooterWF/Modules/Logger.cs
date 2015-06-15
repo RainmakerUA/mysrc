@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace RM.Shooter
+namespace RM.Shooter.Modules
 {
 	internal sealed class Logger
 	{

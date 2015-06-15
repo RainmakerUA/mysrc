@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using RM.Shooter.Modules;
+using RM.Shooter.Settings;
 
 namespace RM.Shooter
 {
@@ -24,15 +26,9 @@ namespace RM.Shooter
 				Icon = Properties.Resources.main;
 			labelVersion.Text = "ver. " + GetType().Assembly.GetName().Version;
 
-			_settings = Settings.GetSettings();
+			_settings = GlobalSettings.GetSettings();
 			_logger = new Logger("MainForm");
-			_frameChanger = new FrameChanger(
-										_settings.WindowClass,
-										_settings.WindowTitle,
-										_settings.FrameMode,
-										_settings.WindowPosition,
-										_settings.WindowSize
-									);
+			_frameChanger = new FrameChanger(_settings.FrameConfigs);
 			_antiAfk = new VtAntiAfk();
 
 			RegisterHook();
@@ -46,13 +42,7 @@ namespace RM.Shooter
 			{
 				_logger.Log(Logger.Level.Info, "Reloading settings");
 				_settings.Reload();
-				_frameChanger.ReInitialize(
-											_settings.WindowClass,
-											_settings.WindowTitle,
-											_settings.FrameMode,
-											_settings.WindowPosition,
-											_settings.WindowSize
-										);
+				_frameChanger.ReInitialize(_settings.FrameConfigs);
 			}
 		}
 
@@ -109,11 +99,12 @@ namespace RM.Shooter
 				var dateStr = String.Format("{0:D4}{1:D2}{2:D2}", now.Year, now.Month, now.Day);
 				var timeStr = String.Format("{0:D2}{1:D2}{2:D2}", now.Hour, now.Minute, now.Second);
 
+				var shooterConfig = _settings.ShooterConfig;
 				var filename = Path.Combine(
-										_settings.Folder,
-										String.Format(_settings.NameFormat, dateStr, timeStr)
+										shooterConfig.Folder,
+										String.Format(shooterConfig.NameFormat, dateStr, timeStr)
 									);
-				Shooter.CreateShot(ref filename, _settings.Format, _settings.Quality);
+				Modules.Shooter.CreateShot(ref filename, shooterConfig.Format, shooterConfig.Quality);
 
 				notifyIconMain.ShowBalloonTip(
 									tipTimeout,

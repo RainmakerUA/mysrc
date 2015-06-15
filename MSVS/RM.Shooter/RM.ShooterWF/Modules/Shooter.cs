@@ -3,9 +3,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using ImageFormat = RM.Shooter.Settings.ImageFormat;
 using ImageFormatClass = System.Drawing.Imaging.ImageFormat;
 
-namespace RM.Shooter
+namespace RM.Shooter.Modules
 {
 	internal static class Shooter
 	{

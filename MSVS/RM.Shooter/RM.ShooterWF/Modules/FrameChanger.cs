@@ -5,76 +5,73 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using RM.Shooter.Native;
+using RM.Shooter.Settings;
 
-namespace RM.Shooter
+namespace RM.Shooter.Modules
 {
 	internal class FrameChanger
 	{
 		private sealed class FrameSettings
 		{
-			private readonly string _wndClass;
-			private readonly string _wndTitle;
-			private readonly FrameMode _frameMode;
-			private readonly Point? _wndPos;
-			private readonly Size? _wndSize;
+			private readonly FrameConfig _frameConfig;
 
-			public FrameSettings(string wndClass, string wndTitle,
-								FrameMode frameMode, Point? wndPos, Size? wndSize)
+			private FrameSettings(FrameConfig frameConfig)
 			{
-				_wndClass = wndClass;
-				_wndTitle = wndTitle;
-				_frameMode = frameMode;
-				_wndPos = wndPos;
-				_wndSize = wndSize;
+				_frameConfig = frameConfig;
 			}
 
 			public string WndClass
 			{
-				get { return _wndClass; }
+				get { return _frameConfig.WindowClass; }
 			}
 
 			public string WndTitle
 			{
-				get { return _wndTitle; }
+				get { return _frameConfig.WindowTitle; }
 			}
 
 			public FrameMode FrameMode
 			{
-				get { return _frameMode; }
+				get { return _frameConfig.FrameMode; }
 			}
 
 			public Point WndPos
 			{
-				get { return _wndPos.GetValueOrDefault(); }
+				get { return _frameConfig.WindowPosition.GetValueOrDefault(); }
 			}
 
 			public Size WndSize
 			{
-				get { return _wndSize.GetValueOrDefault(); }
+				get { return _frameConfig.WindowSize.GetValueOrDefault(); }
 			}
 
 			public bool AreActive
 			{
 				get
 				{
-					return !String.IsNullOrEmpty(_wndClass)
-							|| !String.IsNullOrEmpty(_wndTitle);
+					return !String.IsNullOrEmpty(WndClass)
+							|| !String.IsNullOrEmpty(WndTitle);
 				}
 			}
 
 			public bool ChangeFrame
 			{
-				get { return _frameMode != FrameMode.Unchanged; }
+				get { return _frameConfig.FrameMode != FrameMode.Unchanged; }
 			}
 
 			public bool ChangePosition
 			{
-				get { return _wndPos.HasValue; }
+				get { return _frameConfig.WindowPosition.HasValue; }
 			}
 
 			public bool ChangeSize
 			{
-				get { return _wndSize.HasValue; }
+				get { return _frameConfig.WindowSize.HasValue; }
+			}
+
+			public static FrameSettings Create(FrameConfig frameConfig)
+			{
+				return new FrameSettings(frameConfig);
 			}
 		}
 
@@ -105,15 +102,14 @@ namespace RM.Shooter
 
 		private readonly Logger _logger;
 		private readonly HashSet<IntPtr> _processedWindows;
-		private FrameSettings _settings;
+		private FrameSettings[] _settings;
 		private uint _shellMessage;
 		private int _lastError;
 
-		public FrameChanger(string wndClass, string wndTitle,
-								FrameMode wndFrame, Point? wndPos, Size? wndSize)
+		public FrameChanger(FrameConfig[] configs)
 			: this()
 		{
-			ReInitialize(wndClass, wndTitle, wndFrame, wndPos, wndSize);
+			ReInitialize(configs);
 		}
 
 		private FrameChanger()
@@ -151,10 +147,7 @@ namespace RM.Shooter
 
 		public void ApplyWindowFrames()
 		{
-			if (_settings.AreActive)
-			{
-				ChangeWindowFrameSettings(_settings);
-			}
+			ChangeWindowFrameSettings(_settings);
 		}
 
 		public void ProcessShellMessage(ref Message msg)
@@ -168,12 +161,12 @@ namespace RM.Shooter
 			}
 		}
 
-		public void ReInitialize(string wndClass, string wndTitle, FrameMode wndFrame, Point? wndPos, Size? wndSize)
+		public void ReInitialize(FrameConfig[] configs)
 		{
-			_settings = new FrameSettings(wndClass, wndTitle, wndFrame, wndPos, wndSize);
+			_settings = Array.ConvertAll(configs, FrameSettings.Create);
 		}
 
-		private void ChangeWindowFrameSettings(FrameSettings settings)
+		private void ChangeWindowFrameSettings(FrameSettings[] settings)
 		{
 			_logger.Log(Logger.Level.Debug, "Applying frame settings for existing windows");
 
@@ -185,58 +178,65 @@ namespace RM.Shooter
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private bool AddWndHandleToList(IntPtr hWnd, object obj)
 		{
-			UpdateWindow(hWnd, obj as FrameSettings);
+			UpdateWindow(hWnd, obj as FrameSettings[]);
 			return true;
 		}
 
-		private void UpdateWindow(IntPtr hWnd, FrameSettings settings)
+		private void UpdateWindow(IntPtr hWnd, FrameSettings[] settings)
 		{
-			if (LogCondition(settings != null, "Settings not set")
-					&& LogCondition(settings.AreActive, "Settings not active")
+			if (LogCondition(settings != null && settings.Length > 0, "Settings not set")
 					&& LogCondition(!_processedWindows.Contains(hWnd), "Window is already processed"))
 			{
-				var wndClass = settings.WndClass;
-				var wndTitle = settings.WndTitle;
-
-				if ((String.IsNullOrEmpty(wndClass) || StringsEqual(wndClass, Win32.GetWndClass(hWnd, out _lastError)))
-						&& (String.IsNullOrEmpty(wndTitle) || StringsEqual(wndTitle, Win32.GetWndTitle(hWnd, out _lastError))))
+				foreach (var setting in settings)
 				{
-					var frameMode = settings.FrameMode;
-					var pos = settings.WndPos;
-					var size = settings.WndSize;
-					var setPosFlags = SWP.NOACTIVATE | SWP.NOZORDER;
-
-					_logger.Log(
-								Logger.Level.Debug,
-								"Updating window 0x{0:X}: Frame: {1}; Pos: {2}; Size: {3}",
-								hWnd.ToInt64(), frameMode, pos, size
-							);
-
-					if (settings.ChangeFrame)
+					if (LogCondition(setting.AreActive, "Skipping inactive settings"))
 					{
-						var winStyle = Win32.GetWindowStyle(hWnd, out _lastError);
-						var styleChange = _frameModes[frameMode];
-						winStyle = (winStyle & ~styleChange.Item1) | styleChange.Item2;
-						Win32.SetWindowStyle(hWnd, winStyle, out _lastError);
-						setPosFlags |= SWP.FRAMECHANGED;
+						var wndClass = setting.WndClass;
+						var wndTitle = setting.WndTitle;
 
-						LogLastError();
+						if ((String.IsNullOrEmpty(wndClass) || StringsEqual(wndClass, Win32.GetWndClass(hWnd, out _lastError)))
+								&& (String.IsNullOrEmpty(wndTitle) || StringsEqual(wndTitle, Win32.GetWndTitle(hWnd, out _lastError))))
+						{
+							var frameMode = setting.FrameMode;
+							var pos = setting.WndPos;
+							var size = setting.WndSize;
+							var setPosFlags = SWP.NOACTIVATE | SWP.NOZORDER;
+
+							_logger.Log(
+										Logger.Level.Debug,
+										"Updating window 0x{0:X}: Frame: {1}; Pos: {2}; Size: {3}",
+										hWnd.ToInt64(), frameMode, pos, size
+									);
+
+							if (setting.ChangeFrame)
+							{
+								var winStyle = Win32.GetWindowStyle(hWnd, out _lastError);
+								var styleChange = _frameModes[frameMode];
+								winStyle = (winStyle & ~styleChange.Item1) | styleChange.Item2;
+								Win32.SetWindowStyle(hWnd, winStyle, out _lastError);
+								setPosFlags |= SWP.FRAMECHANGED;
+
+								LogLastError();
+							}
+
+							if (!setting.ChangePosition)
+							{
+								setPosFlags |= SWP.NOMOVE;
+							}
+
+							if (!setting.ChangeSize)
+							{
+								setPosFlags |= SWP.NOSIZE;
+							}
+
+							Win32.SetWindowPos(hWnd, pos.X, pos.Y, size.Width, size.Height, setPosFlags, out _lastError);
+							_processedWindows.Add(hWnd);
+
+							LogLastError();
+
+							return; // we process only first match
+						}
 					}
-
-					if (!settings.ChangePosition)
-					{
-						setPosFlags |= SWP.NOMOVE;
-					}
-
-					if (!settings.ChangeSize)
-					{
-						setPosFlags |= SWP.NOSIZE;
-					}
-
-					Win32.SetWindowPos(hWnd, pos.X, pos.Y, size.Width, size.Height, setPosFlags, out _lastError);
-					_processedWindows.Add(hWnd);
-
-					LogLastError();
 				}
 			}
 		}

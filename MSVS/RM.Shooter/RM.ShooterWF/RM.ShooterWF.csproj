@@ -52,14 +52,20 @@
     <Reference Include="UIAutomationTypes" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logger.cs" />
+    <Compile Include="Modules\Logger.cs" />
     <Compile Include="Native\CS.cs" />
-    <Compile Include="FrameChanger.cs" />
+    <Compile Include="Modules\FrameChanger.cs" />
     <Compile Include="Native\HSHELL.cs" />
     <Compile Include="Native\SWP.cs" />
     <Compile Include="Native\Win32.cs" />
     <Compile Include="Native\WS.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Settings\FrameMode.cs" />
+    <Compile Include="Settings\FrameConfig.cs" />
+    <Compile Include="Settings\GlobalSettings.Hardcoded.cs" />
+    <Compile Include="Settings\GlobalSettings.Ini.cs" />
+    <Compile Include="Settings\ImageFormat.cs" />
+    <Compile Include="Settings\ISettings.cs" />
+    <Compile Include="Settings\GlobalSettings.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,9 +78,10 @@
     <Compile Include="Configuration\IniFile.Native.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shooter.cs" />
+    <Compile Include="Settings\ShooterConfig.cs" />
+    <Compile Include="Modules\Shooter.cs" />
     <Compile Include="UIAutomation\AutomationHelper.cs" />
-    <Compile Include="VtAntiAfk.cs" />
+    <Compile Include="Modules\VtAntiAfk.cs" />
     <EmbeddedResource Include="Resources\logo.png" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -108,6 +115,7 @@
   <ItemGroup>
     <None Include="Resources\main.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
