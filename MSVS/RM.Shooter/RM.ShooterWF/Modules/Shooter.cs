@@ -44,6 +44,15 @@ namespace RM.Shooter.Modules
 
 			try
 			{
+				filename = Path.GetFullPath(filename);
+
+				var dir = Path.GetDirectoryName(filename);
+				if (!String.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+				{
+					_logger.Log(Logger.Level.Info, "Creating directory '{0}'", dir);
+					Directory.CreateDirectory(dir);
+				}
+
 				using (var bm = new Bitmap(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height))
 				{
 					using (var gr = Graphics.FromImage(bm))

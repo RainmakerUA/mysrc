@@ -163,7 +163,15 @@ namespace RM.Shooter.Modules
 
 		public void ReInitialize(FrameConfig[] configs)
 		{
-			_settings = Array.ConvertAll(configs, FrameSettings.Create);
+			_logger.Log(Logger.Level.Debug, "Reinitializing frame settings");
+
+			_processedWindows.Clear();
+			_settings = configs != null ? Array.ConvertAll(configs, FrameSettings.Create) : null;
+
+			if (_settings != null && _settings.Length > 0)
+			{
+				_logger.Log(Logger.Level.Warning, "Settings are empty");
+			}
 		}
 
 		private void ChangeWindowFrameSettings(FrameSettings[] settings)
@@ -184,7 +192,7 @@ namespace RM.Shooter.Modules
 
 		private void UpdateWindow(IntPtr hWnd, FrameSettings[] settings)
 		{
-			if (LogCondition(settings != null && settings.Length > 0, "Settings not set")
+			if (settings != null && settings.Length > 0
 					&& LogCondition(!_processedWindows.Contains(hWnd), "Window is already processed"))
 			{
 				foreach (var setting in settings)
