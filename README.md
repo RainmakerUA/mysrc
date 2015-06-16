@@ -1,10 +1,10 @@
 # mysrc by [RM] #
 My Personal Sources
 
-## FASM ##
+### FASM ###
 Assembler sources for Flat Assembler
 
-## MSVS ##
+### MSVS ###
 Solutions for MS Visual Studio (various languages)
 
 to be continued...
