@@ -1,0 +1,14 @@
+﻿<Window x:Class="RM.WikiLinks.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Width="640" Height="480"
+		WindowStyle="SingleBorderWindow" ResizeMode="CanMinimize">
+    <Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+        <ListBox Name="ListBoxChain" ItemsSource="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+		<Button Name="ButtonDo" Grid.Row="1" Margin="50, 5">Just Do It</Button>
+    </Grid>
+</Window>
