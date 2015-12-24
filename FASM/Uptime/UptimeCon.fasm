@@ -21,19 +21,16 @@ main:
 	mov    [min], eax
 	mov    [sec], edx
 	xor    edx, edx
-	;mov    ebx, 60
+; ebx is still 60
 	div    ebx
 
-	;mov    [hr], eax
 	mov    [min], edx
 	xor    edx, edx
 	mov    ebx, 24
 	div    ebx
 
-	;mov    [day], eax
-	;mov    [hr], edx
+; eax - days, edx - hours
 
-	;invoke wsprintfA,buffer,fmt,[day],[hr],[min],[sec],[mis]
 	invoke wsprintfA,buffer,fmt,eax,edx,[min],[sec],[mis]
 	push   buffer
 	call   con_out

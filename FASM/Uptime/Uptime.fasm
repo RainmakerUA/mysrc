@@ -6,7 +6,7 @@ include 'win32w.inc'
 
 section '.code' code readable writeable executable
 
-    start:
+start:
 	invoke GetTickCount
 
 	mov    [mis], eax
@@ -23,6 +23,7 @@ section '.code' code readable writeable executable
 	mov    [min], eax
 	mov    [sec], edx
 	xor    edx, edx
+; ebx is still 60
 	div    ebx
 
 	mov    [min], edx
@@ -30,11 +31,14 @@ section '.code' code readable writeable executable
 	mov    ebx, 24
 	div    ebx
 
+; eax - days, edx - hours
+
 	invoke wsprintf,buffer,fmt,eax,edx,[min],[sec],[mis]
 	invoke LoadLibrary, shell32
 	mov    [mbParam.hInstance], eax
 	invoke MessageBoxIndirect, mbParam
 	invoke ExitProcess,0
+
 data0:
 	mis	dd ?
 	sec	dd ?
