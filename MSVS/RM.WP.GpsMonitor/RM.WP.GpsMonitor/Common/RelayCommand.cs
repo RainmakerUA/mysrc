@@ -30,7 +30,9 @@ namespace RM.WP.GpsMonitor.Common
 		public RelayCommand(Action execute, Func<bool> canExecute)
 		{
 			if (execute == null)
-				throw new ArgumentNullException("execute");
+			{
+				throw new ArgumentNullException(nameof(execute));
+			}
 			_execute = execute;
 			_canExecute = canExecute;
 		}
@@ -65,11 +67,7 @@ namespace RM.WP.GpsMonitor.Common
 		/// </summary>
 		public void RaiseCanExecuteChanged()
 		{
-			var handler = CanExecuteChanged;
-			if (handler != null)
-			{
-				handler(this, EventArgs.Empty);
-			}
+			CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

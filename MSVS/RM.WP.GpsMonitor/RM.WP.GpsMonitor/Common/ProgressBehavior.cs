@@ -36,10 +36,7 @@ namespace RM.WP.GpsMonitor.Common
 																						new PropertyMetadata(null, OnValueChanged)
 																					);
 
-		public DependencyObject AssociatedObject
-		{
-			get { return _associatedObject; }
-		}
+		public DependencyObject AssociatedObject => _associatedObject;
 
 		public string Text
 		{
@@ -77,27 +74,24 @@ namespace RM.WP.GpsMonitor.Common
 			var isVisible = (bool)e.NewValue;
 			var pb = GetCurrent(d);
 
-			if (pb != null)
+			if (pb?._currentStatus != null)
 			{
-				if (pb._currentStatus != null)
+				var indicator = pb._currentStatus.ProgressIndicator;
+
+				if (!String.IsNullOrEmpty(pb._presetText))
 				{
-					var indicator = pb._currentStatus.ProgressIndicator;
-
-					if (!String.IsNullOrEmpty(pb._presetText))
-					{
-						SetText(indicator, pb._presetText);
-						pb._presetText = null;
-					}
-
-					if (pb._isValuePreset)
-					{
-						SetValue(indicator, pb._presetValue);
-						pb._isValuePreset = false;
-						pb._presetValue = null;
-					}
-
-					SetVisibility(indicator, isVisible);
+					SetText(indicator, pb._presetText);
+					pb._presetText = null;
 				}
+
+				if (pb._isValuePreset)
+				{
+					SetValue(indicator, pb._presetValue);
+					pb._isValuePreset = false;
+					pb._presetValue = null;
+				}
+
+				SetVisibility(indicator, isVisible);
 			}
 		}
 

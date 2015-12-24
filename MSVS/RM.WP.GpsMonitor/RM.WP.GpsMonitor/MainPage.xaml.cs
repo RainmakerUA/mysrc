@@ -10,11 +10,9 @@ namespace RM.WP.GpsMonitor
     /// </summary>
     public sealed partial class MainPage : Page
 	{
-		private readonly MainViewModel _viewModel;
-
-        public MainPage()
+		public MainPage()
         {
-			_viewModel = DesignMode.DesignModeEnabled
+			ViewModel = DesignMode.DesignModeEnabled
 												? new FakeMainViewModel(Dispatcher)
 												: new MainViewModel(Dispatcher);
 
@@ -27,15 +25,11 @@ namespace RM.WP.GpsMonitor
 				System.Diagnostics.Debug.WriteLine(e);
 				throw;
 			}
-
-
+			
 			NavigationCacheMode = NavigationCacheMode.Required;
         }
 
-		public MainViewModel ViewModel
-		{
-			get { return _viewModel; }
-		}
+		public MainViewModel ViewModel { get; }
 
 		/// <summary>
         /// Invoked when this page is about to be displayed in a Frame.

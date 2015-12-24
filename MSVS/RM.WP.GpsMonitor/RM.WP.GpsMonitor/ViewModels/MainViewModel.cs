@@ -34,10 +34,7 @@ namespace RM.WP.GpsMonitor.ViewModels
 			}
 		}
 
-		public string AppTitle
-		{
-			get { return ResourceHelper.GetString("AppName").ToUpper(); }
-		}
+		public string AppTitle => ResourceHelper.GetString("AppName").ToUpper();
 
 		public PositionStatus Status
 		{

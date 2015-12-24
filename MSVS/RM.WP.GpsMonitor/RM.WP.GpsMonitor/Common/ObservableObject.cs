@@ -12,11 +12,7 @@ namespace RM.WP.GpsMonitor.Common
 		{
 			try
 			{
-				var handler = PropertyChanged;
-				if (handler != null)
-				{
-					handler(this, new PropertyChangedEventArgs(propertyName));
-				}
+				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 			}
 			catch (Exception e)
 			{
@@ -29,22 +25,20 @@ namespace RM.WP.GpsMonitor.Common
 		{
 			if (propertyExpression == null)
 			{
-				throw new ArgumentNullException("propertyExpression");
+				throw new ArgumentNullException(nameof(propertyExpression));
 			}
 
 			var body = propertyExpression.Body as MemberExpression;
 
-			if (body != null)
-			{
-				var property = body.Member as PropertyInfo;
+			var property = body?.Member as PropertyInfo;
 
-				if (property != null)
-				{
-					OnPropertyChanged(property.Name);
-				}
+			if (property != null)
+			{
+				// ReSharper disable once ExplicitCallerInfoArgument
+				OnPropertyChanged(property.Name);
 			}
 
-			throw new ArgumentException("Argument is not a property expression!", "propertyExpression");
+			throw new ArgumentException("Argument is not a property expression!", nameof(propertyExpression));
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

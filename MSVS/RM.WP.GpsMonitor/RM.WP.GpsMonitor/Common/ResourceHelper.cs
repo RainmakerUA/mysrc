@@ -7,14 +7,8 @@ namespace RM.WP.GpsMonitor.Common
 		private const string _noValue = "NoValueString";
 		private static readonly ResourceLoader _loader = new ResourceLoader();
 
-		public static string NoValue
-		{
-			get { return GetString(_noValue); }
-		}
+		public static string NoValue => GetString(_noValue);
 
-		public static string GetString(string key)
-		{
-			return _loader.GetString(key);
-		}
+		public static string GetString(string key) => _loader.GetString(key);
 	}
 }
