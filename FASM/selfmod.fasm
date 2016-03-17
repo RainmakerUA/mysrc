@@ -1,0 +1,56 @@
+format PE GUI 4.0
+entry start
+
+include 'win32w.inc'
+
+section 'ALL' code readable writeable executable
+
+wszMsgSFmt du "Program succesfully started!", 13, 10, "Replaced code:", 13, 10, "@0x%08x: 0x%04x -> 0x%04x", 0
+wszMsgOK   du "Jump instruction restored.", 13, 10, "Program succesfully executed!", 0
+wszCpt	   du "SelfMod example", 0
+op_new	   dw 9090h
+op_old	   dw ?
+wszMsgS    du 40h dup 0
+
+proc	start
+	xor	eax, eax
+	; Modify
+	mov	ax, word [.mod]
+	mov	[op_old], ax
+	mov	ax, [op_new]
+	mov	word [.mod], ax
+
+	movzx	eax, [op_old]
+	movzx	edx, [op_new]
+	invoke wsprintf, wszMsgS, wszMsgSFmt, .mod, eax, edx
+
+	invoke	MessageBox, HWND_DESKTOP, wszMsgS, wszCpt, MB_ICONINFORMATION
+
+	; Restore
+	xor	eax, eax
+	mov	ax, [op_old]
+	mov	word [.mod], ax
+
+.mod:
+	jmp	.norm
+	; "Invalid" code
+	mov	eax, cr0
+	int	2Eh
+	sysenter
+.norm:
+	invoke	MessageBox, HWND_DESKTOP, wszMsgOK, wszCpt, MB_ICONINFORMATION
+	invoke	ExitProcess, 0
+	ret
+endp
+
+data import
+     library kernel32,'KERNEL32.DLL',\
+	     user32,'USER32.DLL'
+
+     import  kernel32,\
+	     ExitProcess,'ExitProcess'
+
+     import  user32,\
+	     wsprintf,'wsprintfW',\
+	     MessageBox,'MessageBoxW'
+end data
