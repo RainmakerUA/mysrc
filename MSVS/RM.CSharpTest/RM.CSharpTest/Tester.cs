@@ -12,6 +12,7 @@ namespace RM.CSharpTest
 	{
 		private readonly ConcurrentQueue<string> _testQueue;
 		private volatile CancellationTokenSource _ctoken;
+		private /*volatile*/ int _testedCount;
 
 		public Tester(string name, string email)
 		{
@@ -25,7 +26,7 @@ namespace RM.CSharpTest
 
 		public string EMail { get; }
 
-		public int TestedCount { get; private set; }
+		public int TestedCount => _testedCount;
 
 		public void AddTests(IEnumerable<string> tests)
 		{
@@ -45,7 +46,7 @@ namespace RM.CSharpTest
 			_ctoken = new CancellationTokenSource();
 
 			WriteLine("Testing is started");
-			TestedCount = 0;
+			_testedCount = 0;
 
 			await Task.Run(() => {
 								string test;
@@ -55,7 +56,7 @@ namespace RM.CSharpTest
 									var task = DoTest(test);
 									task.Wait();
 
-									TestedCount++;
+									Interlocked.Increment(ref _testedCount);
 								}
 
 								_ctoken = null;
