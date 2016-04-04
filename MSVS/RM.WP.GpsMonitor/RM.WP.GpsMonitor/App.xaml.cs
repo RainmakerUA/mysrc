@@ -1,21 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Phone.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using RM.WP.GpsMonitor.DataProviders;
+using RM.WP.GpsMonitor.Settings;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -26,7 +18,8 @@ namespace RM.WP.GpsMonitor
     /// </summary>
     public sealed partial class App : Application
     {
-        private TransitionCollection transitions;
+        private TransitionCollection _transitions;
+	    private LocalSettingsProvider _localSettingsProvider;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -36,6 +29,8 @@ namespace RM.WP.GpsMonitor
         {
             InitializeComponent();
             
+			_localSettingsProvider = new LocalSettingsProvider();
+
 			Suspending += OnSuspending;
 			HardwareButtons.BackPressed += OnHardwareBackPressed;
         }
@@ -51,25 +46,26 @@ namespace RM.WP.GpsMonitor
 #if DEBUG
             if (System.Diagnostics.Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
 
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (rootFrame == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
+	            rootFrame = new Frame {CacheSize = 3};
 
-                // TODO: change this value to a cache size that is appropriate for your application
-                rootFrame.CacheSize = 1;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+	            if (e.PreviousExecutionState == ApplicationExecutionState.Terminated
+					|| e.PreviousExecutionState == ApplicationExecutionState.ClosedByUser
+					|| e.PreviousExecutionState == ApplicationExecutionState.NotRunning)
                 {
                     // TODO: Load state from previously suspended application
+					_localSettingsProvider.Load();
+					AppSettings.Instance.Initialize(_localSettingsProvider);
                 }
 
                 // Place the frame in the current Window
@@ -81,15 +77,15 @@ namespace RM.WP.GpsMonitor
                 // Removes the turnstile navigation for startup.
                 if (rootFrame.ContentTransitions != null)
                 {
-                    this.transitions = new TransitionCollection();
+                    _transitions = new TransitionCollection();
                     foreach (var c in rootFrame.ContentTransitions)
                     {
-                        this.transitions.Add(c);
+                        _transitions.Add(c);
                     }
                 }
 
                 rootFrame.ContentTransitions = null;
-                rootFrame.Navigated += this.RootFrame_FirstNavigated;
+                rootFrame.Navigated += RootFrame_FirstNavigated;
 
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
@@ -112,11 +108,11 @@ namespace RM.WP.GpsMonitor
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
             var rootFrame = sender as Frame;
-            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
-            rootFrame.Navigated -= this.RootFrame_FirstNavigated;
+            rootFrame.ContentTransitions = _transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
+            rootFrame.Navigated -= RootFrame_FirstNavigated;
         }
 
-        /// <summary>
+		/// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
         /// without knowing whether the application will be terminated or resumed with the contents
         /// of memory still intact.
@@ -127,7 +123,9 @@ namespace RM.WP.GpsMonitor
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
-            // TODO: Save application state and stop any background activity
+			// TODO: Save application state and stop any background activity
+			_localSettingsProvider.Save();
+
             deferral.Complete();
         }
 

@@ -144,6 +144,48 @@
   <data name="NoValueString" xml:space="preserve">
     <value>Нет значения</value>
   </data>
+  <data name="ResetSettingsAppButton.Label" xml:space="preserve">
+    <value>сбросить настройки…</value>
+  </data>
+  <data name="SettingsName" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="Settings_Length_Feet" xml:space="preserve">
+    <value>фт</value>
+  </data>
+  <data name="Settings_Length_Feet_L" xml:space="preserve">
+    <value>футы</value>
+  </data>
+  <data name="Settings_Length_Metres" xml:space="preserve">
+    <value>м</value>
+  </data>
+  <data name="Settings_Length_Metres_L" xml:space="preserve">
+    <value>метры</value>
+  </data>
+  <data name="Settings_Length_Yards" xml:space="preserve">
+    <value>ярд.</value>
+  </data>
+  <data name="Settings_Length_Yards_L" xml:space="preserve">
+    <value>ярды</value>
+  </data>
+  <data name="Settings_Speed_KilometrePerHour" xml:space="preserve">
+    <value>км/ч</value>
+  </data>
+  <data name="Settings_Speed_KilometrePerHour_L" xml:space="preserve">
+    <value>километры в час</value>
+  </data>
+  <data name="Settings_Speed_MetrePerSec" xml:space="preserve">
+    <value>м/с</value>
+  </data>
+  <data name="Settings_Speed_MetrePerSec_L" xml:space="preserve">
+    <value>метры в секунду</value>
+  </data>
+  <data name="Settings_Speed_MilePerHour" xml:space="preserve">
+    <value>миль/ч</value>
+  </data>
+  <data name="Settings_Speed_MilePerHour_L" xml:space="preserve">
+    <value>мили в час</value>
+  </data>
   <data name="SpeedLabel.Text" xml:space="preserve">
     <value>Скорость</value>
   </data>

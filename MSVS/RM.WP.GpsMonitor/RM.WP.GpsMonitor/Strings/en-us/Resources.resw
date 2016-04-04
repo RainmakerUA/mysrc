@@ -144,6 +144,48 @@
   <data name="NoValueString" xml:space="preserve">
     <value>No Value</value>
   </data>
+  <data name="ResetSettingsAppButton.Label" xml:space="preserve">
+    <value>reset settings…</value>
+  </data>
+  <data name="SettingsName" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_Length_Feet" xml:space="preserve">
+    <value>ft</value>
+  </data>
+  <data name="Settings_Length_Feet_L" xml:space="preserve">
+    <value>feet</value>
+  </data>
+  <data name="Settings_Length_Metres" xml:space="preserve">
+    <value>m</value>
+  </data>
+  <data name="Settings_Length_Metres_L" xml:space="preserve">
+    <value>metres</value>
+  </data>
+  <data name="Settings_Length_Yards" xml:space="preserve">
+    <value>yd</value>
+  </data>
+  <data name="Settings_Length_Yards_L" xml:space="preserve">
+    <value>yards</value>
+  </data>
+  <data name="Settings_Speed_KilometrePerHour" xml:space="preserve">
+    <value>km/h</value>
+  </data>
+  <data name="Settings_Speed_KilometrePerHour_L" xml:space="preserve">
+    <value>kilometres per hour</value>
+  </data>
+  <data name="Settings_Speed_MetrePerSec" xml:space="preserve">
+    <value>m/s</value>
+  </data>
+  <data name="Settings_Speed_MetrePerSec_L" xml:space="preserve">
+    <value>metres per second</value>
+  </data>
+  <data name="Settings_Speed_MilePerHour" xml:space="preserve">
+    <value>mile/h</value>
+  </data>
+  <data name="Settings_Speed_MilePerHour_L" xml:space="preserve">
+    <value>miles per hour</value>
+  </data>
   <data name="SpeedLabel.Text" xml:space="preserve">
     <value>Speed</value>
   </data>

@@ -6,6 +6,7 @@
 	xmlns:intcore="using:Microsoft.Xaml.Interactions.Core"
 	xmlns:l="using:RM.WP.GpsMonitor"
     xmlns:c="using:RM.WP.GpsMonitor.Common"
+	xmlns:s="using:RM.WP.GpsMonitor.Settings"
 	xmlns:conv="using:RM.WP.GpsMonitor.Converters"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -18,11 +19,12 @@
 	<Page.Resources>
 		<conv:CoordinateToStringConverter x:Key="LatitudeConverter" MarkKey="Lat" />
 		<conv:CoordinateToStringConverter x:Key="LongitudeConverter" MarkKey="Long" />
+		<conv:LengthUnitValueConverter x:Key="LengthUnitConverter" />
+		<conv:SpeedUnitValueConverter x:Key="SpeedUnitConverter" />
 	</Page.Resources>
-	<StackPanel Orientation="Vertical">
+	<StackPanel  Style="{StaticResource PageContainer}">
 		<TextBlock Text="{Binding AppTitle}" Style="{ThemeResource TitleTextBlockStyle}" />
-		<ScrollViewer IsHorizontalRailEnabled="False" Padding="10"
-					  MinZoomFactor="1.0" MaxZoomFactor="1.0">
+		<ScrollViewer IsHorizontalRailEnabled="False" MinZoomFactor="1.0" MaxZoomFactor="1.0">
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />
@@ -39,26 +41,41 @@
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
-				<TextBlock x:Name="LatitudeLabel" x:Uid="LatitudeLabel" Text="Latitude" Style="{StaticResource LabelBlock}" />
-				<TextBlock Text="{Binding Location.Latitude,Converter={StaticResource LatitudeConverter}}" Style="{StaticResource ValueBlock}" Grid.Row="1" />
-				<TextBlock x:Name="LongitudeLabel" x:Uid="LongitudeLabel" Text="Longitude" Style="{StaticResource LabelBlock}" Grid.Row="2" />
-				<TextBlock Text="{Binding Location.Longitude,Converter={StaticResource LongitudeConverter}}" Style="{StaticResource ValueBlock}" Grid.Row="3" />
-				<TextBlock x:Name="AltitudeLabel" x:Uid="AltitudeLabel" Text="Altitude" Style="{StaticResource LabelBlock}" Grid.Row="4" />
-				<TextBlock Text="{Binding Location.Altitude}" Style="{StaticResource ValueBlock}" Grid.Row="5" />
-				<TextBlock x:Name="SpeedLabel" x:Uid="SpeedLabel" Text="Speed" Style="{StaticResource LabelBlock}" Grid.Row="6" />
-				<TextBlock Text="{Binding Location.Speed}" Style="{StaticResource ValueBlock}" Grid.Row="7" />
-				<TextBlock x:Name="HeadingLabel" x:Uid="HeadingLabel" Text="Heading" Style="{StaticResource LabelBlock}" Grid.Row="8" />
-				<TextBlock Text="{Binding Location.Heading}" Style="{StaticResource ValueBlock}" Grid.Row="9" />
-				<TextBlock x:Name="AccuracyLabel" x:Uid="AccuracyLabel" Text="Accuracy" Style="{StaticResource LabelBlock}" Grid.Row="10" />
-				<TextBlock Text="Not implemented" Style="{StaticResource ValueBlock}" Grid.Row="11" />
-				<TextBlock x:Name="AltAccuracyLabel" x:Uid="AltAccuracyLabel" Text="Altitude Accuracy" Style="{StaticResource LabelBlock}" Grid.Row="12" />
-				<TextBlock Text="Not implemented" Style="{StaticResource ValueBlock}" Grid.Row="13" />
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="*" />
+					</Grid.ColumnDefinitions>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="GPS Status:" />
+						<TextBlock Text="Loading" />
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Grid.Column="1">
+						<TextBlock Text="GPS Source:" />
+						<TextBlock Text="Unknown" />
+					</StackPanel>
+				</Grid>
+				<TextBlock x:Name="LatitudeLabel" x:Uid="LatitudeLabel" Text="Latitude" Style="{StaticResource LabelBlock}" Grid.Row="1" />
+				<TextBlock Text="{Binding Location.Latitude,Converter={StaticResource LatitudeConverter}}" Style="{StaticResource ValueBlock}" Grid.Row="2" />
+				<TextBlock x:Name="LongitudeLabel" x:Uid="LongitudeLabel" Text="Longitude" Style="{StaticResource LabelBlock}" Grid.Row="3" />
+				<TextBlock Text="{Binding Location.Longitude,Converter={StaticResource LongitudeConverter}}" Style="{StaticResource ValueBlock}" Grid.Row="4" />
+				<TextBlock x:Name="AltitudeLabel" x:Uid="AltitudeLabel" Text="Altitude" Style="{StaticResource LabelBlock}" Grid.Row="5" />
+				<TextBlock Text="{Binding Location.Altitude, Converter={StaticResource LengthUnitConverter}}" Style="{StaticResource ValueBlock}" Grid.Row="6" />
+				<TextBlock x:Name="SpeedLabel" x:Uid="SpeedLabel" Text="Speed" Style="{StaticResource LabelBlock}" Grid.Row="7" />
+				<TextBlock Text="{Binding Location.Speed, Converter={StaticResource SpeedUnitConverter}}" Style="{StaticResource ValueBlock}" Grid.Row="8" />
+				<TextBlock x:Name="HeadingLabel" x:Uid="HeadingLabel" Text="Heading" Style="{StaticResource LabelBlock}" Grid.Row="9" />
+				<TextBlock Text="{Binding Location.Heading}" Style="{StaticResource ValueBlock}" Grid.Row="10" />
+				<TextBlock x:Name="AccuracyLabel" x:Uid="AccuracyLabel" Text="Accuracy" Style="{StaticResource LabelBlock}" Grid.Row="11" />
+				<TextBlock Text="Not implemented" Style="{StaticResource ValueBlock}" Grid.Row="12" />
+				<TextBlock x:Name="AltAccuracyLabel" x:Uid="AltAccuracyLabel" Text="Altitude Accuracy" Style="{StaticResource LabelBlock}" Grid.Row="13" />
+				<TextBlock Text="Not implemented" Style="{StaticResource ValueBlock}" Grid.Row="14" />
 			</Grid>
 		</ScrollViewer>
 	</StackPanel>
 	<Page.BottomAppBar>
-		<CommandBar>
+		<CommandBar ClosedDisplayMode="Minimal">
 			<CommandBar.SecondaryCommands>
 				<AppBarButton x:Name="SettingsAppBarButton" x:Uid="SettingsAppBarButton" Label="settings">
 					<int:Interaction.Behaviors>

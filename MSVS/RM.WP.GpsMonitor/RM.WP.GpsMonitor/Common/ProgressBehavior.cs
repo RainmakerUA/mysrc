@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Microsoft.Xaml.Interactivity;
@@ -69,7 +70,7 @@ namespace RM.WP.GpsMonitor.Common
 			_presetText = null;
 		}
 
-		private static void OnIsVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private static async void OnIsVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var isVisible = (bool)e.NewValue;
 			var pb = GetCurrent(d);
@@ -91,11 +92,11 @@ namespace RM.WP.GpsMonitor.Common
 					pb._presetValue = null;
 				}
 
-				SetVisibility(indicator, isVisible);
+				await SetVisibility(indicator, isVisible);
 			}
 		}
 
-		private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private static async void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var text = String.Empty;
 			var pb = GetCurrent(d);
@@ -113,7 +114,7 @@ namespace RM.WP.GpsMonitor.Common
 
 					if (pb._presetVisible.HasValue)
 					{
-						SetVisibility(indicator, pb._presetVisible.Value);
+						await SetVisibility(indicator, pb._presetVisible.Value);
 					}
 
 					if (pb._isValuePreset)
@@ -132,7 +133,7 @@ namespace RM.WP.GpsMonitor.Common
 			}
 		}
 
-		private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+		private async static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			var val = (double?)e.NewValue;
 			var pb = GetCurrent(d);
@@ -145,7 +146,7 @@ namespace RM.WP.GpsMonitor.Common
 
 					if (pb._presetVisible.HasValue)
 					{
-						SetVisibility(indicator, pb._presetVisible.Value);
+						await SetVisibility(indicator, pb._presetVisible.Value);
 						pb._presetVisible = null;
 					}
 
@@ -165,15 +166,15 @@ namespace RM.WP.GpsMonitor.Common
 			}
 		}
 
-		private static void SetVisibility(StatusBarProgressIndicator progressIndicator, bool isVisible)
+		private static async Task SetVisibility(StatusBarProgressIndicator progressIndicator, bool isVisible)
 		{
 			if (isVisible)
 			{
-				progressIndicator.ShowAsync();
+				await progressIndicator.ShowAsync();
 			}
 			else
 			{
-				progressIndicator.HideAsync();
+				await progressIndicator.HideAsync();
 			}
 		}
 

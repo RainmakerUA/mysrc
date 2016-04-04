@@ -1,6 +1,7 @@
 ﻿using Windows.ApplicationModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using RM.WP.GpsMonitor.DataProviders;
 using RM.WP.GpsMonitor.ViewModels;
 
 namespace RM.WP.GpsMonitor
@@ -14,7 +15,7 @@ namespace RM.WP.GpsMonitor
         {
 			ViewModel = DesignMode.DesignModeEnabled
 												? new FakeMainViewModel(Dispatcher)
-												: new MainViewModel(Dispatcher);
+												: new MainViewModel(Dispatcher, new GpsLocationProvider());
 
 			try
 			{

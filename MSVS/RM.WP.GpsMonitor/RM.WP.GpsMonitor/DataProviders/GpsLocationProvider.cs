@@ -4,7 +4,7 @@ using RM.WP.GpsMonitor.Common;
 
 namespace RM.WP.GpsMonitor.DataProviders
 {
-	internal sealed class LocationProvider
+	internal sealed class GpsLocationProvider : ILocationProvider
 	{
 		private const PositionAccuracy _accuracy = PositionAccuracy.High;
 		private const int _reportingInterval = 5 * 1000; // 5 seconds
@@ -15,7 +15,7 @@ namespace RM.WP.GpsMonitor.DataProviders
 		private PositionStatus _lastStatus;
 		private Location _lastPosition;
 
-		public LocationProvider()
+		public GpsLocationProvider()
 		{
 			_locator = new Geolocator
 							{
@@ -27,42 +27,24 @@ namespace RM.WP.GpsMonitor.DataProviders
 			_locator.PositionChanged += OnLocatorPositionChanged;
 		}
 
-		public PositionStatus LastStatus
-		{
-			get { return _lastStatus; }
-		}
+		public PositionStatus LastStatus => _lastStatus;
 
-		public Location LastPosition
-		{
-			get { return _lastPosition; }
-		}
+		public Location LastPosition => _lastPosition;
 
-		public event TypedEventHandler<LocationProvider, EventArgs<PositionStatus>> StatusChanged;
+		public event TypedEventHandler<ILocationProvider, EventArgs<PositionStatus>> StatusChanged;
 
-		public event TypedEventHandler<LocationProvider, EventArgs<Location>> PositionChanged;
+		public event TypedEventHandler<ILocationProvider, EventArgs<Location>> PositionChanged;
 
 		private void OnLocatorStatusChanged(Geolocator sender, StatusChangedEventArgs args)
 		{
-			var handler = StatusChanged;
-
 			_lastStatus = args.Status;
-
-			if (handler != null)
-			{
-				handler(this, new EventArgs<PositionStatus>(_lastStatus));
-			}
+			StatusChanged?.Invoke(this, new EventArgs<PositionStatus>(_lastStatus));
 		}
 
 		private void OnLocatorPositionChanged(Geolocator sender, PositionChangedEventArgs args)
 		{
-			var handler = PositionChanged;
-
 			_lastPosition = Location.FromGeoposition(args.Position);
-
-			if (handler != null)
-			{
-				handler(this, new EventArgs<Location>(_lastPosition));
-			}
+			PositionChanged?.Invoke(this, new EventArgs<Location>(_lastPosition));
 		}
 	}
 }

@@ -4,10 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 	
 	<Application.Resources>
-		<Style x:Key="TitleBlock" TargetType="TextBlock">
+		<Style x:Key="PageContainer" TargetType="StackPanel">
+			<Setter Property="Margin" Value="20, 10" />
+		</Style>
+		<!--<Style x:Key="TitleBlock" TargetType="TextBlock" BasedOn="{StaticResource TitleTextBlockStyle}">
+			<Setter Property="Typography." Value="" />
 			<Setter Property="FontSize" Value="20" />
 			<Setter Property="Margin" Value="10,0" />
-		</Style>
+		</Style>-->
 		<Style x:Key="LabelBlock" TargetType="TextBlock">
 			<Setter Property="FontSize" Value="16" />
 			<Setter Property="Foreground" Value="Silver" />

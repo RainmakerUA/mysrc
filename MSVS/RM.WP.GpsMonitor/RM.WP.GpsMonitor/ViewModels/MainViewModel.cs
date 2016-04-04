@@ -2,26 +2,28 @@
 using Windows.Devices.Geolocation;
 using Windows.UI.Core;
 using RM.WP.GpsMonitor.Common;
-using RM.WP.GpsMonitor.DataProviders;
 
 namespace RM.WP.GpsMonitor.ViewModels
 {
 	public class MainViewModel : ObservableObject
 	{
-		private readonly LocationProvider _provider;
+		private readonly ILocationProvider _provider;
 		private readonly CoreDispatcher _updateDispatcher;
 
 		private bool _isLoading = true;
 		private PositionStatus _status = PositionStatus.Initializing;
 		private Location _location = Location.Empty;
 
-		public MainViewModel(CoreDispatcher updateDispatcher)
+		public MainViewModel(CoreDispatcher updateDispatcher, ILocationProvider locationProvider)
 		{
 			_updateDispatcher = updateDispatcher;
-			_provider = new LocationProvider();
+			_provider = locationProvider;
 
-			_provider.StatusChanged += OnProviderStatusChanged;
-			_provider.PositionChanged += OnProviderPositionChanged;
+			if (locationProvider != null)
+			{
+				_provider.StatusChanged += OnProviderStatusChanged;
+				_provider.PositionChanged += OnProviderPositionChanged;
+			}
 		}
 
 		public bool IsLoading
@@ -58,11 +60,11 @@ namespace RM.WP.GpsMonitor.ViewModels
 			}
 		}
 
-		private void OnProviderPositionChanged(LocationProvider sender, EventArgs<Location> args)
+		private async void OnProviderPositionChanged(ILocationProvider sender, EventArgs<Location> args)
 		{
 			if (_updateDispatcher != null)
 			{
-				_updateDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { Location = args.Data; });
+				await _updateDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { Location = args.Data; });
 			}
 			else
 			{
@@ -70,11 +72,11 @@ namespace RM.WP.GpsMonitor.ViewModels
 			}
 		}
 
-		private void OnProviderStatusChanged(LocationProvider sender, EventArgs<PositionStatus> args)
+		private async void OnProviderStatusChanged(ILocationProvider sender, EventArgs<PositionStatus> args)
 		{
 			if (_updateDispatcher != null)
 			{
-				_updateDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { Status = args.Data; });
+				await _updateDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { Status = args.Data; });
 			}
 			else
 			{
@@ -86,7 +88,7 @@ namespace RM.WP.GpsMonitor.ViewModels
 	public class FakeMainViewModel : MainViewModel
 	{
 		public FakeMainViewModel(CoreDispatcher updateDispatcher)
-			: base(updateDispatcher)
+			: base(updateDispatcher, null)
 		{
 			DoReload();
 		}

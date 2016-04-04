@@ -2,7 +2,7 @@
 
 namespace RM.WP.GpsMonitor.Common
 {
-	internal sealed class EventArgs<T> : EventArgs
+	public sealed class EventArgs<T> : EventArgs
 	{
 		public EventArgs(T data)
 		{

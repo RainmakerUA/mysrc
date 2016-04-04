@@ -14,6 +14,8 @@
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>neutral</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -95,11 +97,21 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\EventArgs.cs" />
     <Compile Include="Common\ResourceHelper.cs" />
+    <Compile Include="Common\UnitEnumAttribute.cs" />
+    <Compile Include="Common\UnitEnumHelper.cs" />
+    <Compile Include="Converters\UnitValueConverter.cs" />
+    <Compile Include="Settings\AppSettings.cs" />
     <Compile Include="Converters\CoordinateToStringConverter.cs" />
-    <Compile Include="DataProviders\LocationProvider.cs" />
+    <Compile Include="Common\ILocationProvider.cs" />
+    <Compile Include="Common\ISettingsProvider.cs" />
+    <Compile Include="DataProviders\GpsLocationProvider.cs" />
+    <Compile Include="DataProviders\LocalSettingsProvider.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings\CoordinateFormat.cs" />
+    <Compile Include="Settings\LengthUnit.cs" />
+    <Compile Include="Settings\SpeedUnit.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Common\ProgressBehavior.cs" />
     <Compile Include="Common\ObservableObject.cs" />
@@ -107,6 +119,7 @@
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

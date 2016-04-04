@@ -18,8 +18,7 @@ namespace RM.WP.GpsMonitor.Converters
 
 		public object Convert(object value, Type targetType, object parameter, string language)
 		{
-			if (targetType == typeof(String)
-					&& value is double)
+			if (targetType == typeof(String) && value is double)
 			{
 				return FormatCoordinates((double)value);
 			}

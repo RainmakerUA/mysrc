@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-		<TextBlock Text="About..." Style="{ThemeResource TitleTextBlockStyle}"/>
-    </Grid>
+	<StackPanel Style="{StaticResource PageContainer}">
+		<TextBlock Text="ABOUT" Style="{ThemeResource TitleTextBlockStyle}"/>
+    </StackPanel>
 </Page>
