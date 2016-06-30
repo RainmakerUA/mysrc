@@ -1,4 +1,7 @@
-﻿
+﻿# FASM compiled
+/FASM/**/*.exe
+/FASM/**/*.dll
+
 # Visual Studio ignorings
 # bin/ folder
 /MSVS/**/bin
@@ -13,3 +16,4 @@
 *.suo
 *.user
 *.tss
+
