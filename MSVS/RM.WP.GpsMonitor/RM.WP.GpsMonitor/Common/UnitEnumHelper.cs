@@ -14,17 +14,8 @@ namespace RM.WP.GpsMonitor.Common
 		private readonly IDictionary<T, UnitEnumValueAttribute> _entries;
 		private readonly IDictionary<T, UnitEnumValueAttribute> _entriesWithText;
 
-		//public UnitEnumHelper(string typeName) : this(Type.GetType(typeName))
-		//{
-		//}
-
-		public UnitEnumHelper(/*Type enumType*/)
+		public UnitEnumHelper()
 		{
-			//if (enumType == null)
-			//{
-			//	throw new ArgumentNullException(nameof(enumType));
-			//}
-
 			var enumType = typeof(T);
 
 			_type = enumType;
