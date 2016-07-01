@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Json;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace RM.UzTicket.Lib.Model
-{
+{/*
 	public static class ModelExtensions
 	{
+		private static readonly Regex _toSnakeCase = new Regex("([a-z])([A-Z])");
 		private static readonly IDictionary<Type, PropertyInfo[]> _propCache = new Dictionary<Type, PropertyInfo[]>();
 
 		public static IDictionary<string, object> ToDictionary(this ModelBase model)
@@ -23,7 +26,16 @@ namespace RM.UzTicket.Lib.Model
 			return obj;
 		}
 
-		public static void LoadFromDictionary(this ModelBase model, IDictionary<string, object> dict, bool throwUncastable = false)
+		public static T ToModel<T>(this IDictionary<string, JsonValue> dict) where T : ModelBase, new()
+		{
+			var obj = new T();
+
+			obj.LoadFromDictionary(dict);
+
+			return obj;
+		}
+
+		public static void LoadFromDictionary<T>(this ModelBase model, IDictionary<string, T> dict, bool throwUncastable = false)
 		{
 			foreach (var property in GetProperties(model.GetType()))
 			{
@@ -80,7 +92,16 @@ namespace RM.UzTicket.Lib.Model
 		{
 			if (value != null)
 			{
+				var jsonValue = value as JsonValue;
+				object val;
+
 				var propType = prop.PropertyType;
+
+				if (jsonValue != null && jsonValue.TryReadAs(propType, out val))
+				{
+					value = val;
+				}
+
 				var valType = value.GetType();
 
 				if (!propType.GetTypeInfo().IsAssignableFrom(valType.GetTypeInfo()))
@@ -101,7 +122,11 @@ namespace RM.UzTicket.Lib.Model
 
 		private static string GetPropertyKey(PropertyInfo prop)
 		{
-			return prop.GetCustomAttribute<ModelPropertyAttribute>()?.Name ?? prop.Name.ToLowerInvariant();
+			var name = prop.GetCustomAttribute<ModelPropertyAttribute>()?.Name;
+
+			return String.IsNullOrEmpty(name)
+					? _toSnakeCase.Replace(prop.Name, m => m.Groups[1].Value + '_' + m.Groups[2].Value).ToLowerInvariant()
+					: prop.GetCustomAttribute<ModelPropertyAttribute>().Name;
 		}
 
 		private static PropertyInfo[] GetProperties(Type type)
@@ -114,4 +139,4 @@ namespace RM.UzTicket.Lib.Model
 			return _propCache[type];
 		}
 	}
-}
+*/}

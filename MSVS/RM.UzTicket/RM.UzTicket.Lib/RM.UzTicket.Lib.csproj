@@ -34,24 +34,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Exceptions\SerializationException.cs" />
+    <Compile Include="Model\Coach.cs" />
+    <Compile Include="Model\CoachType.cs" />
     <Compile Include="Model\ModelBase.cs" />
     <Compile Include="Model\ModelExtensions.cs" />
     <Compile Include="Model\ModelPropertyAttribute.cs" />
+    <Compile Include="Model\Station.cs" />
+    <Compile Include="Model\Train.cs" />
+    <Compile Include="Model\UzTimestamp.cs" />
+    <Compile Include="Utils\AsyncLock.cs" />
+    <Compile Include="Utils\DateTimeExtensions.cs" />
+    <Compile Include="Utils\Logger.cs" />
     <Compile Include="UzClient.cs" />
-    <Compile Include="Exceptions\BadRequest.cs" />
-    <Compile Include="Exceptions\FailedObtainToken.cs" />
-    <Compile Include="Exceptions\HttpError.cs" />
-    <Compile Include="Exceptions\ImproperlyConfigured.cs" />
-    <Compile Include="Exceptions\ResponseError.cs" />
+    <Compile Include="Exceptions\BadRequestException.cs" />
+    <Compile Include="Exceptions\TokenException.cs" />
+    <Compile Include="Exceptions\HttpException.cs" />
+    <Compile Include="Exceptions\ConfigurationException.cs" />
+    <Compile Include="Exceptions\ResponseException.cs" />
     <Compile Include="Exceptions\UzException.cs" />
     <Compile Include="Utils\JjDecoder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\TokenParser.cs" />
     <Compile Include="Utils\UserAgentSelector.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Json">
+      <HintPath>Lib\System.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

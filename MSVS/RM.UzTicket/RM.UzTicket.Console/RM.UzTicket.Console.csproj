@@ -50,6 +50,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\RM.UzTicket.Lib\Lib\System.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,6 +67,7 @@
     <Compile Include="Tests\JjDecoderTest.cs" />
     <Compile Include="Tests\ModelTest.cs" />
     <Compile Include="Tests\UtilsTest.cs" />
+    <Compile Include="Tests\UzClientTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

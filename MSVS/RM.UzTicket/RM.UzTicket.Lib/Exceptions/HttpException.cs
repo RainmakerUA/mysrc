@@ -1,7 +1,7 @@
 ﻿
 namespace RM.UzTicket.Lib.Exceptions
 {
-	public class HttpError : UzException
+	public class HttpException : UzException
 	{
 		//public HttpError()
 		//{
@@ -15,7 +15,7 @@ namespace RM.UzTicket.Lib.Exceptions
 		//{
 		//}
 
-		public HttpError(int statusCode, string responseBody, string requestData = null, string json = null)
+		public HttpException(int statusCode, string responseBody, string requestData = null, string json = null)
 			: base($"Status code: {statusCode}; request data: {requestData}; response body: {responseBody}")
 		{
 			StatusCode = statusCode;
