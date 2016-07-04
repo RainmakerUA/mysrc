@@ -27,5 +27,10 @@ namespace RM.UzTicket.Lib.Model
 							["src_date"] = StrDate
 						};
 		}
+
+		public override string ToString()
+		{
+			return DateTime.ToString("dd MMMM HH:mm");
+		}
 	}
 }

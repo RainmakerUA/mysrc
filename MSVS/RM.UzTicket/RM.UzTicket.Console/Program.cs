@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Json;
 using System.Threading;
 using Con = System.Console;
 
@@ -49,10 +50,7 @@ namespace RM.UzTicket.Console
 
 		private static void InlineTest()
 		{
-			var list = new List<string> {"test", "test: again", "one-more: test"};
-			File.WriteAllText(@"D:\out_n.txt", String.Join("\n", list));
-			File.WriteAllText(@"D:\out_rn.txt", String.Join("\r\n", list));
-			File.WriteAllText(@"D:\out_newline.txt", String.Join(Environment.NewLine, list));
+			
 		}
 	}
 }

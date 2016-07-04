@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Json;
 using System.Linq;
 
@@ -51,6 +52,21 @@ namespace RM.UzTicket.Lib.Model
 							//["services"] = ?
 							//["prices"] = ?
 						};
+		}
+
+		public string GetInfo()
+		{
+			var list = new List<string>
+							{
+								"Coach #{0} class {1}",
+								"Places: {2}",
+								"Bedding: {3}",
+								"Services: {4}",
+								"~~~~~~~~~~~~~"
+							};
+			var services = String.Join("\u0020", Services);
+			list.AddRange(Prices.Select(kv => $"{kv.Key}: {kv.Value} UAH"));
+			return String.Format(String.Join(Environment.NewLine, list), Number, Class, PlacesCount, HasBedding ? "+" : "-", services);
 		}
 
 		public override string ToString()

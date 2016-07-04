@@ -68,7 +68,7 @@ namespace RM.UzTicket.Lib.Model
 			var obj = CheckJson(json);
 			return new Station
 						{
-							StationId = obj["station_id"].ReadAs<int>(),
+							Id = obj["station_id"].ReadAs<int>(),
 							Title = obj["station"].ReadAs<string>()
 						};
 		}

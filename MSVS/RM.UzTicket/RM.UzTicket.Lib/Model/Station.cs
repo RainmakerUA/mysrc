@@ -5,13 +5,13 @@ namespace RM.UzTicket.Lib.Model
 {
 	public class Station : ModelBase
 	{
-		public int StationId { get; set; }
+		public int Id { get; set; }
 
 		public string Title { get; set; }
 
 		protected override void FromJsonObject(JsonObject obj)
 		{
-			StationId = obj["station_id"].ReadAs<int>();
+			Id = obj["station_id"].ReadAs<int>();
 			Title = obj["title"].ReadAs<string>();
 		}
 
@@ -19,14 +19,14 @@ namespace RM.UzTicket.Lib.Model
 		{
 			return new Dictionary<string, string>
 						{
-							["station_id"] = StationId.ToString(),
+							["station_id"] = Id.ToString(),
 							["title"] = Title
 						};
 		}
 
 		public override string ToString()
 		{
-			return $"{Title} ({StationId})";
+			return $"{Title} ({Id})";
 		}
 	}
 }
