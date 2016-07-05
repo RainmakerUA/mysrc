@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using RM.UzTicket.Lib;
 using RM.UzTicket.Lib.Exceptions;
@@ -111,7 +109,7 @@ namespace RM.UzTicket.Console.Tests
 				var bl = await client.BookSeatAsync(train, coach, seatNumber, "Иван", "Иванов");
 
 				var sessionId = client.GetSessionId();
-				Con.WriteLine(sessionId);
+				Con.WriteLine($"In console: document.cookie='{sessionId}'");
 			}
 			catch (ResponseException re)
 			{

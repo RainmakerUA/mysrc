@@ -16,6 +16,7 @@ namespace RM.UzTicket.Lib
 	internal class UzClient
 	{
 		private const string _baseUrl = "http://booking.uz.gov.ua/en"; // strict without trailing '/'!
+		private const string _sessionIdKey = "_gv_sessid";
 		private const int _requestTimeout = 10;
 		private const int _tokenMaxAge = 600;
 
@@ -36,7 +37,8 @@ namespace RM.UzTicket.Lib
 
 		public string GetSessionId()
 		{
-			return _httpHandler.CookieContainer.GetCookies(new Uri(_baseUrl))["_gv_sessid"].Value;
+			var value = _httpHandler.CookieContainer.GetCookies(new Uri(_baseUrl))[_sessionIdKey].Value;
+			return _sessionIdKey + "=" + value;
 		}
 
 		public async Task<Station[]> SearchStationsAsync(string name)
@@ -115,7 +117,7 @@ namespace RM.UzTicket.Lib
 			var data = new Dictionary<string, string>
 							{
 								["code_station_from"] = train.SourceStation.Id.ToString(),
-								["code_station_till"] = train.DestinationStation.Id.ToString(),
+								["code_station_to"] = train.DestinationStation.Id.ToString(),
 								["train"] = train.Number,
 								["date"] = train.DepartureTime.Timestamp.ToString(),
 								["round_trip"] = "0"
@@ -176,10 +178,10 @@ namespace RM.UzTicket.Lib
 			return new Dictionary<string, string>
 						{
 							["User-Agent"] = _userAgent,
-							["Referer"] = referer,
+							//["Referer"] = referer,
 							["GV-Ajax"] = "1",
 							["GV-Referer"] = referer,
-							["GV-Screen"] = "1366x768",
+							//["GV-Screen"] = "1366x768",
 							["GV-Token"] = await GetTokenAsync()
 						};
 		}
