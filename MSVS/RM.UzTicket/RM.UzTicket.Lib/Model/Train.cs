@@ -7,7 +7,6 @@ namespace RM.UzTicket.Lib.Model
 {
 	public class Train : ModelBase
 	{
-		[ModelProperty("num")]
 		public string Number { get; set; }
 
 		public int Model { get; set; }

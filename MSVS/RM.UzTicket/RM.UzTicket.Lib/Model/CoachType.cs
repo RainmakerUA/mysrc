@@ -9,7 +9,6 @@ namespace RM.UzTicket.Lib.Model
 
 		public string Letter { get; set; }
 
-		[ModelProperty("places")]
 		public int PlacesCount { get; set; }
 
 		protected override void FromJsonObject(JsonObject obj)
