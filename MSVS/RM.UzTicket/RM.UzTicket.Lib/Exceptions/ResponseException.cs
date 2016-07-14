@@ -9,5 +9,12 @@ namespace RM.UzTicket.Lib.Exceptions
 		public ResponseException(string message) : base(message)
 		{
 		}
+
+		public ResponseException(string message, string json) : base(message)
+		{
+			Json = json;
+		}
+
+		public string Json { get; }
 	}
 }

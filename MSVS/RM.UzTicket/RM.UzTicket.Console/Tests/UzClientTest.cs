@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using RM.UzTicket.Lib;
@@ -17,12 +18,13 @@ namespace RM.UzTicket.Console.Tests
 			CoachType coachType;
 			Coach coach;
 			string stationName, trainNum, coachLetter;
+			string[] res;
 			int seatNumber;
+
+			var client = new UzClient();
 
 			try
 			{
-				var client = new UzClient();
-
 				do
 				{
 					Con.Write("Enter start station name: ");
@@ -39,7 +41,10 @@ namespace RM.UzTicket.Console.Tests
 					Con.WriteLine(endStation == null ? "Station not found. Try again." : $"Found: {endStation}");
 				} while (endStation == null);
 
-				var trains = await client.ListTrainsAsync(DateTime.Today, startStation, endStation);
+				Con.Write("Enter date (dd.mm.yyyy): ");
+				var date = DateTime.ParseExact(Con.ReadLine(), "dd.MM.yyyy", null, DateTimeStyles.AssumeLocal);
+
+				var trains = await client.ListTrainsAsync(date, startStation, endStation);
 
 				if (trains != null)
 				{
@@ -60,7 +65,7 @@ namespace RM.UzTicket.Console.Tests
 				do
 				{
 					Con.Write("Enter train number and coach type: ");
-					var res = Con.ReadLine().Split(new [] {'\u0020', ',', ';'}, StringSplitOptions.RemoveEmptyEntries);
+					res = Con.ReadLine().Split(new[] {'\u0020', ',', ';'}, StringSplitOptions.RemoveEmptyEntries);
 					trainNum = res[0];
 					coachLetter = res[1];
 					train = trains.FirstOrDefault(t => t.Number == trainNum);
@@ -104,9 +109,13 @@ namespace RM.UzTicket.Console.Tests
 					seatNumber = Int32.Parse(seatNum);
 				} while (seatNumber == 0);
 
+				Con.Write("Enter firstname and lastname: ");
+
+				res = Con.ReadLine().Split(new[] {'\u0020', ',', ';'}, StringSplitOptions.RemoveEmptyEntries);
+
 				Con.WriteLine("Booking selected seat...");
 
-				var bl = await client.BookSeatAsync(train, coach, seatNumber, "Иван", "Иванов");
+				var bl = await client.BookSeatAsync(train, coach, seatNumber, res[0], res[1]);
 
 				var sessionId = client.GetSessionId();
 				Con.WriteLine($"In console: document.cookie='{sessionId}'");
@@ -114,6 +123,10 @@ namespace RM.UzTicket.Console.Tests
 			catch (ResponseException re)
 			{
 				Con.WriteLine($"Error: {re.Message}");
+			}
+			finally
+			{
+				client.Dispose();
 			}
 		}
 	}

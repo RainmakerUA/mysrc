@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Json;
 using System.Threading;
 using Con = System.Console;
 
@@ -15,10 +12,12 @@ namespace RM.UzTicket.Console
 		{
 			RunTests();
 			
-			var locker = new Lib.Utils.AsyncLock(_locker);
+			IDisposable locker = new Lib.Utils.AsyncLock(_locker);
 
 			Con.Write("Press any key to exit:");
 			Con.ReadKey(true);
+
+			locker.Dispose();
 		}
 
 		private static async void RunTests()
@@ -33,7 +32,8 @@ namespace RM.UzTicket.Console
 				Tests.JjDecoderTest.Run();
 				Tests.UtilsTest.TestParseToken();
 				Tests.ModelTest.Run();
-				await Tests.UzClientTest.Run();
+				//await Tests.UzClientTest.Run();
+				Tests.UzScannerTest.Run();
 				// ...
 
 				Con.WriteLine("Tests completed!");

@@ -13,7 +13,7 @@ using RM.UzTicket.Lib.Utils;
 
 namespace RM.UzTicket.Lib
 {
-	internal class UzClient
+	internal sealed class UzClient : IDisposable
 	{
 		private const string _baseUrl = "http://booking.uz.gov.ua/en"; // strict without trailing '/'!
 		private const string _sessionIdKey = "_gv_sessid";
@@ -27,13 +27,51 @@ namespace RM.UzTicket.Lib
 		private string _token;
 		private int _tokenTime;
 		private string _userAgent;
-
+		private bool _isDisposed;
 
 		public UzClient()
 		{
 			_tokenLock = new AutoResetEvent(true);
 			InitializeHttpClient();
 		}
+
+		#region Disposable
+
+		~UzClient()
+		{
+			Dispose(false);
+		}
+
+		private void Dispose(bool isDisposing)
+		{
+			if (!_isDisposed)
+			{
+				if (isDisposing)
+				{
+					// Free managed resources
+					_httpClient.Dispose();
+					_httpClient = null;
+
+					_httpHandler.Dispose();
+					_httpHandler = null;
+
+					_tokenLock.Dispose();
+				}
+
+				// Free unmanagement resources
+				// ...
+
+				_isDisposed = true;
+			}
+		}
+
+		public void Dispose()
+		{
+			GC.SuppressFinalize(this);
+			Dispose(true);
+		}
+
+		#endregion
 
 		public string GetSessionId()
 		{
@@ -74,8 +112,15 @@ namespace RM.UzTicket.Lib
 
 		public async Task<Train> FetchTrainAsync(DateTime date, Station source, Station destination, string trainNumber)
 		{
-			var trains = await ListTrainsAsync(date, source, destination);
-			return trains.FirstOrDefault(tr => tr.Number == trainNumber);
+			try
+			{
+				var trains = await ListTrainsAsync(date, source, destination);
+				return trains.FirstOrDefault(tr => tr.Number == trainNumber);
+			}
+			catch (ResponseException)
+			{
+				return null;
+			}
 		}
 
 		public async Task<Coach[]> ListCoachesAsync(Train train, CoachType coachType)
@@ -178,10 +223,8 @@ namespace RM.UzTicket.Lib
 			return new Dictionary<string, string>
 						{
 							["User-Agent"] = _userAgent,
-							//["Referer"] = referer,
 							["GV-Ajax"] = "1",
 							["GV-Referer"] = referer,
-							//["GV-Screen"] = "1366x768",
 							["GV-Token"] = await GetTokenAsync()
 						};
 		}
@@ -224,14 +267,32 @@ namespace RM.UzTicket.Lib
 		}
 
 		private async Task<JsonValue> GetJson(string path, HttpMethod method = null, IDictionary<string, string> headers = null,
-											IDictionary<string, string> data = null)
+												IDictionary<string, string> data = null)
 		{
 			var str = await GetString(path, method, headers, data);
 			var json = JsonValue.Parse(str);
+			bool isError;
 
-			if (json.ContainsKey("error") && json["error"] != null && json["error"].ReadAs<bool>())
+			if (json.ContainsKey("error") && json["error"] != null
+				&& (!json["error"].TryReadAs(out isError) || isError))
 			{
-				throw new ResponseException(json["value"].ReadAs<string>());
+				string message;
+				JsonValue errorsArray;
+				var value = json["value"];
+				var valueObj = value as JsonObject;
+
+
+				if (valueObj != null && valueObj.TryGetValue("errors", out errorsArray))
+				{
+					var errors = errorsArray as IEnumerable<JsonValue>;
+					message = errors != null ? String.Join(" | ", errors.Select(jv => jv.ReadAs<string>())) : null;
+				}
+				else
+				{
+					value.TryReadAs(out message);
+				}
+
+				throw new ResponseException(message, str);
 			}
 
 			return json;

@@ -69,6 +69,7 @@
     <Compile Include="Tests\ModelTest.cs" />
     <Compile Include="Tests\UtilsTest.cs" />
     <Compile Include="Tests\UzClientTest.cs" />
+    <Compile Include="Tests\UzScannerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

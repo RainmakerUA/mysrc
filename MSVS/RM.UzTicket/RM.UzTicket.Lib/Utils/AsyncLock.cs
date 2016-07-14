@@ -14,13 +14,18 @@ namespace RM.UzTicket.Lib.Utils
 				throw new ArgumentNullException(nameof(value));
 			}
 
-			value.WaitOne(milliseconds);
 			_value = value;
+			IsCaptured = value.WaitOne(milliseconds);
 		}
+
+		public bool IsCaptured { get; }
 
 		void IDisposable.Dispose()
 		{
-			_value.Set();
+			if (IsCaptured)
+			{
+				_value.Set();
+			}
 		}
 	}
 }
