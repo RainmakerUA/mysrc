@@ -3,6 +3,8 @@
 /FASM/**/*.dll
 
 # Visual Studio ignorings
+# .vs/ folder
+/MSVS/**/.vs
 # bin/ folder
 /MSVS/**/bin
 # obj/ folder
