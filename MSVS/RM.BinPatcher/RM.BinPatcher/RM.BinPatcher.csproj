@@ -39,14 +39,15 @@
   <ItemGroup>
     <Compile Include="Enumerators\PatternEnumerator.cs" />
     <Compile Include="Enumerators\StreamQueue.cs" />
-    <Compile Include="Enumerators\AsyncStreamQueue.cs" />
     <Compile Include="Exceptions\PatchParseException.cs" />
     <Compile Include="Exceptions\PatternParseException.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Model\Patch.cs" />
+    <Compile Include="Model\PatchEntry.cs" />
     <Compile Include="Model\Pattern.cs" />
+    <Compile Include="Parsers\PatchParser.cs" />
     <Compile Include="Parsers\PatternParser.cs" />
     <Compile Include="Patcher.cs" />
-    <Compile Include="Enumerators\AsyncPatternEnumerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

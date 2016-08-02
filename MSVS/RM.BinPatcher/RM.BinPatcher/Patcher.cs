@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using RM.BinPatcher.Enumerators;
 using RM.BinPatcher.Model;
 
@@ -58,21 +56,6 @@ namespace RM.BinPatcher
 			return new PatternEnumerator(Stream, pattern);
 	    }
 
-	    public Task<IEnumerable<Task<long>>> FindPatternAsync(Pattern pattern)
-	    {
-		    return FindPatternAsync(pattern, CancellationToken.None);
-	    }
-
-		public async Task<IEnumerable<Task<long>>> FindPatternAsync(Pattern pattern, CancellationToken cancellationToken)
-		{
-			CheckNotDisposed();
-
-			var result = new AsyncPatternEnumerator(Stream, pattern, cancellationToken);
-			await result.FindFirstMatch();
-
-			return result;
-		}
-
 		public bool Validate(string patch)
 		{
 			CheckNotDisposed();
@@ -81,19 +64,6 @@ namespace RM.BinPatcher
 		    return false;
 	    }
 		
-		public Task<bool> ValidateAsync(string patch)
-	    {
-			return ValidateAsync(patch, CancellationToken.None);
-	    }
-		
-		public async Task<bool> ValidateAsync(string patch, CancellationToken cancellationToken)
-		{
-			CheckNotDisposed();
-			Helper.ValidateStream(Stream, true, true);
-
-		    return false;
-	    }
-
 		public bool Apply(string patch)
 		{
 			CheckNotDisposed();
@@ -101,18 +71,5 @@ namespace RM.BinPatcher
 
 			return false;
 		}
-
-		public Task<bool> ApplyAsync(string patch)
-	    {
-			return ApplyAsync(patch, CancellationToken.None);
-	    }
-
-		public async Task<bool> ApplyAsync(string patch, CancellationToken cancellationToken)
-		{
-			CheckNotDisposed();
-			Helper.ValidateStream(Stream, true, true);
-
-			return false;
-	    }
     }
 }
