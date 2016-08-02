@@ -9,16 +9,14 @@ namespace RM.BinPatcher.Enumerators
 {
 	internal sealed class PatternEnumerator : IEnumerable<long>, IEnumerator<long>
 	{
-		//private readonly Stream _stream;
 		private readonly Pattern _pattern;
 		private readonly StreamQueue _strQueue;
 
 		private bool _enumerationDone;
 		private long _currentPosition;
 
-		public PatternEnumerator(Stream stream, Pattern pattern, AutoResetEvent lockEvent)
+		public PatternEnumerator(Stream stream, Pattern pattern)
 		{
-			//_stream = stream;
 			_pattern = pattern;
 			_strQueue = new StreamQueue(stream, pattern.Length);
 			Reset();

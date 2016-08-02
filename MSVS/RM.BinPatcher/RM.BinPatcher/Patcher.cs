@@ -10,14 +10,12 @@ namespace RM.BinPatcher
 {
     public sealed class Patcher: IDisposable
     {
-	    private readonly AutoResetEvent _lockEvent;
 	    private bool _isDisposed;
 
 		public Patcher(Stream stream)
 	    {
 			Helper.ValidateStream(stream, true, false);
 		    Stream = stream;
-			_lockEvent = new AutoResetEvent(true);
 		}
 
 		#region Disposable
@@ -39,7 +37,7 @@ namespace RM.BinPatcher
 	    {
 		    if (!_isDisposed && disposing)
 		    {
-			    _lockEvent.Dispose();
+			    // Free managed resources (none yet)
 			    _isDisposed = true;
 		    }
 	    }
@@ -57,7 +55,7 @@ namespace RM.BinPatcher
 		public IEnumerable<long> FindPattern(Pattern pattern)
 		{
 			CheckNotDisposed();
-			return new PatternEnumerator(Stream, pattern, _lockEvent);
+			return new PatternEnumerator(Stream, pattern);
 	    }
 
 	    public Task<IEnumerable<Task<long>>> FindPatternAsync(Pattern pattern)

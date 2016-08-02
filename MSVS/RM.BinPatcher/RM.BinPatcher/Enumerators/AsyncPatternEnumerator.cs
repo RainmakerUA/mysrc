@@ -42,7 +42,10 @@ namespace RM.BinPatcher.Enumerators
 		
 		public bool MoveNext()
 		{
-			return (_currentPosition = _nextPosition) > Helper.InvalidOffset;
+			_currentPosition = _nextPosition;
+			_nextPosition = Helper.InvalidOffset;
+
+			return _currentPosition > Helper.InvalidOffset;
 		}
 
 		public void Reset()
