@@ -8,13 +8,16 @@ namespace RM.BinPatcher
 {
     public sealed class Patcher: IDisposable
     {
+	    private readonly Stream _stream;
+	    private readonly bool _autoClose;
 	    private bool _isDisposed;
 
-		public Patcher(Stream stream)
+	    public Patcher(Stream stream, bool autoClose = false)
 	    {
 			Helper.ValidateStream(stream, true, false);
-		    Stream = stream;
-		}
+		    _stream = stream;
+		    _autoClose = autoClose;
+	    }
 
 		#region Disposable
 
@@ -35,7 +38,12 @@ namespace RM.BinPatcher
 	    {
 		    if (!_isDisposed && disposing)
 		    {
-			    // Free managed resources (none yet)
+			    // Free managed resources
+			    if (_autoClose)
+			    {
+				    _stream.Dispose();
+			    }
+
 			    _isDisposed = true;
 		    }
 	    }
@@ -48,18 +56,18 @@ namespace RM.BinPatcher
 
 		#endregion
 
-	    public Stream Stream { get; }
+	    //public Stream Stream => _stream;
 
-		public IEnumerable<long> FindPattern(Pattern pattern)
+	    public IEnumerable<long> FindPattern(Pattern pattern)
 		{
 			CheckNotDisposed();
-			return new PatternEnumerator(Stream, pattern);
+			return new PatternEnumerator(_stream, pattern);
 	    }
 
 		public bool Validate(string patch)
 		{
 			CheckNotDisposed();
-			Helper.ValidateStream(Stream, true, true);
+			Helper.ValidateStream(_stream, true, true);
 
 		    return false;
 	    }
@@ -67,7 +75,7 @@ namespace RM.BinPatcher
 		public bool Apply(string patch)
 		{
 			CheckNotDisposed();
-			Helper.ValidateStream(Stream, true, true);
+			Helper.ValidateStream(_stream, true, true);
 
 			return false;
 		}
