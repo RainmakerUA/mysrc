@@ -9,6 +9,7 @@ namespace RM.BinPatcher.Enumerators
 		private readonly int _queueLength;
 		private readonly Queue<byte> _queue;
 		private long _position;
+		private bool _endOfStream;
 
 		public StreamQueue(Stream stream, int queueLength)
 		{
@@ -24,14 +25,17 @@ namespace RM.BinPatcher.Enumerators
 
 		public bool SkipByte()
 		{
-			var res = _stream.ReadByte();
-
-			if (res > -1)
+			if (!_endOfStream)
 			{
-				_queue.Dequeue();
-				_queue.Enqueue((byte)res);
-				_position += 1;
-				return true;
+				var res = _stream.ReadByte();
+
+				if (res > -1)
+				{
+					_queue.Dequeue();
+					_queue.Enqueue((byte)res);
+					_position += 1;
+					return true;
+				}
 			}
 
 			return false;
@@ -40,17 +44,27 @@ namespace RM.BinPatcher.Enumerators
 		public long SkipPatternBytes()
 		{
 			var oldPosition = _position;
-			var bytes = new byte[_queueLength];
 
-			_stream.Read(bytes, 0, _queueLength);
-			_queue.Clear();
-
-			foreach (var b in bytes)
+			if (!_endOfStream)
 			{
-				_queue.Enqueue(b);
-			}
+				var bytes = new byte[_queueLength];
 
-			_position += _queueLength;
+				if (_stream.Read(bytes, 0, _queueLength) == _queueLength)
+				{
+					_queue.Clear();
+
+					foreach (var b in bytes)
+					{
+						_queue.Enqueue(b);
+					}
+
+					_position += _queueLength;
+				}
+				else
+				{
+					_endOfStream = true;
+				}
+			}
 
 			return oldPosition;
 		}
@@ -61,11 +75,20 @@ namespace RM.BinPatcher.Enumerators
 
 			_position = 0;
 			_stream.Position = 0;
-			_stream.Read(bytes, 0, _queueLength);
+			_endOfStream = false;
 
-			foreach (var b in bytes)
+			if (_stream.Read(bytes, 0, _queueLength) == _queueLength)
 			{
-				_queue.Enqueue(b);
+				_queue.Clear();
+
+				foreach (var b in bytes)
+				{
+					_queue.Enqueue(b);
+				}
+			}
+			else
+			{
+				_endOfStream = true;
 			}
 		}
 	}

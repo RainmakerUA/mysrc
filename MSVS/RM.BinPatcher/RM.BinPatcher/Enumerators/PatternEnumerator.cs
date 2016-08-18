@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using RM.BinPatcher.Model;
 
 namespace RM.BinPatcher.Enumerators
@@ -24,15 +23,9 @@ namespace RM.BinPatcher.Enumerators
 
 		#region IEnumerable
 
-		public IEnumerator<long> GetEnumerator()
-		{
-			return this;
-		}
+		public IEnumerator<long> GetEnumerator() => this;
 
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
+		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
 		#endregion
 

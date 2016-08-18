@@ -8,10 +8,10 @@ namespace RM.BinPatcher.Cli
 	{
 		private static void Main(string[] args)
 		{
-			//var pattern = Pattern.Parse("7E??????04 25 17 6A 58 80??????04 7E??????04 36??");
-			//FindPattern(pattern);
+			var pattern = Pattern.Parse("7E??????04 25 17 6A 58 80??????04 7E??????04 36??");
+			FindPattern(pattern);
 
-			var patch = Patch.Parse(File.ReadAllLines(@"..\..\..\patch.features.txt"));
+			//var patch = Patch.Parse(File.ReadAllLines(@"..\..\..\patch.features.txt"));
 
 			Console.WriteLine("Press any key to exit");
 			Console.ReadKey(true);

@@ -24,7 +24,7 @@ namespace RM.BinPatcher
 				throw new NotSupportedException("Stream is not seekable!");
 			}
 
-			if (checkWriteable && stream.CanWrite)
+			if (checkWriteable && !stream.CanWrite)
 			{
 				throw new NotSupportedException("Stream is not writeable!");
 			}
