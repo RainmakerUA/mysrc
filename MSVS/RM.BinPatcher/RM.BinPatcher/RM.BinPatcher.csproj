@@ -45,6 +45,7 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Model\Patch.cs" />
     <Compile Include="Model\PatchEntry.cs" />
+    <Compile Include="Model\PatchResult.cs" />
     <Compile Include="Model\Pattern.cs" />
     <Compile Include="Parsers\PatchParser.cs" />
     <Compile Include="Parsers\PatternParser.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using RM.BinPatcher.Model;
 
 namespace RM.BinPatcher.Cli
@@ -8,10 +9,11 @@ namespace RM.BinPatcher.Cli
 	{
 		private static void Main(string[] args)
 		{
-			var pattern = Pattern.Parse("7E??????04 25 17 6A 58 80??????04 7E??????04 36??");
-			FindPattern(pattern);
+			//var pattern = Pattern.Parse("7E??????04 25 17 6A 58 80??????04 7E??????04 36??");
+			//FindPattern(pattern);
 
-			//var patch = Patch.Parse(File.ReadAllLines(@"..\..\..\patch.features.txt"));
+			var patch = Patch.Parse(File.ReadAllLines(@"..\..\..\patch.fu.txt"));
+			ValidatePatch(patch);
 
 			Console.WriteLine("Press any key to exit");
 			Console.ReadKey(true);
@@ -33,6 +35,21 @@ namespace RM.BinPatcher.Cli
 			}
 
 			Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} Search completed");
+		}
+
+		private static void ValidatePatch(Patch patch)
+		{
+			Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} Validating patch...");
+
+			using (var stream = File.Open(@"e:\Work\RE\Notepad\notepad_3.bin", FileMode.Open, FileAccess.ReadWrite, FileShare.Read))
+			{
+				using (var patcher = new Patcher(stream))
+				{
+					Console.WriteLine(patcher.Validate(patch) ? "Patch is valid" : "Patch is NOT valid");
+				}
+			}
+
+			Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} Validation completed");
 		}
 	}
 }

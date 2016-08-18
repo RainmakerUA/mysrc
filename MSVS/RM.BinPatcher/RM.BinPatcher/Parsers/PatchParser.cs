@@ -128,6 +128,9 @@ namespace RM.BinPatcher.Parsers
 				}
 			}
 
+			// TODO: validation for empty patch?
+			// TODO: validate patch contents: overlapping addresses etc. (?or in Patcher.Validate)
+
 			return new Patch(entries, title, author, url);
 		}
 
