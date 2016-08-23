@@ -13,7 +13,8 @@ namespace RM.BinPatcher.Cli
 			//FindPattern(pattern);
 
 			var patch = Patch.Parse(File.ReadAllLines(@"..\..\..\patch.fu.txt"));
-			ValidatePatch(patch);
+			//ValidatePatch(patch);
+			ApplyPatch(patch);
 
 			Console.WriteLine("Press any key to exit");
 			Console.ReadKey(true);
@@ -50,6 +51,28 @@ namespace RM.BinPatcher.Cli
 			}
 
 			Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} Validation completed");
+		}
+
+		private static void ApplyPatch(Patch patch)
+		{
+			Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} Applying patch...");
+
+			using (var stream = File.Open(@"e:\Work\RE\Notepad\notepad_3.bin", FileMode.Open, FileAccess.ReadWrite, FileShare.Read))
+			{
+				using (var bakStream = File.OpenWrite(@"e:\Work\RE\Notepad\notepad_3.bin.bak"))
+				{
+					stream.CopyTo(bakStream);
+					stream.Position = 0;
+				}
+
+				using (var patcher = new Patcher(stream))
+				{
+					var result = patcher.Apply(patch);
+					Console.WriteLine(result.IsSuccess ? "Patch is applied" : "Patch is NOT applied: " + result.Message);
+				}
+			}
+
+			Console.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} Application completed");
 		}
 	}
 }

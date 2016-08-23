@@ -57,8 +57,6 @@ namespace RM.BinPatcher
 
 		#endregion
 
-		//public Stream Stream => _stream;
-
 		public IEnumerable<long> FindPattern(Pattern pattern)
 		{
 			CheckNotDisposed();
@@ -70,27 +68,47 @@ namespace RM.BinPatcher
 			CheckNotDisposed();
 			Helper.ValidateStream(_stream, true, true);
 
-			return patch.Entries.Select(ValidateEntry).All(res => res.IsSuccess);
+			return patch.Entries.Select(ValidateEntry).All(res => res.Item1);
 		}
 
-		public bool Apply(Patch patch)
+		public PatchResult Apply(Patch patch)
 		{
 			CheckNotDisposed();
 			Helper.ValidateStream(_stream, true, true);
 
-			return false;
+			foreach (var entry in patch.Entries)
+			{
+				var validateResult = ValidateEntry(entry);
+				if (!validateResult.Item1)
+				{
+					return PatchResult.MakeFail(validateResult.Item2);
+				}
+
+				var applyResult = ApplyEntry(entry, validateResult.Item3);
+				if (!applyResult.Item1)
+				{
+					return PatchResult.MakeFail(applyResult.Item2);
+				}
+			}
+
+			return PatchResult.MakeSuccess();
 		}
-		
+
 		// Tests required
-		private PatchResult ValidateEntry(PatchEntry entry)
+		private Tuple<bool, string, long[]> ValidateEntry(PatchEntry entry)
 		{
+			bool isSuccess = false;
+			string message = null;
+			long[] addresses = null;
+
 			switch (entry.Match)
 			{
 				case PatchEntry.MatchBy.Address:
 					if (!entry.Address.HasValue)
 					{
 						// Should not happen, otherwise parser is incorrect!
-						return PatchResult.MakeFail("Entry address not specified");
+						message = "Entry address not specified";
+						break;
 					}
 
 					var pattern = entry.OldData;
@@ -101,23 +119,95 @@ namespace RM.BinPatcher
 
 					var readCount = _stream.Read(buffer, 0, patternLength);
 
-					return readCount == patternLength && Helper.CompareBytes(buffer, pattern.Bytes)
-							? PatchResult.MakeSuccess()
-							: PatchResult.MakeFail("Pattern do not match at its address");
+					if (readCount == patternLength && Helper.CompareBytes(buffer, pattern.Bytes))
+					{
+						isSuccess = true;
+					}
+					else
+					{
+						message = "Pattern do not match at its address";
+					}
+					break;
 
 				case PatchEntry.MatchBy.EveryMatch:
 				case PatchEntry.MatchBy.FirstMatch:
-					return FindPattern(entry.OldData).Any()
-							? PatchResult.MakeSuccess()
-							: PatchResult.MakeFail("Pattern not found");
+					var addrs = FindPattern(entry.OldData).ToArray();
+					if (addrs.Length > 0)
+					{
+						isSuccess = true;
+						if (entry.Match == PatchEntry.MatchBy.FirstMatch)
+						{
+							Array.Resize(ref addrs, 1);
+						}
+
+						addresses = addrs;
+					}
+					else
+					{
+						message = "Pattern not found";
+					}
+					break;
 
 				case PatchEntry.MatchBy.SingleMatch:
-					var take2Count = FindPattern(entry.OldData).Take(2).Count();
-					return take2Count == 1
-							? PatchResult.MakeSuccess()
-							: PatchResult.MakeFail(take2Count == 0 ? "Pattern not found" : "Pattern is not unique");
+					var take2 = FindPattern(entry.OldData).Take(2).ToArray();
+					var take2Count = take2.Length;
+					if (take2Count == 1)
+					{
+						isSuccess = true;
+						addresses = new[] { take2[0] };
+					}
+					else
+					{
+						message = take2Count == 0 ? "Pattern not found" : "Pattern is not unique";
+					}
+					break;
+
 				default:
-					return PatchResult.MakeFail("Patch entry type not supported");
+					message = "Patch entry type not supported";
+					break;
+			}
+
+			return Tuple.Create(isSuccess, message, addresses);
+		}
+
+		private Tuple<bool, string> ApplyEntry(PatchEntry entry, long[] addresses)
+		{
+			try
+			{
+				if (entry.Match == PatchEntry.MatchBy.Address)
+				{
+					addresses = entry.Address.HasValue ? new[] {entry.Address.Value} : null;
+				}
+
+				if (addresses == null || addresses.Length == 0)
+				{
+					return Tuple.Create(false, "No address specified!");
+				}
+
+				var newBytes = entry.NewData.Bytes;
+
+				foreach (var address in addresses)
+				{
+					_stream.Position = address;
+
+					foreach (var newByte in newBytes)
+					{
+						if (newByte.HasValue)
+						{
+							_stream.WriteByte(newByte.Value);
+						}
+						else
+						{
+							_stream.Position += 1;
+						}
+					}
+				}
+
+				return Tuple.Create(true, (string)null);
+			}
+			catch (Exception e)
+			{
+				return Tuple.Create(false, e.Message);
 			}
 		}
 	}
