@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.BinPatcher", "RM.BinPatc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.BinPatcher.Cli", "RM.BinPatcher.Cli\RM.BinPatcher.Cli.csproj", "{16DE32ED-8B84-4938-95F5-8AB0ED854FF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.BinPatcher.Module", "RM.BinPatcher.Module\RM.BinPatcher.Module.csproj", "{7667758E-0A9A-4E3E-AD9F-64210C19F4F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{16DE32ED-8B84-4938-95F5-8AB0ED854FF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16DE32ED-8B84-4938-95F5-8AB0ED854FF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16DE32ED-8B84-4938-95F5-8AB0ED854FF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7667758E-0A9A-4E3E-AD9F-64210C19F4F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7667758E-0A9A-4E3E-AD9F-64210C19F4F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7667758E-0A9A-4E3E-AD9F-64210C19F4F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7667758E-0A9A-4E3E-AD9F-64210C19F4F6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
