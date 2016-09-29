@@ -32,8 +32,6 @@ namespace RM.WP.GpsMonitor.Settings
 
 		// int Timeout?
 		// int Threshold
-		// SpeedUnit SpeedUnit
-		// LengthUnit LengthUnit
 
 		public CoordinateFormat CoordinateFormat
 		{

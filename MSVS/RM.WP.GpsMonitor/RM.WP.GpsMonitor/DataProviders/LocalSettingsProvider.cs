@@ -46,17 +46,8 @@ namespace RM.WP.GpsMonitor.DataProviders
 
 		public T Get<T>(string key)
 		{
-			if (_settings.ContainsKey(key))
-			{
-				var val = _settings[key];
-
-				if (val is T)
-				{
-					return (T) val;
-				}
-			}
-
-			return default(T);
+			object val;
+			return _settings.TryGetValue(key, out val) && val is T ? (T) val : default(T);
 		}
 
 		public void Set<T>(T value, string key)
