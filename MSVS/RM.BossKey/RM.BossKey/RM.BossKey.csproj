@@ -69,7 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32\NativeMethods.Consts.cs" />
     <Compile Include="Win32\NativeMethods.cs" />
-    <Compile Include="Win32\NativeMethods.Enums.cs" />
+    <Compile Include="Win32\ShowWindowCommand.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -9,6 +9,7 @@ namespace RM.BossKey
 	public partial class MainForm : Form
 	{
 		private readonly Hotkey _hotkey;
+		private ShowHideNativeWindow _shWindow;
 		private int _hkID;
 
 		public MainForm()
@@ -37,7 +38,7 @@ namespace RM.BossKey
 
 		private void OnHotkeyPress(object sender, EventArgs<int> e)
 		{
-			
+			_shWindow?.ToggleVisibility();
 		}
 
 		private void showToolStripMenuItem_Click(object sender, EventArgs e)
@@ -55,16 +56,26 @@ namespace RM.BossKey
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			_hkID = _hotkey.Register(Modifiers.Win, (Keys)'~');
-
-			if (_hkID >= 0)
+			try
 			{
+				_hkID = _hotkey.Register(Modifiers.Win, Keys.NumPad0);
+				_shWindow = ShowHideNativeWindow.Find("TscShellContainerClass", null);
 				labelIndi.BackColor = Color.Green;
+			}
+			catch (Win32Exception exc)
+			{
+				MessageBox.Show(exc.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
+			if (_shWindow != null)
+			{
+				_shWindow.ReleaseHandle();
+				_shWindow = null;
+			}
+
 			if (_hotkey.Unregister(_hkID))
 			{
 				_hkID = -1;

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using RM.BossKey.Win32;
 
@@ -53,12 +55,12 @@ namespace RM.BossKey.Components
 
 			var id = _nextID++;
 
-			if (NativeMethods.RegisterHotKey(_win.HandleRef, id, (uint)mods, (uint)key))
+			if (!NativeMethods.RegisterHotKey(_win.HandleRef, id, (uint)mods, (uint)key))
 			{
-				return id;
+				throw new Win32Exception(Marshal.GetLastWin32Error());
 			}
 
-			return -1;
+			return id;
 		}
 
 		public bool Unregister(int id)
