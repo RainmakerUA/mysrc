@@ -9,7 +9,7 @@ using Con = System.Console;
 
 namespace RM.UzTicket.Console.Tests
 {
-	internal static class UzClientTest
+	internal static class UzServiceTest
 	{
 		public static async Task Run()
 		{
@@ -21,7 +21,7 @@ namespace RM.UzTicket.Console.Tests
 			string[] res;
 			int seatNumber;
 
-			var client = new UzClient();
+			var client = new UzService();
 
 			try
 			{

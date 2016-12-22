@@ -45,7 +45,7 @@
     <Compile Include="Utils\AsyncLock.cs" />
     <Compile Include="Utils\DateTimeExtensions.cs" />
     <Compile Include="Utils\Logger.cs" />
-    <Compile Include="UzClient.cs" />
+    <Compile Include="UzService.cs" />
     <Compile Include="Exceptions\BadRequestException.cs" />
     <Compile Include="Exceptions\TokenException.cs" />
     <Compile Include="Exceptions\HttpException.cs" />
@@ -57,6 +57,8 @@
     <Compile Include="Utils\TokenParser.cs" />
     <Compile Include="Utils\UserAgentSelector.cs" />
     <Compile Include="UzScanner.cs" />
+    <Compile Include="UzTicketClient.cs" />
+    <Compile Include="UzTicketScanResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Json">

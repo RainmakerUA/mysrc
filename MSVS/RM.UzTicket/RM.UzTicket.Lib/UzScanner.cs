@@ -52,7 +52,7 @@ namespace RM.UzTicket.Lib
 		private readonly Func<string, string, Task> _successCallbackAsync;
 		private readonly int _delay;
 		private readonly IDictionary<string, ScanData> _scanStates;
-		private readonly UzClient _client;
+		private readonly UzService _client;
 		private readonly CancellationTokenSource _cancelTokenSource;
 		
 		private volatile bool _isRunning;
@@ -63,7 +63,7 @@ namespace RM.UzTicket.Lib
 			_successCallbackAsync = successCallbackAsync;
 			_delay = secondsDelay;
 			_scanStates = new ConcurrentDictionary<string, ScanData>();
-			_client = new UzClient();
+			_client = new UzService();
 			_cancelTokenSource = new CancellationTokenSource();
 		}
 
@@ -152,7 +152,7 @@ namespace RM.UzTicket.Lib
 
 		private void Start()
 		{
-			Task.Run(() => Run(), _cancelTokenSource.Token);
+			Task.Run(Run, _cancelTokenSource.Token);
 		}
 
 		private void Stop()
@@ -160,7 +160,7 @@ namespace RM.UzTicket.Lib
 			_isRunning = false;
 		}
 
-		private async void Run()
+		private async Task Run()
 		{
 			//logInfo("Starting UzScanner");
 
@@ -238,7 +238,7 @@ namespace RM.UzTicket.Lib
 
 		private static async Task<string> BookAsync(Train train, CoachType[] coachTypes, string firstName, string lastName)
 		{
-			using (var client = new UzClient())
+			using (var client = new UzService())
 			{
 				foreach (var coachType in coachTypes)
 				{

@@ -8,11 +8,13 @@ namespace RM.UzTicket.Lib.Exceptions
 		{
 		}
 
-		public UzException(string message) : base(message)
+		public UzException(string message)
+			: base(message)
 		{
 		}
 
-		public UzException(string message, Exception innerException) : base(message, innerException)
+		public UzException(string message, Exception innerException)
+			: base(message, innerException)
 		{
 		}
 	}

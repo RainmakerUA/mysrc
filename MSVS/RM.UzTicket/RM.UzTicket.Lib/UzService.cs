@@ -13,7 +13,7 @@ using RM.UzTicket.Lib.Utils;
 
 namespace RM.UzTicket.Lib
 {
-	internal sealed class UzClient : IDisposable
+	internal sealed class UzService : IDisposable
 	{
 		private const string _baseUrl = "http://booking.uz.gov.ua/en"; // strict without trailing '/'!
 		private const string _sessionIdKey = "_gv_sessid";
@@ -29,7 +29,7 @@ namespace RM.UzTicket.Lib
 		private string _userAgent;
 		private bool _isDisposed;
 
-		public UzClient()
+		public UzService()
 		{
 			_tokenLock = new AutoResetEvent(true);
 			InitializeHttpClient();
@@ -37,7 +37,7 @@ namespace RM.UzTicket.Lib
 
 		#region Disposable
 
-		~UzClient()
+		~UzService()
 		{
 			Dispose(false);
 		}
