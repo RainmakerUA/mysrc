@@ -15,7 +15,7 @@ namespace RM.WikiLinks.Providers
 		private const string _wikiUrlFormat = "https://{0}.wikipedia.org{1}";
 		private const string _wiki = "/wiki/";
 		private const string _stop = "###stop###";
-		private const int _linkLimit = 10000;
+		private const int _linkLimit = 1000;
 
 		private readonly string _langCode;
 		private readonly object _mode;
@@ -41,7 +41,7 @@ namespace RM.WikiLinks.Providers
 			using (var stream = resp.GetResponseStream())
 			{
 				var array = deser.ReadObject(stream) as object[];
-				return Array.ConvertAll(array[1] as object[], o => (o as string));
+				return Array.ConvertAll(array[1] as object[], o => o as string);
 			}
 		}
 

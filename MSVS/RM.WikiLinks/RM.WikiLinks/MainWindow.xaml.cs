@@ -13,24 +13,31 @@ namespace RM.WikiLinks
 		public MainWindow()
 		{
 			InitializeComponent();
-
-			ButtonDo.Click+= OnButtonDoClick;
+			ButtonDo.Click += OnButtonDoClick;
 		}
 
 		private async void OnButtonDoClick(object sender, RoutedEventArgs routedEventArgs)
 		{
-			var btn = sender as Button;
 			var prov = new WikiPageLinkProvider();
-			var oldText = btn.Content;
+			var oldText = ButtonDo.Content;
+			var startTerm = TextBoxStartTerm.Text;
+			var endTerm = TextBoxEndTerm.Text;
 
-			btn.Content = "DOING...";
-			btn.IsEnabled = false;
+			ButtonDo.Content = "DOING...";
+			SetControlsEnabled(false, ButtonDo, TextBoxStartTerm, TextBoxEndTerm);
 
-			var sr = await prov.GetWikiSearch("Пуле", 20);
-			DataContext = await GetLinkChainAsync(prov, "Игла", "Топор");
+			DataContext = await GetLinkChainAsync(prov, startTerm, endTerm);
 
-			btn.Content = oldText;
-			btn.IsEnabled = true;
+			ButtonDo.Content = oldText;
+			SetControlsEnabled(true, ButtonDo, TextBoxStartTerm, TextBoxEndTerm);
+		}
+
+		private static void SetControlsEnabled(bool enabled, params UIElement[] controls)
+		{
+			foreach (var control in controls)
+			{
+				control.IsEnabled = enabled;
+			}
 		}
 
 		private static Task<string[]> GetLinkChainAsync(WikiPageLinkProvider provider, string beginTerm, string endTerm)

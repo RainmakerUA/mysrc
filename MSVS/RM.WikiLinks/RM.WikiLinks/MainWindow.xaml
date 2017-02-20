@@ -7,8 +7,16 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-        <ListBox Name="ListBoxChain" ItemsSource="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
-		<Button Name="ButtonDo" Grid.Row="1" Margin="50, 5">Just Do It</Button>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="20" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<ListBox Name="ListBoxChain" Grid.ColumnSpan="3" ItemsSource="{Binding Path=DataContext,RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+		<TextBox x:Name="TextBoxStartTerm" Margin="5" Grid.Row="1" Grid.Column="0"/>
+		<TextBox x:Name="TextBoxEndTerm" Margin="5" Grid.Row="1" Grid.Column="2"/>
+		<Button Name="ButtonDo" Grid.Row="2" Grid.ColumnSpan="3" Margin="50, 5">Just Do It</Button>
     </Grid>
 </Window>
