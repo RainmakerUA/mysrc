@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RM.Win.BossKey"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+		Icon="Resources/main.ico"
+        Title="MainWindow" Height="350" Width="525" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />

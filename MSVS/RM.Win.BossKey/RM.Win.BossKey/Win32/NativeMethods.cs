@@ -13,9 +13,17 @@ namespace RM.Win.BossKey.Win32
 		public const int GCL_HICONSM = -34;
 		public const int GCL_HICON = -14;
 
+		public const int GWL_STYLE = -16;
+
 		public const int ICON_SMALL = 0;
 		public const int ICON_BIG = 1;
 		public const int ICON_SMALL2 = 2;
+
+		public const int SMTO_NORMAL = 0x0000;
+		public const int SMTO_BLOCK = 0x0001;
+		public const int SMTO_ABORTIFHUNG = 0x0002;
+		public const int SMTO_NOTIMEOUTIFNOTHUNG = 0x0008;
+		public const int SMTO_ERRORONEXIT = 0x0020;
 
 		public const int SW_HIDE = 0;
 		public const int SW_SHOWNA = 8;
@@ -50,10 +58,13 @@ namespace RM.Win.BossKey.Win32
 
 		[DllImport(_user32)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool ShowWindow(HandleRef hWnd, int nCmdShow);
+		public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
 		[DllImport(_user32, CharSet = CharSet.Auto)]
 		public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+		[DllImport(_user32, CharSet = CharSet.Auto)]
+		public static extern IntPtr SendMessageTimeout(IntPtr hWnd, uint msg, UIntPtr wParam, IntPtr lParam, uint flags, uint timeoutMs, out uint result);
 
 		[DllImport(_user32, SetLastError = true)]
 		public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);

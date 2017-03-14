@@ -14,12 +14,15 @@ namespace RM.Win.BossKey
 
 		private void OnDoClick(object sender, RoutedEventArgs e)
 		{
-			var wnd = Win32.NativeWindow.Find("TscShellContainerClass", null);
+			var wnd = SelectWindow.ShowSelectDialog(this);
 
-			image.Source = wnd.Icon;
-			textBlock.Text = wnd.Title;
-			textBlock1.Text = wnd.Class;
-			textBlock2.Text = wnd.ExeName;
+			if (wnd != null)
+			{
+				image.Source = wnd.Icon;
+				textBlock.Text = wnd.Title;
+				textBlock1.Text = wnd.Class;
+				textBlock2.Text = wnd.ExeName;
+			}
 		}
 	}
 }
