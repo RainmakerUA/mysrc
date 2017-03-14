@@ -1,0 +1,22 @@
+﻿<Window x:Class="RM.Win.BossKey.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RM.Win.BossKey"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="525">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<ListBox x:Name="ListBoxProcesses" Visibility="Collapsed" />
+
+		<Button Grid.Row="1" Margin="20,5" Click="OnDoClick">DO IT!</Button>
+		<Image x:Name="image" HorizontalAlignment="Left" Height="32" Margin="20,10,0,0" VerticalAlignment="Top" Width="32"/>
+		<TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="98,10,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="-0.475,1.411"/>
+		<TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="98,31,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" RenderTransformOrigin="-0.825,-1.224"/>
+		<TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="98,52,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
+	</Grid>
+</Window>
