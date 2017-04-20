@@ -1,13 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.BinPatcher", "RM.BinPatcher\RM.BinPatcher.csproj", "{916C8177-0ADB-46D1-BFA5-75E9DA3041B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.BinPatcher.Cli", "RM.BinPatcher.Cli\RM.BinPatcher.Cli.csproj", "{16DE32ED-8B84-4938-95F5-8AB0ED854FF2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.BinPatcher.Module", "RM.BinPatcher.Module\RM.BinPatcher.Module.csproj", "{7667758E-0A9A-4E3E-AD9F-64210C19F4F6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{5A9AAE69-B48D-492F-8600-B7552D16AE48}"
+	ProjectSection(SolutionItems) = preProject
+		patch.features.txt = patch.features.txt
+		patch.fu.txt = patch.fu.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{403B1D0A-6578-4C07-9D82-3D2BD878873C}"
+	ProjectSection(SolutionItems) = preProject
+		Patch.ps1 = Patch.ps1
+		PatchFile.ps1 = PatchFile.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
