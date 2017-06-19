@@ -1,0 +1,66 @@
+ * Matrix42 E-mail Robot Exported Message. Message ID = 24
+Delivered-To: update4u.info@gmail.com
+Received: by 10.112.96.179 with SMTP id dt19csp123978lbb;
+        Tue, 5 Feb 2013 01:39:34 -0800 (PST)
+X-Received: by 10.50.214.68 with SMTP id ny4mr12050723igc.65.1360057173766;
+        Tue, 05 Feb 2013 01:39:33 -0800 (PST)
+Return-Path: <Pavel.Biryukov@matrix42.com>
+Received: from va3outboundpool.messaging.microsoft.com (va3ehsobe006.messaging.microsoft.com. [216.32.180.16])
+        by mx.google.com with ESMTPS id d8si9013055paz.338.2013.02.05.01.39.32
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Tue, 05 Feb 2013 01:39:33 -0800 (PST)
+Received-SPF: neutral (google.com: 216.32.180.16 is neither permitted nor denied by best guess record for domain of Pavel.Biryukov@matrix42.com) client-ip=216.32.180.16;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 216.32.180.16 is neither permitted nor denied by best guess record for domain of Pavel.Biryukov@matrix42.com) smtp.mail=Pavel.Biryukov@matrix42.com
+Received: from mail215-va3-R.bigfish.com (10.7.14.254) by
+ VA3EHSOBE011.bigfish.com (10.7.40.61) with Microsoft SMTP Server id
+ 14.1.225.23; Tue, 5 Feb 2013 09:38:58 +0000
+Received: from mail215-va3 (localhost [127.0.0.1])	by
+ mail215-va3-R.bigfish.com (Postfix) with ESMTP id 8167AC00146	for
+ <update4u.info@gmail.com>; Tue,  5 Feb 2013 09:38:58 +0000 (UTC)
+X-Forefront-Antispam-Report: CIP:157.56.249.53;KIP:(null);UIP:(null);IPV:NLI;H:AMSPRD0411HT005.eurprd04.prod.outlook.com;RD:none;EFVD:NLI
+X-SpamScore: 0
+X-BigFish: PS0(zzc85fhzz1ee6h1de0h1202h1e76h1d1ah1d2ahzzz2dh2a8h668h839hd25hf0ah1288h12a5h12bdh137ah1441h1504h1537h153bh15d0h162dh1631h1758h18e1h1946h34h1155h)
+Received: from mail215-va3 (localhost.localdomain [127.0.0.1]) by mail215-va3
+ (MessageSwitch) id 1360057136849921_17466; Tue,  5 Feb 2013 09:38:56 +0000
+ (UTC)
+Received: from VA3EHSMHS032.bigfish.com (unknown [10.7.14.236])	by
+ mail215-va3.bigfish.com (Postfix) with ESMTP id C321DB60050	for
+ <update4u.info@gmail.com>; Tue,  5 Feb 2013 09:38:56 +0000 (UTC)
+Received: from AMSPRD0411HT005.eurprd04.prod.outlook.com (157.56.249.53) by
+ VA3EHSMHS032.bigfish.com (10.7.99.42) with Microsoft SMTP Server (TLS) id
+ 14.1.225.23; Tue, 5 Feb 2013 09:38:52 +0000
+Received: from AMSPRD0411MB437.eurprd04.prod.outlook.com ([169.254.4.197]) by
+ AMSPRD0411HT005.eurprd04.prod.outlook.com ([10.255.62.168]) with mapi id
+ 14.16.0263.000; Tue, 5 Feb 2013 09:38:48 +0000
+From: Pavel Biryukov <Pavel.Biryukov@matrix42.com>
+To: "update4u.info@gmail.com" <update4u.info@gmail.com>
+Subject: TestAttachment
+Thread-Topic: TestAttachment
+Thread-Index: Ac4DhKenXchO/W2zSx+eVLudiww8xQ==
+Date: Tue, 5 Feb 2013 09:38:47 +0000
+Message-ID: <F8AB3DB77F20064B8979C3BFD796AB1508F3F2C2@AMSPRD0411MB437.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator:
+x-originating-ip: [194.246.117.218]
+Content-Type: multipart/mixed;
+	boundary="_002_F8AB3DB77F20064B8979C3BFD796AB1508F3F2C2AMSPRD0411MB437_"
+MIME-Version: 1.0
+Return-Path: Pavel.Biryukov@matrix42.com
+X-OriginatorOrg: matrix42.com
+
+--_002_F8AB3DB77F20064B8979C3BFD796AB1508F3F2C2AMSPRD0411MB437_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+BodyText
+
+--_002_F8AB3DB77F20064B8979C3BFD796AB1508F3F2C2AMSPRD0411MB437_
+Content-Disposition: attachment; filename=a.txt
+Content-Transfer-Encoding: base64
+
+//5BAHQAdABhAGMAaABtAGUAbgB0AEYAaQBsAGUAQwBvAG4AdABlAG4AdAA=
+
+--_002_F8AB3DB77F20064B8979C3BFD796AB1508F3F2C2AMSPRD0411MB437_--

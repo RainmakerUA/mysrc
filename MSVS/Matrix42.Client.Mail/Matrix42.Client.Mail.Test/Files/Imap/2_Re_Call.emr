@@ -1,0 +1,122 @@
+ * Matrix42 E-mail Robot Exported Message. Message ID = 1190
+Received: from mx-out2.sec.rhs.zz ([10.255.193.6])
+          by dehze01-wsv331.RHS.ZZ (IBM Domino Release 9.0.1FP5)
+          with ESMTP id 2016061009504001-4956562 ;
+          Fri, 10 Jun 2016 09:50:40 +0200 
+Received: from mail2.kratzer-automation.com ([217.7.89.62])
+  by mx-in2.de.rhenus.com with ESMTP/TLS/AES256-SHA; 10 Jun 2016 09:50:37 +0200
+Received: from EXCAS1.kratzer.lan (172.30.30.41) by
+ mail2.kratzer-automation.com (172.30.30.62) with Microsoft SMTP Server (TLS)
+ id 14.3.248.2; Fri, 10 Jun 2016 09:49:58 +0200
+Received: from g3-otrs-1.kratzer.lan (172.22.20.164) by
+ Server-Relay.kratzer.lan (172.22.20.60) with Microsoft SMTP Server id
+ 14.3.248.2; Fri, 10 Jun 2016 09:50:32 +0200
+Subject: Re: [Call#5131060]  - Monitoring: PROBLEM: Schnittstelle:
+ interfaces/1204/1207/1208/1211/1213/stdTour/import/error at R [...]
+Date: Fri, 10 Jun 2016 09:50:32 +0200
+To: Rhenus Servicedesk <fl.servicedesk@de.rhenus.com>
+From: CADIS-Support <cadis-support@kratzer-automation.com>
+In-Reply-To: <20160610065618.8ADC5240B30@nagios-2.kratzer.lan>
+Message-ID: <8ce7205f-645d-4658-b001-abbc361ca27b@EXCAS1.kratzer.lan>
+Content-Type: multipart/mixed; boundary="----------=_1465545032-17139-1"
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: A0B1AAD8b1pXfT5ZB9ldgnCBJH2ze4RGUoIPgXokgjyDMwKBMzgUAQEBAQEBARIBAQsWB1CERgEBBCMmQAkCBAEJLQcCAh84BhOIMwqQCp0dkG0BAQEBAQUBAQEBAQEBEg6GJ4FxBggBgk2BOYJZEQGDHYJZBYEdjFKKbxeCGIhxgwiJQIVgj2gegm+BNzoyAYhSgTUBAQE
+X-IPAS-Result: A0B1AAD8b1pXfT5ZB9ldgnCBJH2ze4RGUoIPgXokgjyDMwKBMzgUAQEBAQEBARIBAQsWB1CERgEBBCMmQAkCBAEJLQcCAh84BhOIMwqQCp0dkG0BAQEBAQUBAQEBAQEBEg6GJ4FxBggBgk2BOYJZEQGDHYJZBYEdjFKKbxeCGIhxgwiJQIVgj2gegm+BNzoyAYhSgTUBAQE
+X-IronPort-AV: E=Sophos;i="5.26,449,1459807200"; 
+   d="xml'?scan'208,217";a="188987752"
+MIME-Version: 1.0
+X-Powered-BY: OTRS - Open Ticket Request System (http://otrs.org/)
+X-Mailer: OTRS Mail Service (3.1.11)
+Organization: KRATZER AUTOMATION AG
+References: <20160610065618.8ADC5240B30@nagios-2.kratzer.lan>
+Return-Path: cadis-support@kratzer-automation.com
+X-PureMessage: [Scanned]
+X-PMWin-Version: 3.1.3.0, Antivirus-Engine: 3.64.3, Antivirus-Data: 5.28
+X-TNEFEvaluated: 1
+X-MIMETrack: Itemize by SMTP Server on NotesUN7/Server/RHS/DE(Release 9.0.1FP5|November
+  22, 2015) at 10.06.2016 09:50:40,Itemize by IMAP Server on NotesApp/Server/RHS/DE(Release 9.0.1FP5|November
+  22, 2015) at 03/28/2017 09:31:24 AM
+
+------------=_1465545032-17139-1
+Content-Type: multipart/alternative;
+	boundary="----------=_1465545032-17139-0"
+
+------------=_1465545032-17139-0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+
+Sehr geehrte Damen und Herren,
+
+erneut konnte ein Auftrag in /software/cadis/interfaces/1204/stdTour/import/
+nicht verabeitet werden, da der Workflow in der Vergangenheit liegt.
+Im Anhang finden Sie die betreffende Datei.
+Bitte korrigieren Sie das File und lassen es erneut importieren.
+
+Bei Fragen wenden Sie sich bitte an den Servicedesk unter der Telefonnummer:
++49 89 321 52-310 oder per eMail: cadis-support@kratzer-automation.com
+
+Mit freundlichen Gr=C3=BC=C3=9Fen
+
+ServiceDesk
+Logistics Automation
+Tel.: +49 (0)89 32152-310, Fax: -599
+
+KRATZER AUTOMATION AG
+Gutenbergstr. 5
+D-85716 Unterschleissheim
+cadis-support@kratzer-automation.com
+[1]www.kratzer-automation.com
+
+Vorsitzender des Aufsichtsrats: Gerhard Kratzer
+Vorstand: Robert Rubner (Vorsitzender), Detlef Naundorf, Sibylle Pessall,
+Andreas P=C3=B6tz
+Amtsgericht M=C3=BCnchen HRB 126979
+
+
+[1] http://www.kratzer-automation.com
+
+------------=_1465545032-17139-0
+Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset="utf-8"
+Content-Disposition: inline
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body style="font-family:Geneva,Helvetica,Arial,sans-serif; font-size: 12px;">Sehr geehrte Damen und Herren,<br />
+<br />
+erneut konnte ein Auftrag in /software/cadis/interfaces/1204/stdTour/import/<br />
+nicht verabeitet werden, da der Workflow in der Vergangenheit liegt.<br />
+Im Anhang finden Sie die betreffende Datei.<br />
+Bitte korrigieren Sie das File und lassen es erneut importieren.<br />
+<br />
+<br />
+Bei Fragen wenden Sie sich bitte an den Servicedesk unter der Telefonnummer: +49 89 321 52-310 oder per eMail: cadis-support@kratzer-automation.com<br />
+<br />
+Mit freundlichen Gr&uuml;&szlig;en<br />
+<br />
+<b>ServiceDesk</b><br />
+Logistics Automation<br />
+Tel.: +49 (0)89 32152-310, Fax: -599<br />
+<br />
+<b>KRATZER AUTOMATION AG</b><br />
+Gutenbergstr. 5<br />
+D-85716 Unterschleissheim<br />
+cadis-support@kratzer-automation.com<br />
+<a href="http://www.kratzer-automation.com" title="http://www.kratzer-automation.com" target="_blank">www.kratzer-automation.com</a><br />
+<br />
+<span style="font-size:10px;">Vorsitzender des Aufsichtsrats: Gerhard Kratzer<br />
+Vorstand: Robert Rubner (Vorsitzender), Detlef Naundorf, Sibylle Pessall, Andreas P&ouml;tz<br />
+Amtsgericht M&uuml;nchen HRB 126979</span><br />
+</body></html>
+------------=_1465545032-17139-0--
+
+------------=_1465545032-17139-1
+Content-Transfer-Encoding: 7bit
+Content-Type: text/xml; name="1204_ESIRU_cTTour_20160610084453013_84638.xml"
+Content-Disposition: inline;
+	filename="1204_ESIRU_cTTour_20160610084453013_84638.xml"
+
+<?xml version="1.0" encoding="UTF-8"?><ns1:cTTour xmlns:bct="http://www.kratzer-automation.com/cadisTRANSPORT/cTBaseComplexTypes/1.3" xmlns:ct="http://www.kratzer-automation.com/cadisTRANSPORT/cTOrderdata/1.12" xmlns:ns1="http://www.kratzer-automation.com/cadisTRANSPORT/cTTour/1.12" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kratzer-automation.com/cadisTRANSPORT/cTTour/1.12 cTTour-1-12.xsd"  >
+<ns1:BranchNumber>1204</ns1:BranchNumber><ns1:RunsheetNumber>95500309645022</ns1:RunsheetNumber><ns1:RunsheetVersion>1</ns1:RunsheetVersion><ns1:VehicleNumber>3407DVX</ns1:VehicleNumber><ns1:Date>2016-05-31</ns1:Date>
+</ns1:cTTour>
+
+------------=_1465545032-17139-1--

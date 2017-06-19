@@ -1,0 +1,94 @@
+ * Matrix42 E-mail Robot Exported Message. Message ID = 363
+Delivered-To: update4u.info@gmail.com
+Received: by 10.12.176.165 with SMTP id o34csp1311034qvc;
+        Mon, 15 May 2017 01:25:32 -0700 (PDT)
+X-Received: by 10.223.164.153 with SMTP id g25mr2998573wrb.103.1494836732343;
+        Mon, 15 May 2017 01:25:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1494836732; cv=none;
+        d=google.com; s=arc-20160816;
+        b=dDa5AmckLwJmMfa+1IN9bO7Ar8OZ/NH34XbFrpca59SiSSlwxR8a1l8Yne4Cxnwk81
+         ydESGW8m8seyZY7pD/0g2W0uzRTHAiTDh2oo0Jx8OohQ6e4rsLCLNyD6vLwq1/fuN5DA
+         yhU5XCwq8J3wqt8TTHa8bTej8GZx8v3DYtE5JHYDOf8Kzk9LpWlaw7Q/cmQBo3tMdkcV
+         KdLdp1uIcywyPk9D3mcTuENkRmzqYc8VflOvTQQuqQvyTT6/z0thfiIFg56X94y55KOd
+         KuMA3uryViZvWsIJeQN0LeNYH+axklYL+IwbquhQ43w2ydsqicIEGdpvhdZjWQssCh2b
+         v9/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=content-transfer-encoding:mime-version:user-agent:date:message-id
+         :subject:from:to:dkim-signature:arc-authentication-results;
+        bh=7yQVza5iygpBodI+LowNkhly8reGnIXG37M6Z9/oOWQ=;
+        b=wiMvv5LA36TDAkKI/4GDtIZzUiHvb3Z0u/LK2IavSxZrP8EhtP0rwlLLLIWhxb9zxd
+         9k/yoDPX7rpCgLfp6E+r1BnVXZtG9mSajQiGO25e+/dG4KeZTgmjZDYUpxcixfuGouMV
+         VajamRl8dHBBVuiKi0KxiS1LtX9DAfAGIphBjDSUPbICgxHhoMqzYDMaEEP/ZA9k6H3d
+         KD+yvq4mF/OUprYj/jKj7roKgNceF9EFmn4N4yL/gcOmReWMBCLaVHRV7AGU7iE1SHSJ
+         wbWeR+13zFt4Omr5otSwcFh5gZET/EJaqndjbO+/2h8Fn9kYrETJWuCh4X4JcNPeAyOe
+         GOkQ==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@gmail.com;
+       spf=pass (google.com: domain of vazhushma@gmail.com designates 2a00:1450:400c:c09::233 as permitted sender) smtp.mailfrom=vazhushma@gmail.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=gmail.com
+Return-Path: <vazhushma@gmail.com>
+Received: from mail-wm0-x233.google.com (mail-wm0-x233.google.com. [2a00:1450:400c:c09::233])
+        by mx.google.com with ESMTPS id w69si5703106wmw.57.2017.05.15.01.25.32
+        for <update4u.info@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 15 May 2017 01:25:32 -0700 (PDT)
+Received-SPF: pass (google.com: domain of vazhushma@gmail.com designates 2a00:1450:400c:c09::233 as permitted sender) client-ip=2a00:1450:400c:c09::233;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com;
+       spf=pass (google.com: domain of vazhushma@gmail.com designates 2a00:1450:400c:c09::233 as permitted sender) smtp.mailfrom=vazhushma@gmail.com;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=gmail.com
+Received: by mail-wm0-x233.google.com with SMTP id v15so118580wmv.1
+        for <update4u.info@gmail.com>; Mon, 15 May 2017 01:25:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=7yQVza5iygpBodI+LowNkhly8reGnIXG37M6Z9/oOWQ=;
+        b=p5rRsB/eGn5D6nGD0rfsG+U+YTaBp6PQeJX5eiEehM4TeJvG1uD6NC09glNqSnLR6K
+         MuKTf1leqmV9f5Aoz2Smxs3zu3zVoaQjvqPRIYAeqXdoloGi7UnoiI66FF5f+hgApUXz
+         G5GtARWkxb6PQrDPvaq6wE7sOIRY/OOBNPqzf81PZlUFaDe5Zy2AwEK+3GOwfiZweLB9
+         EZkIGi2C7bjyn+hlHLRB2NOboikTvvvQo7zHtPzwrGyPdY1ZTgAEgVSXPkqz3F9Lvqp4
+         XuVoVHbbAMa5dVDZ0QXrkXNkjXy0I/veb51MsH20+vExi7r6jjOz9pc/cVBi6xeAJiqT
+         wn3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=7yQVza5iygpBodI+LowNkhly8reGnIXG37M6Z9/oOWQ=;
+        b=T6O9TMcwh1CkPHd/V6YqgFTChbnudg8+LaymCkUpiunR18bdr5JXQd+aQh2djykBI2
+         t8VSLi8r5kI3h0ANmDsNN5cTu8cqoItXln1nePxG6AUuIN3nYwsoHQpnQtMyy1V8BMTn
+         fQAub4qjVNpfnXmlmUvcXbJr83F9MSQNjoAbNLV//gTf53e2UWVLYAloDeA0SEbt0byg
+         EMWCBsYnBlSWVN9ABgam2SQaAyt2m2pAS9AoVYc7QnCiZ15S815a2HKKrPCFjPePEnU+
+         mU1uv7PD+p7tfn7ycW7LHAbISZ9OFqnc7clwGfbHQYtkoIvFjcnWxX0tTDaUq/sRC9YB
+         4lAA==
+X-Gm-Message-State: AODbwcBdjIF434F6M6MDGG6ToiK05T1FW9k49Ra8sSJV7eHG5S2o/j3C
+	/t4TVGTrxKeKzb8c
+X-Received: by 10.25.125.3 with SMTP id y3mr1569023lfc.141.1494836731787;
+        Mon, 15 May 2017 01:25:31 -0700 (PDT)
+Return-Path: <vazhushma@gmail.com>
+Received: from [192.168.1.5] ([31.43.125.66])
+        by smtp.gmail.com with ESMTPSA id b70sm2060734lfh.42.2017.05.15.01.25.30
+        for <update4u.info@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 15 May 2017 01:25:30 -0700 (PDT)
+To: update4u.info@gmail.com
+From: Vasiliy Zhushma <vazhushma@gmail.com>
+Subject: =?UTF-8?B?w5xtbMOkw7x0IHRlc3Q=?=
+Message-ID: <e7882de6-3b5c-5a30-f187-04a7e07221fc@gmail.com>
+Date: Mon, 15 May 2017 11:25:29 +0300
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.8.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Umlaut keystrokes:
+Ä - Alt+0196
+ä - Alt+0228
+
+Ö - Alt+0214
+ö - Alt+0246
+
+Ü - Alt+0200
+ü - Alt+0252
+

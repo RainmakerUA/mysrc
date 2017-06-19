@@ -11,6 +11,7 @@
 /MSVS/**/obj
 # nuget packages
 /MSVS/**/packages
+/MSVS/**/TestResults
 # temp files
 *~
 *.bak

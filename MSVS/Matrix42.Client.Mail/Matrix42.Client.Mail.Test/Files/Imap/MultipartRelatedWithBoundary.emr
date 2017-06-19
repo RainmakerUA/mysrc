@@ -1,0 +1,256 @@
+ * Matrix42 E-mail Robot Exported Message. Message ID = 1358
+Received: from dehze01-app006.rhs.zz ([10.127.12.83])
+          by dehze01-wsv331.RHS.ZZ (IBM Domino Release 9.0.1FP5)
+          with ESMTP id 2017041212565505-166899 ;
+          Wed, 12 Apr 2017 12:56:55 +0200 
+Received: from mx-out1.sec.rhs.zz (Unknown_Domain [10.255.193.5])
+	by dehze01-app006.rhs.zz (Symantec Messaging Gateway) with SMTP id 44.68.28071.6F70EE85; Wed, 12 Apr 2017 12:56:54 +0200 (CEST)
+Received: from mailout07.rmx.de ([94.199.90.95])
+  by mx-in1.de.rhenus.com with ESMTP/TLS/DHE-RSA-AES128-GCM-SHA256; 12 Apr 2017 12:56:54 +0200
+Received: from kdin01.retarus.com (kdin01.dmz1.retloc [172.19.17.48])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by mailout07.rmx.de (Postfix) with ESMTPS id 3w31842kGszBvGJ
+	for <controltower.daimler@de.rhenus.com>; Wed, 12 Apr 2017 12:56:52 +0200 (CEST)
+Received: from FRHB101.fr.ge.conti.de (unknown [10.220.1.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by kdin01.retarus.com (Postfix) with ESMTPS id 3w318407sCz2xYY
+	for <controltower.daimler@de.rhenus.com>; Wed, 12 Apr 2017 12:56:52 +0200 (CEST)
+Received: from frhb101.fr.ge.conti.de (FRHB101.fr.ge.conti.de [172.29.13.41])
+	by FRHB101.fr.ge.conti.de (8.14.4/8.14.4) with ESMTP id v3CAuoKF057647
+	for <controltower.daimler@de.rhenus.com>; Wed, 12 Apr 2017 12:56:51 +0200
+Received: from fr00764vmx.fr.ge.conti.de ([10.179.146.79])
+          by frhb101.fr.ge.conti.de (IBM Domino Release 9.0.1FP6)
+          with ESMTP id 2017041212564978-1786963 ;
+          Wed, 12 Apr 2017 12:56:49 +0200 
+To: controltower.daimler@de.rhenus.com
+Subject: A2762002351
+From: Patrick Schwarz <patrick.schwarz@fluid.contitech.de>
+Message-ID: <OFB20FE02E.22A9D0FC-ONC1258100.003C0613-C1258100.003C21B5@conti.de>
+Date: Wed, 12 Apr 2017 12:56:47 +0200
+Content-Type: multipart/alternative; boundary="=_alternative 003C215EC1258100_="
+X-AuditID: 0a7f0964-56fff70000006da7-a5-58ee07f634f9
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A0EtAACtBu5Yh19ax15cHAEBBAEBCgEBg?=
+ =?us-ascii?q?nAEgUCBC45skzWVEAchhhiDW1cBAgEBAQEBAgMQAQEBCA0JCCgvgmJyAQEBAQE?=
+ =?us-ascii?q?BAQEBTAIIZIEMDgECGQEBAQoeFQEDC0kBBooUAQmYWJIuixkPBYZMggGIFYJkB?=
+ =?us-ascii?q?IIxBY99NYxYdIEUhAWMVIpihmKUAoFdJRYhhUCBcT41AYkhAQEB?=
+X-IPAS-Result: =?us-ascii?q?A0EtAACtBu5Yh19ax15cHAEBBAEBCgEBgnAEgUCBC45skzW?=
+ =?us-ascii?q?VEAchhhiDW1cBAgEBAQEBAgMQAQEBCA0JCCgvgmJyAQEBAQEBAQEBTAIIZIEMD?=
+ =?us-ascii?q?gECGQEBAQoeFQEDC0kBBooUAQmYWJIuixkPBYZMggGIFYJkBIIxBY99NYxYdIE?=
+ =?us-ascii?q?UhAWMVIpihmKUAoFdJRYhhUCBcT41AYkhAQEB?=
+X-IronPort-AV: E=Sophos;i="5.37,190,1488841200"; 
+   d="scan'208,145";a="36556747"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+MIME-Version: 1.0
+X-KeepSent: B20FE02E:22A9D0FC-C1258100:003C0613; name=$KeepSent; type=4; flags=0
+X-Mailer: Lotus Notes Release 8.5.3FP6 SHF603 February 03, 2016
+X-MIMETrack: Serialize by Router on FRHB0105/srvc1/srvc/cag(Release 9.0.1FP6|April  20,
+ 2016) at 04/12/2017 12:56:50 PM,Serialize complete at 04/12/2017 12:56:50
+ PM,Itemize by SMTP Server on frhb101/srvcMX/srvc/cag(Release 9.0.1FP6|April
+  20, 2016) at 04/12/2017 12:56:49 PM,Serialize by Router on
+ frhb101/srvcMX/srvc/cag(Release 9.0.1FP6|April  20, 2016) at 04/12/2017
+ 12:56:51 PM,Serialize complete at 04/12/2017 12:56:51 PM,Itemize by SMTP
+ Server on NotesUN7/Server/RHS/DE(Release 9.0.1FP5|November  22, 2015) at
+ 12.04.2017 12:56:55,Itemize by IMAP Server on NotesApp/Server/RHS/DE(Release
+ 9.0.1FP5|November  22, 2015) at 04/13/2017 03:16:46 PM
+X-TNEFEvaluated: 1
+X-AutoFooter: AFMA Version 2.0.11 (frhb101.fr.ge.conti.de)
+X-RMX-ID: 20170412-125652-3w318407sCz2xYY-0@kdin01
+X-RMX-TRACE: 2017-04-12 12:56:52 RmxMSO@kdin01/mailcc08 [0.1s] 20170412-125652-3w318407sCz2xYY-0@kdin01 0:00:00
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrIKsWRWlGSWpSXmKPExsXC9f8gq+539ncRBt06FhMP3mRzYPToXPmA
+	KYAxissmJTUnsyy1SN8ugStj/4YFzAVXnCuuPX/L1sA40b6LkYNDQsBEYvo+sy5GLg4hgcOM
+	En1PT7J3MXICxZUl1m38B2VvYpLYcDsUpEhCYAmTxIxPjUwQiWCJS5M7mSFsUYkPs2EaVCTe
+	PnwPVSMlMWHbDkaIDRMYJXpX32aDcHYySdzqWwSV2ccksXrWMyjnEaPE1an7WUH6hQTuMkoc
+	/OkBcqyIgJrE2ptVIGFeAUGJkzOfsIDYwgIiEscPzYRaFyRxpPk4C4RtL3Hz5GmwMWwCVhJH
+	brcyQfQGSLxf/x/sbBYBVYlfj1azQfy2h1ni7PQGqH+EJE4vPssMspcZqOHvg3KIsJXEuq0H
+	GSFsI4nXN7dB7S2UeH77OdT7+RKdm1+zT2CUnYXk1FkIk0DCzALaEssWvmaGsPUkplxtYYQo
+	sZXoO8EGEZaXaLqwixVTua7Ehf9TWCBsCYltE6ZA1StKTH32BmqTqcSlg0YQYWmJfT9mMC5g
+	5FnFKJqSmlGVamCom1hQYGBgpleUUaxXVbWJEZSQ6jlTdjCu++13iFGAg1GJh1ea7V2EEGti
+	WXFl7iFGCQ5mJRHe1E9vI4R4UxIrq1KL8uOLSnNSiw8xSnOwKInz8hVvDRcSSE8sSc1OTS1I
+	LYLJMnFwSjUw8lyROCsad8repGZVPm9F1tYff27OiRP7WaNpIvXUtvRMZpT6r5RvjE3nLt47
+	PP+A/F2F0xJ9TA3btXLWawfnbeafF2L4KWqPk4ZqgsOJBiaGi/OE9qtX802dPOHK4/te7ff5
+	q0p7e2Nc0vMXJ+Uo86wtFO2Q/bG6+s0FptU1ho4ht/PL1kkosRRnJBpqMRcVJwIAZ50iTkQD
+	AAA=
+
+
+--=_alternative 003C215EC1258100_=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="ISO-8859-1"
+
+Guten Tag,
+
+von der Leitung A2762002351 k=F6nnen heute nur 412 St=FCck statt 490 St=FCc=
+k=20
+versendet werden.
+
+Wir versuchen morgen wie avisiert 490 St=FCck zu versenden.
+Bei =C4nderungen werde ich Sie dahingehend informieren.
+
+Vielen Dank
+
+Mit freundlichen Gr=FC=DFen / Best Regards
+____________________________________
+Patrick Schwarz
+Kundenlogistik EDT
+Segment Engine Drive Train
+ContiTech Techno-Chemie GmbH
+Dieselstra=DFe 4, 61184 Karben, Germany
+
+Phone: +49 6039 990-435
+patrick.schwarz=40fluid.contitech.de
+http://www.continental-corporation.com
+________________________________________________________________________
+
+ContiTech Techno-Chemie GmbH, Dieselstr. 4, D-61184 Karben
+Vorsitzender des Aufsichtsrats/Chairman of the Supervisory Board:=20
+Christian Noell
+Geschaeftsfuehrer/Managing Director: Steffen Langbein
+Sitz der Gesellschaft/Registered Office: Karben
+Registergericht/Registered Court: Amtsgericht Frankfurt am Main HRB 71427
+USt.-ID-Nr./VAT-ID-No. DE 811164004
+________________________________________________________________________
+
+Proprietary and confidential. Distribution only by express authority of
+Continental AG or its subsidiaries.
+
+--=_alternative 003C215EC1258100_=
+content-transfer-encoding: 8bit
+content-type: multipart/related; boundary="muff_boundary_000"
+
+--muff_boundary_000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="ISO-8859-1"
+
+<font size=3D2 face=3D=22sans-serif=22>Guten Tag,</font>
+<br>
+<br><font size=3D2 face=3D=22sans-serif=22>von der Leitung A2762002351 k=F6=
+nnen heute
+nur 412 St=FCck statt 490 St=FCck versendet werden.</font>
+<br>
+<br><font size=3D2 face=3D=22sans-serif=22>Wir versuchen morgen wie avisier=
+t 490
+St=FCck zu versenden.</font>
+<br><font size=3D2 face=3D=22sans-serif=22>Bei =C4nderungen werde ich Sie d=
+ahingehend
+informieren.</font>
+<br>
+<br><font size=3D2 face=3D=22sans-serif=22>Vielen Dank</font>
+<br>
+<br><font size=3D2 face=3D=22sans-serif=22>Mit freundlichen Gr=FC=DFen / Be=
+st Regards<br>
+____________________________________<br>
+Patrick Schwarz<br>
+Kundenlogistik EDT<br>
+Segment Engine Drive Train<br>
+ContiTech Techno-Chemie GmbH<br>
+Dieselstra=DFe 4, 61184 Karben, Germany<br>
+<br>
+Phone: +49 6039 990-435<br>
+patrick.schwarz=40fluid.contitech.de<br>
+<br />
+http://www.continental-corporation.com<br />
+<br />
+<IMG SRC=3D=22cid:muff_pallas_000_0=40autofooter.pallas.com=22><br />
+________________________________________________________________________<br=
+
+ />
+<br />
+ContiTech Techno-Chemie GmbH, Dieselstr. 4, D-61184 Karben<br />
+Vorsitzender des Aufsichtsrats/Chairman of the Supervisory Board:=20
+Christian Noell; Geschaeftsfuehrer/Managing Director: Steffen Langbein<br /=
+>
+Sitz der Gesellschaft/Registered Office: Karben,=20
+Registergericht/Registered Court: Amtsgericht Frankfurt am Main HRB 71427,=
+=20
+USt.-ID-Nr./VAT-ID-No. DE 811164004<br />
+________________________________________________________________________<br=
+
+ />
+<br />
+Proprietary and confidential. Distribution only by express authority of=20
+Continental AG or its subsidiaries.<br />
+<br /><br>
+</font>
+--muff_boundary_000
+content-transfer-encoding: base64
+content-type: image/jpeg
+content-disposition: inline
+content-id: <muff_pallas_000_0@autofooter.pallas.com>
+
+/9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQIBAQEBAQIBAQECAgIC
+AgICAgIDAwQDAwMDAwICAwQDAwQEBAQEAgMFBQQEBQQEBAT/wAALCAAbAJYBAREA/8QAHQAA
+AQUBAQEBAAAAAAAAAAAAAAYHCAkKCwUEA//EAC8QAAAGAwABBAEDAwQDAAAAAAIDBAUGBwEI
+CRIAChETFBUhIxYiJBcxMjpReLf/2gAIAQEAAD8Al77gr3LT3o5PH3SrRAcWeNlWJKUG5Lrf
+mwmVxmjT1JAVBDKztpwRI172Es1OcoMVhPRIsGYIMTqFIjgIqvq41e60vFLxzdbq73+vPl1W
+9zEZfq8g7zesxJtaVhPwSoKwmgLW9NCJBgZSspR+EgCeqTlCD96FLj/jOHmQu2UqzY6VX/z9
+65QHtxXM8LZjtwNXbYd3KmtsVbU3gb2AE1jLY/rlJyhazIQoA5VqTEgVydOFvyFQeBEIGrnH
+SPnbmYLq9xvtpbmftjqsY3KDY2lg39YN61vycFejPbP1P8ks9NlOowcUIGBlZIM8sY8RfHo0
+l0E0a2RNsEmhdudd7ZNqpqUyCxioPbTK+GwxsR5+FTwvCBRnJbaXnPxlxz/i/tn+bPqi2nfc
+76zbKdTYDpZTS+umTVxa1v7PI9qbilIa/JsWUEJsf0+2Q1OsPTlgIVrMYSFDW4GpcTFZYU6Y
+nxAYog5U1v8ASayu9SR3gPYjSq0dMZRsQvVxilYLvLX03QyGvM5WKyYW3VakWjcjJAnbQ/gj
+WlI/MK1MNZlYMsOTM6n470p5zy99URiJ7+aUSiSpGx0elUdju1MFenxKjY29W7PSsxIS6CNC
+S3oW9etVG5DgCdOhUGmZAAsYgrjXTdXUTbzEoxq9srSl+HQlSBPLkdV2I1zFxjn2CEEg5YmT
+miNLIPyWZglQIOCjslD+sY/AXwir26PaC6wzpLV+wu4+uFOWMp+jJkGn1uMsfljWWqASalUO
+KAw/ByIg4s8owtQsCUUMAsjCPIQizhbWHu1plUcRr6f2ttzrFWMDttEc51TNrCvuKwuI2amT
+ATGKFEecli4tO4llAWJBjGjGYEIVROc5xgYc5amUdS+a0KS104SffjUBsa7bTmrq2ec7ERVY
+yTBKQ5LGY9ejXFLRkCRlODc4oTFmR4TgUt6okRmDCTAhiB197kat8m6waFEhUprj2OsuMf1L
+SlARN6LKXSFvNEeSnkr44hCYBtYsnkGlAV5CYcsNJOLSEH/QrMTPrz26V07tnz/rHcayro1t
+iC8muWp82ZMjVpNaCu6Df1pBJqlnfVCpwNEzGF5UEfCZ1PCcHB5fznPljOX6146EaNbayByi
+OtW2mv8AdswaCDVq+H17aLTIJeSmJ+vBqwLUA78saUOTSw5VALyTgQvjz+f29ZAJN1H6p0J7
+jeD8xpXvI63JrpnY6Bxd8QPWulWw1yf2OYxZglZrUYrQMAFpWEuH7KIKkhUA4YEgTMjCIecY
+0k7tdstG9EbYzRt5vN4p5kWkJUSd4rqhn+aRmvk6ttE7BWqnTCX8VT9CAJrgcU24XmkEJzBH
+EBwHIc5YPbP7nWXsb2/3hkM/29sS/wCM23ra9HsD/bYEtWO1xODBL4oJgXt8DJWqEbdhA1qJ
+WYlam8ZgW1C4KQY8Q5Nz66DPrjNcmWIvd3tVqeq2EUZnym5Nss3DaQ5IVh9JnTinUL5ktJci
+zs5weSvVoslKAG+QRlqDMCwLGchzZ91Ss193Y90TWdI3WU8uNRw3d2odTI9AHsvBSFuipklj
+KR5AnTj8y8luyl0d3D7RBz9pbmV848AgAHy+2NryDRD3Mct2C19y2QiTQ6fVdZ5jZDx/oaF4
+NXRCMAkSB0IIwAPg9lCXgXl4x/lFu5wzMiGeMWVt0P10p+3PdyqdeZXCGINO2Ps3TLfO4Kyo
+sRxjkqN1rmBOb8lOAjySIOHQ05blUaUIJpgl6gzI8jHkWf15U13DaM92ZLNeKrZCYnSjbsVs
+TTJFcknnOMePijfDrFORMCotQMwSlGUNrbRYLUCM8soisiyLIfn0tuS9bV0s92HtNBlkBhSu
+ExPaLZAUWhymKoT4tGsssik42bLe3iKyQn/AEnT5TfSAP0ZILyX4eIfhCUYwMUW94OOOxhka
+I3H2ffCYImliYW0lnZmskDA++JKdKUEJRYMfv8BAHGMf+PTRHa1Ufd/urZprVYtesjlRcq3n
+lDC/1o0BHFY2vbkjc6LgNuC0IiclJhmJSwmEk5AEZYhgz/aLOMq3mG/l6C98ukDfQTUtbYPr
+PFts2WE16BerdEryyV0XKXOOsS3IjPuVlgNjLPn+UeRjMSFjyPzxgXqJHKl2S7DRrreVampW
+y2+uy2yeq7yx1lMqmpgV9SGuZ3IFDo5JZZIlWTgqW0Bz2nZThOKYBx2cJlAMAFgQgDeGaUnu
+XR3t/th6e3M15uKoUFV72V3JtbTL6rBfEHlnSTBok4ZigjClwTgUFohqY+zqVKZKLBH3rcmC
+D5nCyJorl0413jftwdSt3WiAhTbNTvoU807KLKE+Lz1DnGcs0/PA0fgiOykASUdGGw4GSygj
+CYJSLy/nM+ZHdUVxU34CcF7Nfm9Cun40FhVUomSxOBbKlTBEnte1MTSY5DxlQJGjJJz+OkyP
+JJH3DwWAOM5+bUb4tnlTrDxi4wr90KXsC8X6R1Ji3YvqBS8tS1LX1/vYGNva1EwtVSlAWpUA
+asHElt6oRgzjTlaorJKtP+YAqhWRO6rXjt7p1ZlD6pv3OVPKbTpaz4hrz/q+C3hRpol+WEZh
+mXYsf24SPzevNOUtCvBZqYLqqSGkFYD9QbXtvf8AuoRL/wBoaP8A/k0A9dBG0NZqyt259b73
+l5T+Od6svkpfKxy2vOUTEeKYRhZE3oh2ReIgLCRo1ohlgF45LOIKHjOfHIRc+H3FXIVDyYs+
+uenOgNjSqmWOcXqenVw2NOaKKqaEli9OtdkR8MVEnFKctiwtO6l/phacwCECcQMniTnlkE6r
+eDfQzZbdGtbgq/cDEMdr410jdSypdYMIacMKKxY9bFbNU9jziuTkmDRZW+ClYEZzfglMaVlO
+IKYrOc5M5+2/erl88E+usfseJxJcXAoBfhOxGpsncAHAh1mRVK8FORTAcuLCHyNSkHfojoQD
+wNB5CMCDBShOYZfjtFpjE+1Gw1Qdm+KN4VAu2kjK2GWhe2oNry8mCWvEJdCFLUFndhFBHkJJ
+gcN7YjPEflOhU4awqErgcM8QMeZYvP2w5z1fYOnXcOR0JrAZNLUhjnTXPymZ0VsFsXsI9sBD
+FHYXG2hjbQqMq209W2o/1FdgZn2DApKGUhTnYUppcX/wd66Wf2TdutcVlvOJI+NVzR6w4JWc
+htezU7SqQw5jaowwlO2SYeYYA9QhZER6wKc8QAqDz8FD+vAM+vqjXATqJRvayyerlFznQeTM
+7tsdZNtQevbZsyw2hyMZ5+kkzPkl2Kb4mYAtYnQyQ03wTqjSsKE4MfaYD5zlVVhwd6P6sdzb
+E6T69zzUGa09b9+zu0HtHbUhlbVK4wwWI6q10ibMtKFtyEbmmKd15TccWsGmNMRkjU/QEYiv
+TQQz2/HXGN9dyurCuZ85TpAp2FcbrdK0T2zZomcsl2JVoVaVOMUNwbkYE6w0ZeBm4xk0AMCH
+4/OfRDPb8dcY313K6sK5nzlOkCnYVxut0rRPbNmiZyyXYlWhVpU4xQ3BuRgTrDRl4GbjGTQA
+wIfj859OPTft+ui1E9jdg+iTBI9CrFpa+dgrUkDzWFi2HPipKogVpP7wY5pFSJPFMpMuhbQ8
+HAwm/MGkypx4CPGV/fmNsa9tx125t7kSy7eP+3NKsNezIC6Ksq22XE5ulbHHHFQQqyyyxkVM
+jm1uhSEYCPqXp/sPNG3YUBSJDBBJ9WC708Y+tO3nOhj1RnG5VEbIX1aWxI9jdjLYvmRSauoP
+XR7c1t7bHYjVzMzMCxMSzFYw6GqfuSIMmKD/ALwEAEeaWCJMu9ub0xnHGWt+YLxYuiyCXU3u
+wm2PhE7bLLn50cfGJXH5+jekjqcOJfeWvLXyhs/FLTpREjTFKRGHlmALAb9V5+3A6D3vyK1g
+0cl9mahNF2aPWrIn6l3CFTaYOdeWjFZUNc6vKaQL1sdIUonkpxVACjymSjRiTleJwwDM+4po
+dufbPdItrNG9I4pKJvqG0bN6ZwpTQLNEYhMJUTA5lWv47OtYTF7wsbReEpQuhkmwtwQSBtUJ
+VSPJJwDCBYUpCyvbO9qLh2U182+s7ZnQqx7hqdlr8xzTyaSTSGoRH16YlTszWYJuiJwVgMom
+ls/IcPhOaaepVYwV8AAcdMTZjg51Ts7sa09a6zmXPwiSNjzWFkZrKdWfYzeyCksRrqJRt+R+
+SWJHG5bBuzK5CSG/fhQYjGmGaAg0RhRemqRTvpQieVySJ6raOyePJxhLbZBIt/p7BHl1D4A8
+zj2cmm3EpJnI/s+CQrlXwHAf5RZzn4pL6Ocqt++jlo1tZNh1DqZHU8WXt0bl0LO6VWRKIs5Q
+T7hGy2KRQjFKJcRlZKi8J0jrJEmFDkajSASAGBKM8g20ut4xvRT6YlLVXOjmJXYCYXHq5wdD
+t/ZswLVDBEkZrdF2c9QVQwTTkbQmPUEIiDRCAmLUGhKwDAx+Ustr9M9Xd5KvPprbCl4fddeG
+rQuiRokxShI5MKsAcgwtaHZIaS4NynwEMvKlAoINyWYMGR5AMQc8VXbmExqnNlbKh1aIlEVj
+0XkRyNgSJHZYrUNxYRDBgIVRxoz8/wBv7fIjM5z8/wC/ro7e1y0O1GatSofu6CkIy67Wvshd
+YwfdspXOUylzWjAhQF+DThepPTthgylKggw9uKTnGknDKGYMvOQetZ/o9Ho9Ho9Ho9Ho9Ho9
+Ho9Ho9f/2Q==
+
+--muff_boundary_000--
+
+--=_alternative 003C215EC1258100_=--

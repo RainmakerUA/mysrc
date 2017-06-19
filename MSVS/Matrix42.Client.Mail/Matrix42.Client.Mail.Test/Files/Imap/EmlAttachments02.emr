@@ -1,0 +1,203 @@
+ * Matrix42 E-mail Robot Exported Message. Message ID = 721
+Delivered-To: update4u.info@gmail.com
+Received: by 10.112.205.201 with SMTP id li9csp57366lbc;
+        Mon, 24 Feb 2014 07:48:41 -0800 (PST)
+X-Received: by 10.14.215.133 with SMTP id e5mr25320269eep.103.1393256921582;
+        Mon, 24 Feb 2014 07:48:41 -0800 (PST)
+Return-Path: <andrey.bruslik@matrix42.com>
+Received: from mail-ee0-f44.google.com (mail-ee0-f44.google.com [74.125.83.44])
+        by mx.google.com with ESMTPS id g47si30754672eev.157.2014.02.24.07.48.41
+        for <update4u.info@gmail.com>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 24 Feb 2014 07:48:41 -0800 (PST)
+Received-SPF: neutral (google.com: 74.125.83.44 is neither permitted nor denied by best guess record for domain of andrey.bruslik@matrix42.com) client-ip=74.125.83.44;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 74.125.83.44 is neither permitted nor denied by best guess record for domain of andrey.bruslik@matrix42.com) smtp.mail=andrey.bruslik@matrix42.com
+Received: by mail-ee0-f44.google.com with SMTP id d49so847686eek.17
+        for <update4u.info@gmail.com>; Mon, 24 Feb 2014 07:48:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-type:thread-index:content-language;
+        bh=/Ta7SCf8dDZaJZWtibdeFztbsl5nejX1++P/nJ9FW+8=;
+        b=ID+O6eaxWcDl2UsTzSVAu3/Y/Wv2NEP+tXY6Kbl7wwItf+1XLliRytRDSA91Rf54wj
+         72fOw7QQXzz0cKgEUgEAqCfdq7XjOfTe20KmgB4hspU4xG9JfxPT3Yss7MdwSmevontp
+         v0gnQoEtnTeJ2Eppa3/gkINV8RHDelASaJRjzFOTKC/sK6SqcS0b8DpBlQ/gW4QWobQI
+         4xY00NQxOOZCP3fIlRsZX9CXDsY4wlM7e1yArHtibHgQhc6SrDnc5yM9iqPXe2i9ZDNA
+         kp88HND9umbKjf98knpSkOHfNXr7VDYvN1mHorFQnsh2UHzPA6OQyfOJ39DzaTF7+hGd
+         SSIQ==
+X-Gm-Message-State: ALoCoQmKqc6rDbUiAAhdKVjvMta9F1r2ZZ5hr41GqSCywYQiY8BzfeCJJVZutnVh6x2S6CpoxvSa
+X-Received: by 10.14.111.5 with SMTP id v5mr20254414eeg.11.1393256921400;
+        Mon, 24 Feb 2014 07:48:41 -0800 (PST)
+Return-Path: <andrey.bruslik@matrix42.com>
+Received: from PUAABA01 ([62.244.42.26])
+        by mx.google.com with ESMTPSA id k41sm65205234een.19.2014.02.24.07.48.39
+        for <update4u.info@gmail.com>
+        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Mon, 24 Feb 2014 07:48:40 -0800 (PST)
+From: "Andrey" <andrey.bruslik@matrix42.com>
+To: <update4u.info@gmail.com>
+Subject: test2
+Date: Mon, 24 Feb 2014 17:49:35 +0200
+Message-ID: <009b01cf3178$06eb1560$14c14020$@matrix42.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_00A0_01CF3188.CA7481A0"
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: Ac8xd/T0fwpuuJOySnSC4nmHFygLaw==
+Content-Language: en-us
+
+This is a multipart message in MIME format.
+
+------=_NextPart_000_00A0_01CF3188.CA7481A0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_001_00A1_01CF3188.CA7481A0"
+
+
+------=_NextPart_001_00A1_01CF3188.CA7481A0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Test2
+
+
+------=_NextPart_001_00A1_01CF3188.CA7481A0
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
+xmlns=3D"http://www.w3.org/TR/REC-html40"><head><META =
+HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 15 =
+(filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:#954F72;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DEN-US =
+link=3D"#0563C1" vlink=3D"#954F72"><div class=3DWordSection1><p =
+class=3DMsoNormal>Test2<o:p></o:p></p></div></body></html>
+------=_NextPart_001_00A1_01CF3188.CA7481A0--
+
+------=_NextPart_000_00A0_01CF3188.CA7481A0
+Content-Type: message/rfc822
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment
+
+From: "Andrey" <andrey.bruslik@matrix42.com>
+To: <update4u.info@gmail.com>
+Subject: Test: no attachments
+Date: Mon, 24 Feb 2014 12:02:40 +0200
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_009C_01CF3188.CA7481A0"
+X-Mailer: Microsoft Outlook 15.0
+Thread-Index: Ac8xR42mEvud019GRVmJBMj4uedngA==
+Content-Language: en-us
+
+This is a multipart message in MIME format.
+
+------=_NextPart_000_009C_01CF3188.CA7481A0
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+test
+
+
+------=_NextPart_000_009C_01CF3188.CA7481A0
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" =
+xmlns=3D"http://www.w3.org/TR/REC-html40"><head><META =
+HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii"><meta name=3DGenerator content=3D"Microsoft Word 15 =
+(filtered medium)"><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri","sans-serif";}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:#954F72;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:"Calibri","sans-serif";
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-family:"Calibri","sans-serif";}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]--></head><body lang=3DEN-US =
+link=3D"#0563C1" vlink=3D"#954F72"><div class=3DWordSection1><p =
+class=3DMsoNormal>test<o:p></o:p></p></div></body></html>
+------=_NextPart_000_009C_01CF3188.CA7481A0--
+
+------=_NextPart_000_00A0_01CF3188.CA7481A0--
