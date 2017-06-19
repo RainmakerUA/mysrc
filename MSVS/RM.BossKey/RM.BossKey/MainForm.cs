@@ -36,9 +36,28 @@ namespace RM.BossKey
 			notifyIcon.Icon = Icon;
 		}
 
+		private void Log(string message)
+		{
+			if (textBoxLog.TextLength > 0)
+			{
+				textBoxLog.AppendText(Environment.NewLine);
+			}
+
+			textBoxLog.AppendText(message);
+		}
+
 		private void OnHotkeyPress(object sender, EventArgs<int> e)
 		{
-			_shWindow?.ToggleVisibility();
+			Log($"Hotkey #${e.Value} pressed.");	
+
+			if (_shWindow != null)
+			{
+				Log(
+					_shWindow.ToggleVisibility()
+					? String.Format("Window was {0}.", _shWindow.Visible ? "shown" : "hidden")
+					: String.Format("Error when changing window state (now {0})", _shWindow.Visible ? "shown" : "hidden")
+				);
+			}
 		}
 
 		private void showToolStripMenuItem_Click(object sender, EventArgs e)
@@ -61,6 +80,9 @@ namespace RM.BossKey
 				_hkID = _hotkey.Register(Modifiers.Win, Keys.NumPad0);
 				_shWindow = ShowHideNativeWindow.Find("TscShellContainerClass", null);
 				labelIndi.BackColor = Color.Green;
+
+				var windowName = _shWindow?.ToString() ?? "(not found)";
+				Log($"Hotkey #{_hkID} registered. Window: {windowName}.");
 			}
 			catch (Win32Exception exc)
 			{
@@ -72,12 +94,14 @@ namespace RM.BossKey
 		{
 			if (_shWindow != null)
 			{
+				Log($"Unbinding window ${_shWindow}.");
 				_shWindow.ReleaseHandle();
 				_shWindow = null;
 			}
 
 			if (_hotkey.Unregister(_hkID))
 			{
+				Log($"Unregistered hotkey #{_hkID}.");
 				_hkID = -1;
 				labelIndi.BackColor = Color.Red;
 			}

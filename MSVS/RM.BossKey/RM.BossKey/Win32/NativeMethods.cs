@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace RM.BossKey.Win32
 {
@@ -29,5 +30,8 @@ namespace RM.BossKey.Win32
 		[DllImport(_user32)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool ShowWindow(HandleRef hWnd, ShowWindowCommand nCmdShow);
+
+		[DllImport(_user32, CharSet = CharSet.Auto, SetLastError = true)]
+		public static extern int GetWindowText(HandleRef hWnd, StringBuilder lpString, int nMaxCount);
 	}
 }

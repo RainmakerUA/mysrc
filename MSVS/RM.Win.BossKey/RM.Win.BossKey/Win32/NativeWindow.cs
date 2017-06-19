@@ -146,8 +146,7 @@ namespace RM.Win.BossKey.Win32
 
 		private static Tuple<int, string> GetWindowProcess(IntPtr handle)
 		{
-			uint processID;
-			var threadID = GetWindowThreadProcessId(handle, out processID);
+			var threadID = GetWindowThreadProcessId(handle, out uint processID);
 
 			if (processID != 0)
 			{

@@ -34,12 +34,19 @@
 			this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.button1 = new System.Windows.Forms.Button();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button3 = new System.Windows.Forms.Button();
+			this.tabControlMain = new System.Windows.Forms.TabControl();
+			this.tabPageControl = new System.Windows.Forms.TabPage();
+			this.tabPageLog = new System.Windows.Forms.TabPage();
 			this.labelIndi = new System.Windows.Forms.Label();
+			this.button3 = new System.Windows.Forms.Button();
+			this.button2 = new System.Windows.Forms.Button();
+			this.button1 = new System.Windows.Forms.Button();
+			this.textBoxLog = new System.Windows.Forms.TextBox();
 			toolStripSeparatorExit = new System.Windows.Forms.ToolStripSeparator();
 			this.contextMenuStrip.SuspendLayout();
+			this.tabControlMain.SuspendLayout();
+			this.tabPageControl.SuspendLayout();
+			this.tabPageLog.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolStripSeparatorExit
@@ -78,60 +85,108 @@
 			this.exitToolStripMenuItem.Text = "E&xit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
-			// button1
+			// tabControlMain
 			// 
-			this.button1.Location = new System.Drawing.Point(98, 13);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(174, 39);
-			this.button1.TabIndex = 1;
-			this.button1.Text = "&Register";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.button1_Click);
+			this.tabControlMain.Controls.Add(this.tabPageControl);
+			this.tabControlMain.Controls.Add(this.tabPageLog);
+			this.tabControlMain.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tabControlMain.Location = new System.Drawing.Point(0, 0);
+			this.tabControlMain.Name = "tabControlMain";
+			this.tabControlMain.SelectedIndex = 0;
+			this.tabControlMain.Size = new System.Drawing.Size(344, 231);
+			this.tabControlMain.TabIndex = 1;
 			// 
-			// button2
+			// tabPageControl
 			// 
-			this.button2.Location = new System.Drawing.Point(98, 58);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(173, 39);
-			this.button2.TabIndex = 2;
-			this.button2.Text = "&Unregister";
-			this.button2.UseVisualStyleBackColor = true;
-			this.button2.Click += new System.EventHandler(this.button2_Click);
+			this.tabPageControl.Controls.Add(this.labelIndi);
+			this.tabPageControl.Controls.Add(this.button3);
+			this.tabPageControl.Controls.Add(this.button2);
+			this.tabPageControl.Controls.Add(this.button1);
+			this.tabPageControl.Location = new System.Drawing.Point(4, 22);
+			this.tabPageControl.Name = "tabPageControl";
+			this.tabPageControl.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageControl.Size = new System.Drawing.Size(336, 205);
+			this.tabPageControl.TabIndex = 0;
+			this.tabPageControl.Text = "Controls";
+			this.tabPageControl.UseVisualStyleBackColor = true;
 			// 
-			// button3
+			// tabPageLog
 			// 
-			this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.button3.Location = new System.Drawing.Point(13, 135);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(259, 39);
-			this.button3.TabIndex = 3;
-			this.button3.Text = "E&xit";
-			this.button3.UseVisualStyleBackColor = true;
-			this.button3.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+			this.tabPageLog.Controls.Add(this.textBoxLog);
+			this.tabPageLog.Location = new System.Drawing.Point(4, 22);
+			this.tabPageLog.Name = "tabPageLog";
+			this.tabPageLog.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPageLog.Size = new System.Drawing.Size(336, 205);
+			this.tabPageLog.TabIndex = 1;
+			this.tabPageLog.Text = "Log";
+			this.tabPageLog.UseVisualStyleBackColor = true;
 			// 
 			// labelIndi
 			// 
 			this.labelIndi.BackColor = System.Drawing.Color.Red;
-			this.labelIndi.Location = new System.Drawing.Point(13, 13);
+			this.labelIndi.Location = new System.Drawing.Point(37, 24);
 			this.labelIndi.Name = "labelIndi";
 			this.labelIndi.Size = new System.Drawing.Size(79, 84);
-			this.labelIndi.TabIndex = 4;
+			this.labelIndi.TabIndex = 8;
+			// 
+			// button3
+			// 
+			this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.button3.Location = new System.Drawing.Point(37, 131);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(259, 39);
+			this.button3.TabIndex = 7;
+			this.button3.Text = "E&xit";
+			this.button3.UseVisualStyleBackColor = true;
+			this.button3.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+			// 
+			// button2
+			// 
+			this.button2.Location = new System.Drawing.Point(122, 69);
+			this.button2.Name = "button2";
+			this.button2.Size = new System.Drawing.Size(173, 39);
+			this.button2.TabIndex = 6;
+			this.button2.Text = "&Unregister";
+			this.button2.UseVisualStyleBackColor = true;
+			this.button2.Click += new System.EventHandler(this.button2_Click);
+			// 
+			// button1
+			// 
+			this.button1.Location = new System.Drawing.Point(122, 24);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(174, 39);
+			this.button1.TabIndex = 5;
+			this.button1.Text = "&Register";
+			this.button1.UseVisualStyleBackColor = true;
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// textBoxLog
+			// 
+			this.textBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.textBoxLog.Location = new System.Drawing.Point(3, 3);
+			this.textBoxLog.Multiline = true;
+			this.textBoxLog.Name = "textBoxLog";
+			this.textBoxLog.ReadOnly = true;
+			this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.textBoxLog.Size = new System.Drawing.Size(330, 199);
+			this.textBoxLog.TabIndex = 0;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(284, 186);
-			this.Controls.Add(this.labelIndi);
-			this.Controls.Add(this.button3);
-			this.Controls.Add(this.button2);
-			this.Controls.Add(this.button1);
+			this.ClientSize = new System.Drawing.Size(344, 231);
+			this.Controls.Add(this.tabControlMain);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "[RM] Bozz Kei";
 			this.contextMenuStrip.ResumeLayout(false);
+			this.tabControlMain.ResumeLayout(false);
+			this.tabPageControl.ResumeLayout(false);
+			this.tabPageLog.ResumeLayout(false);
+			this.tabPageLog.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -142,10 +197,14 @@
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
-		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.TabControl tabControlMain;
+		private System.Windows.Forms.TabPage tabPageControl;
 		private System.Windows.Forms.Label labelIndi;
+		private System.Windows.Forms.Button button3;
+		private System.Windows.Forms.Button button2;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.TabPage tabPageLog;
+		private System.Windows.Forms.TextBox textBoxLog;
 	}
 }
 

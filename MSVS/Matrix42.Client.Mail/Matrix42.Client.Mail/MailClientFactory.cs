@@ -11,7 +11,7 @@ namespace Matrix42.Client.Mail
 	{
 		public static IMailClient GetClient(ClientConfig config, bool msex  /*, client type*/)
 		{
-			return msex ? new Exchange.Client(config, ExchangeVersion.Exchange2016) : (IMailClient)new Imap.ImapClient(config);
+			return msex ? new Exchange.Client(config, ExchangeVersion.Exchange2016) : (IMailClient) new Imap.Client(config);
 		}
 	}
 }

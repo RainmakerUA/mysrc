@@ -5,11 +5,11 @@ using MimeKit;
 
 namespace Matrix42.Client.Mail.Imap
 {
-	internal sealed class ImapMessage : IMessage, Utility.IWriteable
+	internal sealed class Message : IMessage, Utility.IWriteable
 	{
 		private readonly MimeMessage _message;
 
-		public ImapMessage(MimeMessage message, string id)
+		public Message(MimeMessage message, string id)
 		{
 			_message = message;
 
@@ -22,7 +22,7 @@ namespace Matrix42.Client.Mail.Imap
 			Subject = message.Subject;
 			BodyText = message.TextBody;
 			BodyHtml = message.HtmlBody; //TODO: Handle text-only & html-only messages
-			Attachments = ImapAttachment.ListFrom(message.BodyParts);
+			Attachments = Attachment.ListFrom(message.BodyParts);
 			ReceivedDate = message.Date != DateTimeOffset.MinValue ? message.Date.DateTime : new DateTime?();
 			Importance = ConvertImportance(message.Importance);
 			OutOfOfficeReply = false; // TODO: Do we need it for IMAP?
@@ -63,9 +63,9 @@ namespace Matrix42.Client.Mail.Imap
 			_message.WriteTo(stream);
 		}
 
-		public static ImapMessage FromMessage(MimeMessage message, string id)
+		public static Message FromMessage(MimeMessage message, string id)
 		{
-			return new ImapMessage(message, id);
+			return new Message(message, id);
 		}
 
 		private static Importance? ConvertImportance(MessageImportance importance)

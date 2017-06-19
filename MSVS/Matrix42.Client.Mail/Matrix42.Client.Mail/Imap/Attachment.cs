@@ -8,9 +8,9 @@ using MimeKit;
 
 namespace Matrix42.Client.Mail.Imap
 {
-	internal sealed class ImapAttachment : IAttachment
+	internal sealed class Attachment : IAttachment
 	{
-		public ImapAttachment(string name, string cid, string mimeType, byte[] data)
+		public Attachment(string name, string cid, string mimeType, byte[] data)
 		{
 			Name = name;
 			Cid = cid;
@@ -26,9 +26,9 @@ namespace Matrix42.Client.Mail.Imap
 
 		public byte[] Data { get; }
 
-		public static ImapAttachment From(MimeEntity entity)
+		public static Attachment From(MimeEntity entity)
 		{
-			return new ImapAttachment(GetName(entity), entity.ContentId, entity.ContentType.MimeType, GetData(entity));
+			return new Attachment(GetName(entity), entity.ContentId, entity.ContentType.MimeType, GetData(entity));
 		}
 
 		public static IList<IAttachment> ListFrom(IEnumerable<MimeEntity> parts)
@@ -49,8 +49,6 @@ namespace Matrix42.Client.Mail.Imap
 
 		private static string GetName(MimeEntity entity)
 		{
-			const string nonameFile = "File";
-
 			if (entity is MessagePart message)
 			{
 				return FileHelper.MakeValidFileName(message.Message.Subject, null) + FileHelper.EmlExtension;
@@ -58,10 +56,12 @@ namespace Matrix42.Client.Mail.Imap
 
 			if (entity is MimePart part)
 			{
-				return FileHelper.MakeValidFileName(!String.IsNullOrEmpty(part.FileName) ? part.FileName : nonameFile, part.ContentType.MimeType);
+				return FileHelper.MakeValidFileName(part.FileName, part.ContentType.MimeType);
 			}
 
-			return nonameFile;
+			// return null;
+			// return FileHelper.MakeValidFileName(null, part.ContentType.MimeType);
+			throw new NotSupportedException($"{entity.GetType().FullName} is not supported");
 		}
 
 		private static byte[] GetData(MimeEntity entity)
