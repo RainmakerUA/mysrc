@@ -21,10 +21,13 @@ namespace Matrix42.Client.Mail.Imap
 		private IMailFolder _folder;
 		private IMailFolder _folderToMove;
 
+		private bool _isDisposed;
+
 		public ImapClient(ClientConfig config)
 		{
 			_config = config;
 			_client = new KitImapClient();
+			_isDisposed = false;
 		}
 
 		#region IMailClient members
@@ -33,7 +36,7 @@ namespace Matrix42.Client.Mail.Imap
 
 		public string Folder => _config.Folder.Name;
 
-		public string FolderToMove => _config.FolderToMove.Name;
+		public string FolderToMove => _config.FolderToMove?.Name;
 
 		public IList<string> GetUnreadMails()
 		{
@@ -110,20 +113,26 @@ namespace Matrix42.Client.Mail.Imap
 
 		public void Dispose()
 		{
-			SafeCloseFolder(_folder);
-
-			SafeCloseFolder(_folderToMove);
-
-			// ...?
-
-			if (_client != null)
+			try
 			{
-				if (_client.IsConnected)
-				{
-					_client.Disconnect(true);
-				}
+				SafeCloseFolder(_folder);
+				SafeCloseFolder(_folderToMove);
 
-				_client.Dispose();
+				// ...?
+
+				if (_client != null)
+				{
+					if (_client.IsConnected)
+					{
+						_client.Disconnect(true);
+					}
+
+					_client.Dispose();
+				}
+			}
+			finally
+			{
+				_isDisposed = true;
 			}
 		}
 
@@ -131,6 +140,11 @@ namespace Matrix42.Client.Mail.Imap
 
 		private void EnsureInitialized(FolderAccess folderAccess, bool withFolderToMove)
 		{
+			if (_isDisposed)
+			{
+				throw new ObjectDisposedException(nameof(ImapClient), $"{GetType().FullName} instance has been disposed");
+			}
+
 			if (_config == null)
 			{
 				throw new InvalidOperationException("IMAP Client is not configured!");
@@ -138,7 +152,7 @@ namespace Matrix42.Client.Mail.Imap
 
 			if (_client.ServerCertificateValidationCallback == null)
 			{
-				_client.ServerCertificateValidationCallback = ServerCertificateValidationCallback;
+				_client.ServerCertificateValidationCallback = NetworkHelper.ServerCertificateValidationCallback;
 			}
 
 			if (!_client.IsConnected)
@@ -196,11 +210,5 @@ namespace Matrix42.Client.Mail.Imap
 				folder.Close(folder.Access == FolderAccess.ReadWrite);
 			}
 		}
-
-		private static bool ServerCertificateValidationCallback(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-		{
-			return true;
-		}
 	}
-
 }
