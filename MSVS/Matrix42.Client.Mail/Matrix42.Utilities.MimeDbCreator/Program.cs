@@ -10,19 +10,36 @@ namespace Matrix42.Utilities.MimeDbCreator
 {
 	internal static class Program
 	{
+		private struct Args
+		{
+			public string Message;
+
+			public bool UseMimeDB;
+
+			public bool UseRegistry;
+
+			public string OutFileName;
+		}
+
 		private const string _mimeDbUrl = "https://cdn.rawgit.com/jshttp/mime-db/master/db.json";
+		private const string _help = "Usage:\r\ncreator.exe -m|-r|-mr outfile.txt";
 
 		private static void Main(string[] args)
 		{
-			// TODO: Parse args
-			var useMimeDb = true;
-			var useRegistry = true;
-			var outFileName = @"E:\_Temp\mimetype.dat";
+			var options = ParseArgs(args);
 
-			var mdb = useMimeDb ? GetMimeDb() : null;
-			var result = useRegistry ? AddRegistryData(mdb) : mdb;
-			WriteMimeData(outFileName, result);
-
+			if (!String.IsNullOrEmpty(options.Message))
+			{
+				Console.WriteLine(String.Concat(options.Message, Environment.NewLine, _help));
+			}
+			else
+			{
+				var mdb = options.UseMimeDB ? GetMimeDb() : null;
+				var result = options.UseRegistry ? AddRegistryData(mdb) : mdb;
+				var written = WriteMimeData(options.OutFileName, result);
+				Console.WriteLine($"{written} entries were written to {options.OutFileName}");
+			}
+			
 			Console.WriteLine("Press any key to exit");
 			Console.ReadKey(true);
 		}
@@ -115,8 +132,10 @@ namespace Matrix42.Utilities.MimeDbCreator
 			return dict;
 		}
 
-		private static void WriteMimeData(string filename, IDictionary<string, MimeDbEntry> mimeData)
+		private static int WriteMimeData(string filename, IDictionary<string, MimeDbEntry> mimeData)
 		{
+			var numWritten = 0;
+
 			using (var fs = File.OpenWrite(filename))
 			{
 				using (var tw = new StreamWriter(fs))
@@ -131,10 +150,61 @@ namespace Matrix42.Utilities.MimeDbCreator
 						if (extensions != null && extensions.Length > 0)
 						{
 							tw.WriteLine("{0} {1}", key, String.Join("\u0020", extensions));
+							numWritten += 1;
 						}
 					}
 				}
 			}
+
+			return numWritten;
+		}
+
+		private static Args ParseArgs(string[] args)
+		{
+			var result = new Args();
+
+			foreach (var arg in args)
+			{
+				if (arg[0] == '-')
+				{
+					for (int i = 1; i < arg.Length; i++)
+					{
+						switch (arg[i])
+						{
+							case 'M':
+							case 'm':
+								result.UseMimeDB = true;
+								break;
+
+							case 'R':
+							case 'r':
+								result.UseRegistry = true;
+								break;
+
+							default:
+								result.Message = $"Unrecognized option: -{arg[i]}.";
+								break;
+						}
+
+						if (!String.IsNullOrEmpty(result.Message))
+						{
+							break;
+						}
+					}
+				}
+				else
+				{
+					result.OutFileName = arg;
+					break;
+				}
+			}
+
+			if (String.IsNullOrEmpty(result.OutFileName))
+			{
+				result.Message = "File name is missing.";
+			}
+
+			return result;
 		}
 	}
 }
