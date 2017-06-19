@@ -48,8 +48,6 @@ namespace Matrix42.Client.Mail.Imap
 
 		public IList<string> SearchMails(string[] terms)
 		{
-			EnsureInitialized(FolderAccess.ReadOnly, false);
-
 			if (terms.Length > 0)
 			{
 				SearchQuery subjectQuery = SearchQuery.SubjectContains(terms[0]);
