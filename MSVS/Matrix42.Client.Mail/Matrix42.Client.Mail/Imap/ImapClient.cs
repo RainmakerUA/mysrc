@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using MailKit;
 using MailKit.Search;
 using Matrix42.Client.Mail.Utility;
@@ -40,12 +38,12 @@ namespace Matrix42.Client.Mail.Imap
 
 		public IList<string> GetUnreadMails()
 		{
-			return GetMails(true);
+			return SearchMailIDs(SearchQuery.NotSeen);
 		}
 
 		public IList<string> GetAllMails()
 		{
-			return GetMails(false);
+			return SearchMailIDs(SearchQuery.All);
 		}
 
 		public IList<string> SearchMails(string[] terms)
@@ -63,10 +61,7 @@ namespace Matrix42.Client.Mail.Imap
 					bodyQuery = SearchQuery.Or(bodyQuery, SearchQuery.SubjectContains(terms[i]));
 				}
 
-				var query = SearchQuery.Or(subjectQuery, bodyQuery);
-				var results = _folder.Search(SearchOptions.All, query);
-
-				return results.UniqueIds.Select(id => id.Id.ToString()).ToList().AsReadOnly();
+				return SearchMailIDs(SearchQuery.Or(subjectQuery, bodyQuery));
 			}
 
 			return new string[0];
@@ -188,11 +183,11 @@ namespace Matrix42.Client.Mail.Imap
 			}
 		}
 
-		private string[] GetMails(bool unreadOnly)
+		private string[] SearchMailIDs(SearchQuery query)
 		{
 			EnsureInitialized(FolderAccess.ReadOnly, false);
 
-			var uids = _folder.Search(unreadOnly ? SearchQuery.NotSeen : SearchQuery.All);
+			var uids = _folder.Search(query);
 			return uids.Select(uid => uid.Id.ToString()).ToArray();
 		}
 
