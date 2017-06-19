@@ -3,7 +3,8 @@ namespace Matrix42.Client.Mail
 {
 	public sealed class ClientConfig
 	{
-		public ClientConfig(string host, int? port, bool useSsl, string username, string password, MailFolder folder, MailFolder folderToMove)
+		public ClientConfig(string host, int? port, bool useSsl, string mailAddress, string username, string password,
+								MailFolder folder, MailFolder folderToMove, bool ignoreAbsenceEmails = false)
 		{
 			Host = host;
 			Port = port;
@@ -12,6 +13,8 @@ namespace Matrix42.Client.Mail
 			Password = password;
 			Folder = folder;
 			FolderToMove = folderToMove;
+			MailAddress = mailAddress;
+			IgnoreAbsenceEmails = ignoreAbsenceEmails;
 		}
 
 		public string Host { get; }
@@ -19,6 +22,8 @@ namespace Matrix42.Client.Mail
 		public int? Port { get; }
 
 		public bool UseSsl { get; }
+
+		public string MailAddress { get; }
 
 		public string Username { get; }
 
@@ -28,5 +33,6 @@ namespace Matrix42.Client.Mail
 
 		public MailFolder FolderToMove { get; }
 
+		public bool IgnoreAbsenceEmails { get; }
 	}
 }

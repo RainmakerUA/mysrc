@@ -49,7 +49,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 				throw new ArgumentException("Filename cannot be empty, null or only whitespaces", nameof(filename));
 			}
 			
-			using (var client = MailClientFactory.GetClient(null))
+			using (var client = MailClientFactory.GetClient(null, false))
 			{
 				return client.LoadMessage(Path.Combine("Imap", filename), "-1");
 			}

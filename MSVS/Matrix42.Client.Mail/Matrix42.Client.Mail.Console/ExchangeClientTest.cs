@@ -2,46 +2,51 @@
 
 namespace Matrix42.Client.Mail.Console
 {
-	internal class ImapClientTest
+	internal class ExchangeClientTest
 	{
 		private readonly string _host;
 		private readonly int? _port;
 		private readonly bool _useSsl;
 		private readonly string _username;
 		private readonly string _password;
+		private readonly string _mailAddress;
 		private readonly string _folder;
 		private readonly string _folderToMove;
+		private readonly bool _ignoreOoo;
 
-		public ImapClientTest()
-			: this("imap.gmail.com", null, true, "update4u.info", "update4u.", "Inbox/Incident/VZH test", "Inbox/Incident/VZH processed")
+		public ExchangeClientTest()
+			: this("outlook.office.de", null, true, "matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", "8tzT8ErszHa0fO9K",
+					"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", "ng-test", null, false)
 		{
 			// Do nothing
 		}
 
-		public ImapClientTest(string host, int? port, bool useSsl, string username, string password, string folder, string folderToMove)
+		public ExchangeClientTest(string host, int? port, bool useSsl, string username, string password, string mailAddress, string folder, string folderToMove, bool ignoreOoo)
 		{
 			_host = host;
 			_port = port;
 			_useSsl = useSsl;
 			_username = username;
 			_password = password;
+			_mailAddress = mailAddress;
 			_folder = folder;
 			_folderToMove = folderToMove;
+			_ignoreOoo = ignoreOoo;
 		}
 
 		public void Execute()
 		{
 			try
 			{
-				var config = new ClientConfig(_host, _port, _useSsl, null, _username, _password, _folder, _folderToMove);
+				var config = new ClientConfig(_host, _port, _useSsl, _mailAddress, _username, _password, _folder, _folderToMove, _ignoreOoo);
 
-				using (var client = MailClientFactory.GetClient(config, false))
+				using (var client = MailClientFactory.GetClient(config, true))
 				{
-					//FetchAndProcessMessage(client);
+					FetchAndProcessMessage(client);
 					//SaveMessage(client);
 					//ListFolders(client);
 
-					SearchMessages(client);
+					//SearchMessages(client);
 				}
 			}
 			catch (Exception e)

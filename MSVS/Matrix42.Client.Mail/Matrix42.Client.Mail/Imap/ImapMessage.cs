@@ -9,11 +9,11 @@ namespace Matrix42.Client.Mail.Imap
 	{
 		private readonly MimeMessage _message;
 
-		public ImapMessage(MimeMessage message)
+		public ImapMessage(MimeMessage message, string id)
 		{
 			_message = message;
 
-			ID = message.MessageId;
+			ID = id;
 			From = MailAddress.From(message.From);
 			Sender = MailAddress.From(message.Sender);
 			To = MailAddress.ListFrom(message.To);
@@ -21,7 +21,7 @@ namespace Matrix42.Client.Mail.Imap
 			Bcc = MailAddress.ListFrom(message.Bcc);
 			Subject = message.Subject;
 			BodyText = message.TextBody;
-			BodyHtml = message.HtmlBody;
+			BodyHtml = message.HtmlBody; //TODO: Handle text-only & html-only messages
 			Attachments = ImapAttachment.ListFrom(message.BodyParts);
 			ReceivedDate = message.Date != DateTimeOffset.MinValue ? message.Date.DateTime : new DateTime?();
 			Importance = ConvertImportance(message.Importance);
@@ -63,9 +63,9 @@ namespace Matrix42.Client.Mail.Imap
 			_message.WriteTo(stream);
 		}
 
-		public static ImapMessage FromMessage(MimeMessage message)
+		public static ImapMessage FromMessage(MimeMessage message, string id)
 		{
-			return new ImapMessage(message);
+			return new ImapMessage(message, id);
 		}
 
 		private static Importance? ConvertImportance(MessageImportance importance)

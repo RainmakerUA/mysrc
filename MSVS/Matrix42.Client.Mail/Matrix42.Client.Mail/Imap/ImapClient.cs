@@ -67,7 +67,7 @@ namespace Matrix42.Client.Mail.Imap
 
 		public IMessage GetMessage(string id)
 		{
-			return ImapMessage.FromMessage(GetMimeMessage(id));
+			return ImapMessage.FromMessage(GetMimeMessage(id), id);
 		}
 
 		public void MarkMessagesAsRead(params string[] ids)
@@ -95,7 +95,7 @@ namespace Matrix42.Client.Mail.Imap
 
 		public IMessage LoadMessage(string fileName, string id)
 		{
-			return ImapMessage.FromMessage(FileHelper.LoadMimeMessage(fileName, id, out string _));
+			return ImapMessage.FromMessage(FileHelper.LoadMimeMessage(fileName, id, out string outID), id ?? outID);
 		}
 
 		public void SaveMessage(string fileName, string id)

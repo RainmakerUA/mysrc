@@ -37,6 +37,9 @@
     <Reference Include="MailKit, Version=1.16.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
       <HintPath>..\packages\MailKit.1.16.1\lib\net45\MailKit.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Exchange.WebServices">
+      <HintPath>..\packages\Microsoft.Exchange.WebServices.dll</HintPath>
+    </Reference>
     <Reference Include="MimeKit, Version=1.16.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
       <HintPath>..\packages\MimeKit.1.16.1\lib\net45\MimeKit.dll</HintPath>
     </Reference>
@@ -52,6 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientConfig.cs" />
+    <Compile Include="Exchange\Attachment.cs" />
+    <Compile Include="Exchange\Client.cs" />
+    <Compile Include="Exchange\ExchangeConstants.cs" />
+    <Compile Include="Exchange\Message.cs" />
     <Compile Include="FolderType.cs" />
     <Compile Include="IAttachment.cs" />
     <Compile Include="IMailClient.cs" />
@@ -68,6 +75,7 @@
     <Compile Include="Utility\IWriteable.cs" />
     <Compile Include="Utility\MimeTypeHelper.cs" />
     <Compile Include="Utility\NativeMethods.cs" />
+    <Compile Include="Utility\NetworkHelper.cs" />
     <Compile Include="Utility\StreamLineReader.cs" />
   </ItemGroup>
   <ItemGroup />

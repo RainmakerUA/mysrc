@@ -9,11 +9,11 @@ namespace Matrix42.Client.Mail.Console
 			var parserTest = new ParserTest();
 			parserTest.Execute();
 
-			var imapTest = new ImapClientTest();
+			var imapTest = new ExchangeClientTest();
 			imapTest.Execute();
 
-			var mimeTest = new MimeTest();
-			mimeTest.Execute();
+			//var mimeTest = new MimeTest();
+			//mimeTest.Execute();
 
 			Con.Write("Press any key...");
 			Con.ReadKey(true);
