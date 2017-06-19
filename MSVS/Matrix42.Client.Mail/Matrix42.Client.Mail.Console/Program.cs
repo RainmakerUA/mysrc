@@ -12,6 +12,9 @@ namespace Matrix42.Client.Mail.Console
 			var imapTest = new ImapClientTest();
 			imapTest.Execute();
 
+			var mimeTest = new MimeTest();
+			mimeTest.Execute();
+
 			Con.Write("Press any key...");
 			Con.ReadKey(true);
 		}

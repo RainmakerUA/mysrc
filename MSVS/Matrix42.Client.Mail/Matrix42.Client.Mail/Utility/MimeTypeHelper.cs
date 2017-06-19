@@ -16,24 +16,24 @@ namespace Matrix42.Client.Mail.Utility
 		private static readonly Type _thisType = typeof(MimeTypeHelper);
 
 		private static string[] _resourceLines;
-		private static Dictionary<string, string[]> _mimeTypeToExtension;
-		private static Dictionary<string, string> _extensionToMimeType;
+		private static Dictionary<string, string[]> _mimeTypeToExtensions;
+		private static Dictionary<string, string[]> _extensionToMimeTypes;
 
 		public static IReadOnlyList<string> GetExtensions(string mimeType)
 		{
-			if (_mimeTypeToExtension == null)
+			if (_mimeTypeToExtensions == null)
 			{
-				_mimeTypeToExtension = GetMimeTypeToExtensionMapping();
+				_mimeTypeToExtensions = GetMimeTypeToExtensionsMapping();
 			}
 
-			return _mimeTypeToExtension.TryGetValue(mimeType, out var result) ? result : new string[0];
+			return _mimeTypeToExtensions.TryGetValue(mimeType, out var result) ? result : new string[0];
 		}
 
-		public static string GetMimeType(string extension)
+		public static IReadOnlyList<string> GetMimeTypes(string extension)
 		{
-			if (_extensionToMimeType == null)
+			if (_extensionToMimeTypes == null)
 			{
-				_extensionToMimeType = GetExtensionToMimeTypeMapping();
+				_extensionToMimeTypes = GetExtensionToMimeTypesMapping();
 			}
 
 			if (extension.StartsWith(_dot))
@@ -41,10 +41,10 @@ namespace Matrix42.Client.Mail.Utility
 				extension = extension.Substring(1);
 			}
 
-			return _extensionToMimeType.TryGetValue(extension, out var mime) ? mime : null;
+			return _extensionToMimeTypes.TryGetValue(extension, out var mime) ? mime : null;
 		}
 
-		private static Dictionary<string, string[]> GetMimeTypeToExtensionMapping()
+		private static Dictionary<string, string[]> GetMimeTypeToExtensionsMapping()
 		{
 			if (_resourceLines == null)
 			{
@@ -72,14 +72,14 @@ namespace Matrix42.Client.Mail.Utility
 			return result;
 		}
 
-		private static Dictionary<string, string> GetExtensionToMimeTypeMapping()
+		private static Dictionary<string, string[]> GetExtensionToMimeTypesMapping()
 		{
 			if (_resourceLines == null)
 			{
 				_resourceLines = ReadMimeResource();
 			}
 
-			var result = new Dictionary<string, string>();
+			var result = new Dictionary<string, string[]>();
 
 			foreach (var line in _resourceLines)
 			{
@@ -92,10 +92,11 @@ namespace Matrix42.Client.Mail.Utility
 
 					foreach (var key in keys)
 					{
-						if (!result.TryGetValue(key, out var val) || String.IsNullOrEmpty(val))
-						{
-							result[key] = value;
-						} 
+						var newVal = result.TryGetValue(key, out var val)
+										? new List<string>(val){ value }.ToArray()
+										: new []{ value };
+
+						result[key] = newVal;
 					}
 				}
 			}
