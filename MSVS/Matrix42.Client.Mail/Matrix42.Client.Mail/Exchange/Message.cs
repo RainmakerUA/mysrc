@@ -24,7 +24,7 @@ namespace Matrix42.Client.Mail.Exchange
 			Attachments = Attachment.ListFrom(message.Attachments);
 			ReceivedDate = message.DateTimeReceived;
 			Importance = ConvertImportance(message.Importance);
-			OutOfOfficeReply = message.ItemClass == ExchangeConstants.OutOfOfficeMessageClass;
+			OutOfOfficeReply = message.ItemClass == Constants.OutOfOfficeMessageClass;
 		}
 
 		public string ID { get; }

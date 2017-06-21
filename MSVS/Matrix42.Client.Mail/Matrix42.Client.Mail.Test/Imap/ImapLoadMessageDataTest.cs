@@ -67,7 +67,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 
 			Assert.IsNotNull(message.Attachments);
 			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.IsInstanceOfType(message.Attachments[0], typeof(ImapAttachment));
+			Assert.IsInstanceOfType(message.Attachments[0], typeof(Attachment));
 			Assert.AreEqual("a.txt", message.Attachments[0].Name);
 			
 			var expectedAttachmentData = new byte[44];

@@ -155,7 +155,7 @@ namespace Matrix42.Client.Mail.Exchange
 		{
 			var filter = new SearchFilter.SearchFilterCollection(
 															LogicalOperator.And,
-															new SearchFilter.IsNotEqualTo(ItemSchema.ItemClass, ExchangeConstants.UndeliverableMessageClass)
+															new SearchFilter.IsNotEqualTo(ItemSchema.ItemClass, Constants.UndeliverableMessageClass)
 														);
 			if (unreadOnly)
 			{
@@ -164,7 +164,7 @@ namespace Matrix42.Client.Mail.Exchange
 
 			if (_config.IgnoreAbsenceEmails)
 			{
-				filter.Add(new SearchFilter.IsNotEqualTo(ItemSchema.ItemClass, ExchangeConstants.OutOfOfficeMessageClass));
+				filter.Add(new SearchFilter.IsNotEqualTo(ItemSchema.ItemClass, Constants.OutOfOfficeMessageClass));
 			}
 
 			return SearchMailIDs(filter);
