@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Matrix42.Client.Mail.Test.Imap
 {
 	/// <summary>
-	/// This test class tests <see cref="Mail.Imap.Client"/>
+	/// This test class tests <see cref="T:Matrix42.Client.Mail.Imap.ImapClient"/>
 	/// It checks data parsed by client.
 	/// </summary>
 	[TestClass]
@@ -67,7 +67,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 
 			Assert.IsNotNull(message.Attachments);
 			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.IsInstanceOfType(message.Attachments[0], typeof(Attachment));
+			Assert.IsInstanceOfType(message.Attachments[0], typeof(ImapAttachment));
 			Assert.AreEqual("a.txt", message.Attachments[0].Name);
 			
 			var expectedAttachmentData = new byte[44];

@@ -9,7 +9,7 @@ using KitImapClient = MailKit.Net.Imap.ImapClient;
 
 namespace Matrix42.Client.Mail.Imap
 {
-	internal sealed class Client : IMailClient
+	internal sealed class ImapClient : IMailClient
 	{
 		private const char _defaultSeparator = '/';
 
@@ -21,7 +21,7 @@ namespace Matrix42.Client.Mail.Imap
 
 		private bool _isDisposed;
 
-		public Client(ClientConfig config)
+		public ImapClient(ClientConfig config)
 		{
 			_config = config;
 			_client = new KitImapClient();
@@ -67,7 +67,7 @@ namespace Matrix42.Client.Mail.Imap
 
 		public IMessage GetMessage(string id)
 		{
-			return Message.FromMessage(GetMimeMessage(id), id);
+			return ImapMessage.FromMessage(GetMimeMessage(id), id);
 		}
 
 		public void MarkMessagesAsRead(params string[] ids)
@@ -95,7 +95,7 @@ namespace Matrix42.Client.Mail.Imap
 
 		public IMessage LoadMessage(string fileName, string id)
 		{
-			return Message.FromMessage(FileHelper.LoadMimeMessage(fileName, id, out string outID), id ?? outID);
+			return ImapMessage.FromMessage(FileHelper.LoadMimeMessage(fileName, id, out string outID), id ?? outID);
 		}
 
 		public void SaveMessage(string fileName, string id)
@@ -135,7 +135,7 @@ namespace Matrix42.Client.Mail.Imap
 		{
 			if (_isDisposed)
 			{
-				throw new ObjectDisposedException(nameof(Client), $"{GetType().FullName} instance has been disposed");
+				throw new ObjectDisposedException(nameof(ImapClient), $"{GetType().FullName} instance has been disposed");
 			}
 
 			if (_config == null)

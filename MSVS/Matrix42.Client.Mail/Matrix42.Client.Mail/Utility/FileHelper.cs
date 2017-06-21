@@ -88,9 +88,8 @@ namespace Matrix42.Client.Mail.Utility
 
 		public static string MakeValidFileName(string filename, string mimeType)
 		{
-			const string noname = "File";
 			var invalidChars = Path.GetInvalidFileNameChars();
-			var sb = new StringBuilder(!String.IsNullOrEmpty(filename) ? filename : noname);
+			var sb = new StringBuilder(filename);
 
 			for (int i = 0; i < sb.Length; i++)
 			{

@@ -13,15 +13,12 @@ namespace RM.Win.BossKey
 			InitializeComponent();
 		}
 
-		public SelectViewModel ViewModel => DataContext as SelectViewModel;
-
 		public static Window ShowSelectDialog(WpfWindow owner)
 		{
-			var win = new SelectWindow { Owner = owner };
-			var viewModel = win.ViewModel;
+			var viewModel = new SelectViewModel();
+			var win = new SelectWindow { DataContext = viewModel, Owner = owner };
 
 			viewModel.LoadWindows();
-
 			return win.ShowDialog().GetValueOrDefault() ? viewModel.SelectedWindow : null;
 		}
 	}

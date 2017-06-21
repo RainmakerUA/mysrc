@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:RM.Win.BossKey.ViewModel"
+        xmlns:local="clr-namespace:RM.Win.BossKey"
         mc:Ignorable="d"
         Icon="Resources/main.ico" Title="Select a window"
-		WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="NoResize"
-		Height="405" Width="512">
+		WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ResizeMode="CanResizeWithGrip"
+		Height="384" Width="512">
 		<Window.Resources>
 			<Style TargetType="{x:Type ListBox}">
 				<Setter Property="Margin" Value="3" />
@@ -19,9 +19,6 @@
 			</Style>
 			<BooleanToVisibilityConverter x:Key="BoolToVisibility" />
 		</Window.Resources>
-		<Window.DataContext>
-			<vm:SelectViewModel />
-		</Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
 			<RowDefinition Height="*" />
