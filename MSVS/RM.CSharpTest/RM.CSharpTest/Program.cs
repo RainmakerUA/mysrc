@@ -8,6 +8,7 @@ namespace RM.CSharpTest
     {
         private static void Main(string[] args)
         {
+			/*
 			var tester = new Tester("Mr. Tester", "mrtester@example.com");
 			tester.TestingCompleted += (sender, message) => { Console.WriteLine(message); };
 
@@ -24,6 +25,11 @@ namespace RM.CSharpTest
 
 			Console.ReadLine();
 			tester.Stop();
-        }
+			*/
+			var lt = new ListTester();
+			lt.Run();
+	        Console.WriteLine("Press ENTER to exit");
+			Console.ReadLine();
+		}
     }
 }
