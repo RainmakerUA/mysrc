@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Matrix42.Client.Mail.Console
 {
@@ -7,8 +6,8 @@ namespace Matrix42.Client.Mail.Console
 	{
 		public void Execute()
 		{
-			string entry = null;
 			bool isMimeMode = false;
+			bool exitRequest;
 
 			do
 			{
@@ -17,9 +16,11 @@ namespace Matrix42.Client.Mail.Console
 										? "Enter MIME type (--- to switch to extension mode, none to finish): "
 										: "Enter extension (--- to switch to mime mode, none to finish): "
 								);
-				entry = System.Console.ReadLine();
 
-				if (!String.IsNullOrEmpty(entry))
+				var entry = System.Console.ReadLine();
+				exitRequest = String.IsNullOrEmpty(entry);
+
+				if (!exitRequest)
 				{
 					if (entry.Equals("---", StringComparison.OrdinalIgnoreCase))
 					{
@@ -30,11 +31,11 @@ namespace Matrix42.Client.Mail.Console
 						var result = isMimeMode
 											? Utility.MimeTypeHelper.GetExtensions(entry)
 											: Utility.MimeTypeHelper.GetMimeTypes(entry);
-						System.Console.WriteLine("Results: {0}", result == null ? "<none>" : String.Join(", ", result));
+						System.Console.WriteLine("Results: {0}", result == null || result.Count == 0 ? "<none>" : String.Join(", ", result));
 					}
 				}
 			}
-			while (!String.IsNullOrEmpty(entry));
+			while (!exitRequest);
 		}
 	}
 }
