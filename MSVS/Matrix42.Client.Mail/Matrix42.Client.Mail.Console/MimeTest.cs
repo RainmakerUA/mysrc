@@ -30,7 +30,7 @@ namespace Matrix42.Client.Mail.Console
 						var result = isMimeMode
 											? Utility.MimeTypeHelper.GetExtensions(entry)
 											: Utility.MimeTypeHelper.GetMimeTypes(entry);
-						System.Console.WriteLine("Results: {0}", result == null ? "<none>" : String.Join(Environment.NewLine, result.Select(s => "\t\t\t" + s)));
+						System.Console.WriteLine("Results: {0}", result == null ? "<none>" : String.Join(", ", result));
 					}
 				}
 			}
