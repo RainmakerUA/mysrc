@@ -15,22 +15,22 @@ namespace Matrix42.Client.Mail.Console
 
 			if (!String.IsNullOrEmpty(filename))
 			{
-				//IMessage msg;
+				IMessage msg;
 
-				//using (var client = MailClientFactory.GetClient(null))
-				//{
-				//	msg = client.LoadMessage(filename, "-19");
-				//}
+				using (var client = MailClientFactory.GetClient(null, false))
+				{
+					msg = client.LoadMessage(filename, "-19");
+				}
 
-				//System.Console.WriteLine($"Message subject: '{msg.Subject}'");
-				//foreach (var attachment in msg.Attachments)
-				//{
-				//	System.Console.WriteLine(
-				//					!String.IsNullOrEmpty(attachment.Name)
-				//						? $"Attachment: '{attachment.Name}'"
-				//						: $"Attachment (strange): '{attachment.MimeType}'"
-				//				);
-				//}
+				System.Console.WriteLine($"Message subject: '{msg.Subject}'");
+				foreach (var attachment in msg.Attachments)
+				{
+					System.Console.WriteLine(
+									!String.IsNullOrEmpty(attachment.Name)
+										? $"Attachment: '{attachment.Name}'"
+										: $"Attachment (strange): '{attachment.MimeType}'"
+								);
+				}
 
 				//foreach (var file in Directory.EnumerateFiles(filename).ToArray())
 				//{
@@ -40,21 +40,21 @@ namespace Matrix42.Client.Mail.Console
 				//	}
 				//}
 
-				using (var fs = File.OpenRead(filename))
-				{
-					const int buffSize = 0x4000;
-					var buffer = new byte[buffSize];
-					var size = fs.Read(buffer, 0, buffSize);
+				//using (var fs = File.OpenRead(filename))
+				//{
+				//	const int buffSize = 0x4000;
+				//	var buffer = new byte[buffSize];
+				//	var size = fs.Read(buffer, 0, buffSize);
 
-					if (size < buffSize)
-					{
-						Array.Resize(ref buffer, size);
-					}
+				//	if (size < buffSize)
+				//	{
+				//		Array.Resize(ref buffer, size);
+				//	}
 
-					var mime = Utility.Win32Api.FindMimeFromData(buffer, null);
+				//	var mime = Utility.Win32Api.FindMimeFromData(buffer, null);
 
-					System.Console.WriteLine("Detected MIME: {0}", mime);
-				}
+				//	System.Console.WriteLine("Detected MIME: {0}", mime);
+				//}
 			}
 			else
 			{

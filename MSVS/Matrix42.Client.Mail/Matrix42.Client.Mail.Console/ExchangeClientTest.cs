@@ -10,18 +10,18 @@ namespace Matrix42.Client.Mail.Console
 		private readonly string _username;
 		private readonly string _password;
 		private readonly string _mailAddress;
-		private readonly string _folder;
-		private readonly string _folderToMove;
+		private readonly MailFolder _folder;
+		private readonly MailFolder _folderToMove;
 		private readonly bool _ignoreOoo;
 
 		public ExchangeClientTest()
 			: this("outlook.office.de", null, true, "matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", "8tzT8ErszHa0fO9K",
-					"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", "ng-test", null, false)
+					"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", new MailFolder("Public_TEST\\child1", FolderType.Public), null, false)
 		{
 			// Do nothing
 		}
 
-		public ExchangeClientTest(string host, int? port, bool useSsl, string username, string password, string mailAddress, string folder, string folderToMove, bool ignoreOoo)
+		public ExchangeClientTest(string host, int? port, bool useSsl, string username, string password, string mailAddress, MailFolder folder, MailFolder folderToMove, bool ignoreOoo)
 		{
 			_host = host;
 			_port = port;

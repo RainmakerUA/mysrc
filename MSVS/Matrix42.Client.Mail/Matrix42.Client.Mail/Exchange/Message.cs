@@ -6,11 +6,11 @@ namespace Matrix42.Client.Mail.Exchange
 {
 	internal sealed class Message : IMessage
 	{
-		private readonly EmailMessage _message;
+		//private readonly EmailMessage _message;
 
 		public Message(EmailMessage message, string id)
 		{
-			_message = message;
+			//_message = message;
 
 			ID = id;
 			From = MailAddress.From(message.From);
@@ -18,6 +18,25 @@ namespace Matrix42.Client.Mail.Exchange
 			To = MailAddress.ListFrom(message.ToRecipients);
 			Cc = MailAddress.ListFrom(message.CcRecipients);
 			Bcc = MailAddress.ListFrom(message.BccRecipients);
+			Subject = message.Subject;
+			BodyText = message.TextBody;
+			BodyHtml = message.Body; //TODO: Handle text-only & html-only messages
+			Attachments = Attachment.ListFrom(message.Attachments);
+			ReceivedDate = message.DateTimeReceived;
+			Importance = ConvertImportance(message.Importance);
+			OutOfOfficeReply = message.ItemClass == Constants.OutOfOfficeMessageClass;
+		}
+
+		public Message(PostItem message, string id)
+		{
+			//_message = message;
+
+			ID = id;
+			From = MailAddress.From(message.From);
+			Sender = MailAddress.From(message.Sender);
+			//To = MailAddress.ListFrom(message.ToRecipients);
+			//Cc = MailAddress.ListFrom(message.CcRecipients);
+			//Bcc = MailAddress.ListFrom(message.BccRecipients);
 			Subject = message.Subject;
 			BodyText = message.TextBody;
 			BodyHtml = message.Body; //TODO: Handle text-only & html-only messages
@@ -53,9 +72,19 @@ namespace Matrix42.Client.Mail.Exchange
 
 		public bool OutOfOfficeReply { get; }
 
-		public static Message FromMessage(EmailMessage message, string id)
+		public static Message FromItem(Item item, string id)
 		{
-			return new Message(message, id);
+			switch (item)
+			{
+				case EmailMessage message:
+					return new Message(message, id);
+
+				case PostItem postItem:
+					return new Message(postItem, id);
+
+				default:
+					throw new NotSupportedException($"Item type '{item.GetType().Name}' is not supported!");
+			}
 		}
 
 		private static Importance? ConvertImportance(Microsoft.Exchange.WebServices.Data.Importance importance)

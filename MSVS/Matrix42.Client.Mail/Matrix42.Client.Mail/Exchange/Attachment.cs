@@ -41,14 +41,14 @@ namespace Matrix42.Client.Mail.Exchange
 			switch (attachment)
 			{
 				case FileAttachment fAtt:
-					return FileHelper.MakeValidFileName(fAtt.FileName ?? fAtt.Name, fAtt.ContentType);
+					return FileHelper.MakeValidFileName(fAtt.Name, fAtt.ContentType);
 
 				case ItemAttachment iAtt:
 					iAtt.Load(ItemSchema.Subject);
-					/*new PropertySet(BasePropertySet.FirstClassProperties, ItemSchema.TextBody, ItemSchema.Attachments, ItemSchema.MimeContent*/
+					/*new PropertySet(BasePropertySet.FirstClassProperties, ItemSchema.TextBody, ItemSchema.Attachments, ItemSchema.MimeContent)*/
 
 					string subject = null;
-					iAtt.Load(ItemSchema.Subject));
+					iAtt.Load(ItemSchema.Subject);
 
 					try
 					{

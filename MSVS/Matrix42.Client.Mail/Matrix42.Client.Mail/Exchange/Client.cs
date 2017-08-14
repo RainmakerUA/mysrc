@@ -69,15 +69,14 @@ namespace Matrix42.Client.Mail.Exchange
 		{
 			EnsureInitialized(false);
 
-			// var properties = new PropertySet(BasePropertySet.IdOnly, ItemSchema.MimeContent, ItemSchema.TextBody, ItemSchema.Attachments);
+			var item = GetItem(id, ItemSchema.TextBody, ItemSchema.Attachments);
+			
+			return Message.FromItem(item, id);
 
-			var properties = new PropertySet(BasePropertySet.FirstClassProperties, ItemSchema.TextBody, ItemSchema.Attachments);
+			// Optional impl.: use MimeKit to parse mail
+			// var item = GetItem(id, new PropertySet(BasePropertySet.IdOnly, ItemSchema.MimeContent));
 
-			var email = EmailMessage.Bind(_service, new ItemId(id), properties);
-
-			return Message.FromMessage(email, id);
-
-			//using (var ms = new System.IO.MemoryStream(email.MimeContent.Content))
+			//using (var ms = new System.IO.MemoryStream(item.MimeContent.Content))
 			//{
 			//	var mimeMsg = MimeKit.MimeMessage.Load(ms);
 			//	return Imap.ImapMessage.FromMessage(mimeMsg, id);
@@ -147,7 +146,7 @@ namespace Matrix42.Client.Mail.Exchange
 
 			if (withFolderToMove && _folderToMoveID == null && _config.FolderToMove != null)
 			{
-				_folderID = FindFolderID(_config.FolderToMove.Name, null, _config.FolderToMove.Type);
+				_folderToMoveID = FindFolderID(_config.FolderToMove.Name, null, _config.FolderToMove.Type);
 			}
 		}
 
@@ -220,11 +219,17 @@ namespace Matrix42.Client.Mail.Exchange
 						: new FolderId(GetFolderType(folderType));
 		}
 
-		private Item GetItem(string itemID)
+		private Item GetItem(string itemID, params PropertyDefinitionBase[] additionalProperties)
 		{
-			var props = new PropertySet(BasePropertySet.FirstClassProperties, new PropertySet(ItemSchema.MimeContent));
-			return Item.Bind(_service, new ItemId(itemID), props);
+			var props = new PropertySet(BasePropertySet.FirstClassProperties, additionalProperties);
+			return GetItem(itemID, props);
 		}
+
+		private Item GetItem(string itemID, PropertySet properties)
+		{
+			return Item.Bind(_service, new ItemId(itemID), properties);
+		}
+
 		/*
 		private IEnumerable<FolderInfo> GetFoldersRecursive(FolderInfo parentFolder, Predicate<MxFolder> filter, bool skipParent)
 		{
