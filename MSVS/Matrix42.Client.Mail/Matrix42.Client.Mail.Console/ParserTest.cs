@@ -1,6 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
+using Matrix42.Client.Mail.Contracts;
 
 namespace Matrix42.Client.Mail.Console
 {

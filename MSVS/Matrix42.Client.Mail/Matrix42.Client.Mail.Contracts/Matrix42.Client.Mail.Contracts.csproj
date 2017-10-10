@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E6C25B5C-4381-47DC-8E21-BC046EC3AE69}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>Matrix42.Client.Mail.Console</RootNamespace>
-    <AssemblyName>Matrix42.Client.Mail.Console</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <ProjectGuid>{269616AA-8144-40BB-9BA5-D20FEBF0D0E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Matrix42.Client.Mail.Contracts</RootNamespace>
+    <AssemblyName>Matrix42.Client.Mail.Contracts</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -35,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,25 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImapClientTest.cs" />
-    <Compile Include="ExchangeClientTest.cs" />
-    <Compile Include="MimeTest.cs" />
-    <Compile Include="ParserTest.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ClientConfig.cs" />
+    <Compile Include="FolderType.cs" />
+    <Compile Include="IAttachment.cs" />
+    <Compile Include="IMailClient.cs" />
+    <Compile Include="IMailClientFactory.cs" />
+    <Compile Include="IMessage.cs" />
+    <Compile Include="Importance.cs" />
+    <Compile Include="MailAddress.cs" />
+    <Compile Include="MailFolder.cs" />
+    <Compile Include="MailServerType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Matrix42.Client.Mail.Contracts\Matrix42.Client.Mail.Contracts.csproj">
-      <Project>{269616aa-8144-40bb-9ba5-d20febf0d0e2}</Project>
-      <Name>Matrix42.Client.Mail.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Matrix42.Client.Mail\Matrix42.Client.Mail.csproj">
-      <Project>{4b1aa181-1ef1-499c-83e4-e79107090404}</Project>
-      <Name>Matrix42.Client.Mail</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

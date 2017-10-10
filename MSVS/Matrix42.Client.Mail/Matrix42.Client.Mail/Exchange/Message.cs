@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Matrix42.Client.Mail.Contracts;
+using Matrix42.Client.Mail.Utility;
 using Microsoft.Exchange.WebServices.Data;
+using Importance = Matrix42.Client.Mail.Contracts.Importance;
 
 namespace Matrix42.Client.Mail.Exchange
 {
@@ -13,11 +16,11 @@ namespace Matrix42.Client.Mail.Exchange
 			//_message = message;
 
 			ID = id;
-			From = MailAddress.From(message.From);
-			Sender = MailAddress.From(message.Sender);
-			To = MailAddress.ListFrom(message.ToRecipients);
-			Cc = MailAddress.ListFrom(message.CcRecipients);
-			Bcc = MailAddress.ListFrom(message.BccRecipients);
+			From = message.From.ToMailAddress();
+			Sender = message.Sender.ToMailAddress();
+			To = message.ToRecipients.ToMailAddresses();
+			Cc = message.CcRecipients.ToMailAddresses();
+			Bcc = message.BccRecipients.ToMailAddresses();
 			Subject = message.Subject;
 			BodyText = message.TextBody;
 			BodyHtml = message.Body; //TODO: Handle text-only & html-only messages
@@ -32,11 +35,11 @@ namespace Matrix42.Client.Mail.Exchange
 			//_message = message;
 
 			ID = id;
-			From = MailAddress.From(message.From);
-			Sender = MailAddress.From(message.Sender);
-			//To = MailAddress.ListFrom(message.ToRecipients);
-			//Cc = MailAddress.ListFrom(message.CcRecipients);
-			//Bcc = MailAddress.ListFrom(message.BccRecipients);
+			From = message.From.ToMailAddress();
+			Sender = message.Sender.ToMailAddress();
+			//To = message.ToRecipients.ToMailAddresses();
+			//Cc = message.CcRecipients.ToMailAddresses();
+			//Bcc = message.BccRecipients.ToMailAddresses();
 			Subject = message.Subject;
 			BodyText = message.TextBody;
 			BodyHtml = message.Body; //TODO: Handle text-only & html-only messages
@@ -92,13 +95,13 @@ namespace Matrix42.Client.Mail.Exchange
 			switch (importance)
 			{
 				case Microsoft.Exchange.WebServices.Data.Importance.Low:
-					return Mail.Importance.Low;
+					return Contracts.Importance.Low;
 
 				case Microsoft.Exchange.WebServices.Data.Importance.Normal:
-					return Mail.Importance.Normal;
+					return Contracts.Importance.Normal;
 
 				case Microsoft.Exchange.WebServices.Data.Importance.High:
-					return Mail.Importance.High;
+					return Contracts.Importance.High;
 
 				default:
 					return new Importance?();

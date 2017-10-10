@@ -1,4 +1,5 @@
 ﻿using System;
+using Matrix42.Client.Mail.Contracts;
 
 namespace Matrix42.Client.Mail.Console
 {
@@ -16,7 +17,8 @@ namespace Matrix42.Client.Mail.Console
 
 		public ExchangeClientTest()
 			: this("outlook.office.de", null, true, "matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", "8tzT8ErszHa0fO9K",
-					"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", new MailFolder("Public_TEST\\child1", FolderType.Public), null, false)
+					"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", new MailFolder { Name = "Inbox\\subin2", Type = FolderType.Message },
+					new MailFolder { Name = "Inbox\\subin1", Type = FolderType.Message }, false)
 		{
 			// Do nothing
 		}
@@ -38,12 +40,12 @@ namespace Matrix42.Client.Mail.Console
 		{
 			try
 			{
-				var config = new ClientConfig(_host, _port, _useSsl, _mailAddress, _username, _password, _folder, _folderToMove, _ignoreOoo);
+				var config = ClientConfig.MakeConfig(MailServerType.Exchange2010Sp2, _host, _port, _useSsl, _mailAddress, _username, _password, _folder, _folderToMove, _ignoreOoo);
 
 				using (var client = MailClientFactory.GetClient(config, true))
 				{
-					FetchAndProcessMessage(client);
-					//SaveMessage(client);
+					//FetchAndProcessMessage(client);
+					SaveMessage(client);
 					//ListFolders(client);
 
 					//SearchMessages(client);

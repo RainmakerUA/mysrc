@@ -96,6 +96,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\Matrix42.Client.Mail.Contracts\Matrix42.Client.Mail.Contracts.csproj">
+      <Project>{269616aa-8144-40bb-9ba5-d20febf0d0e2}</Project>
+      <Name>Matrix42.Client.Mail.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Matrix42.Client.Mail\Matrix42.Client.Mail.csproj">
       <Project>{4b1aa181-1ef1-499c-83e4-e79107090404}</Project>
       <Name>Matrix42.Client.Mail</Name>
