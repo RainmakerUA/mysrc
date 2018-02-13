@@ -90,7 +90,7 @@ namespace RM.Win.BossKey.Win32
 			var tuple = gch.Target as Tuple<List<NativeWindow>, Predicate<NativeWindow>>;
 			var window = new NativeWindow(handle);
 
-			if ((tuple?.Item2?.Invoke(window)).GetValueOrDefault(true))
+			if (tuple?.Item2?.Invoke(window) ?? true)
 			{
 				tuple?.Item1?.Add(window);
 			}
