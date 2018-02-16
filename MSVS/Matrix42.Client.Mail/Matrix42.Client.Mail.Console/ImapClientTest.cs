@@ -1,4 +1,5 @@
 ﻿using System;
+using Matrix42.Client.Mail.Contracts;
 
 namespace Matrix42.Client.Mail.Console
 {
@@ -9,8 +10,8 @@ namespace Matrix42.Client.Mail.Console
 		private readonly bool _useSsl;
 		private readonly string _username;
 		private readonly string _password;
-		private readonly string _folder;
-		private readonly string _folderToMove;
+		private readonly MailFolder _folder;
+		private readonly MailFolder _folderToMove;
 
 		public ImapClientTest()
 			: this("imap.gmail.com", null, true, "update4u.info", "update4u.", "Inbox/Incident/VZH test", "Inbox/Incident/VZH processed")
@@ -25,15 +26,15 @@ namespace Matrix42.Client.Mail.Console
 			_useSsl = useSsl;
 			_username = username;
 			_password = password;
-			_folder = folder;
-			_folderToMove = folderToMove;
+			_folder = new MailFolder { Name = folder, Type = FolderType.Message };
+			_folderToMove = new MailFolder { Name = folderToMove, Type = FolderType.Message };
 		}
 
 		public void Execute()
 		{
 			try
 			{
-				var config = new ClientConfig(_host, _port, _useSsl, null, _username, _password, _folder, _folderToMove);
+				var config = ClientConfig.MakeConfig(MailServerType.Imap4, _host, _port, _useSsl, null, _username, _password, _folder, _folderToMove);
 
 				using (var client = MailClientFactory.GetClient(config, false))
 				{
@@ -86,7 +87,7 @@ namespace Matrix42.Client.Mail.Console
 
 		private static void SearchMessages(IMailClient client)
 		{
-			var ids = client.SearchMails(new[] {"statistics", "problemo"});
+			var ids = client.SearchMails(new[] { "statistics", "problemo" });
 
 			System.Console.WriteLine(ids.Count > 0 ? "Messages found (IDs):" : "No messages found.");
 			System.Console.WriteLine(String.Join(",\u0020", ids));

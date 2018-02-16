@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Matrix42.Client.Mail.Contracts;
 using Microsoft.Exchange.WebServices.Data;
 
 namespace Matrix42.Client.Mail

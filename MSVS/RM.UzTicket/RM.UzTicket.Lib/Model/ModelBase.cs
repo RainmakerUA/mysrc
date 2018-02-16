@@ -11,6 +11,11 @@ namespace RM.UzTicket.Lib.Model
 
 		public abstract IDictionary<string, string> ToDictionary();
 
+		protected T GetValueOrDefault<T>(JsonObject jobj, string key)
+		{
+			return jobj?[key] != null && jobj[key].TryReadAs<T>(out T result) ? result : default;
+		}
+
 		public static T FromJson<T>(JsonValue json) where T : ModelBase, new()
 		{
 			var obj = CheckJson(json);

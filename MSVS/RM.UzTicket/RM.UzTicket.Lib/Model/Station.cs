@@ -9,18 +9,22 @@ namespace RM.UzTicket.Lib.Model
 
 		public string Title { get; set; }
 
+		public string Region { get; set; }
+
 		protected override void FromJsonObject(JsonObject obj)
 		{
-			Id = obj["station_id"].ReadAs<int>();
-			Title = obj["title"].ReadAs<string>();
+			Id = GetValueOrDefault<int>(obj, "value");
+			Title = GetValueOrDefault<string>(obj, "title");
+			Region = GetValueOrDefault<string>(obj, "region");
 		}
 
 		public override IDictionary<string, string> ToDictionary()
 		{
 			return new Dictionary<string, string>
 						{
-							["station_id"] = Id.ToString(),
-							["title"] = Title
+							["value"] = Id.ToString(),
+							["title"] = Title,
+							["region"] = Region
 						};
 		}
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Matrix42.Client.Mail
+namespace Matrix42.Client.Mail.Contracts
 {
     public interface IMailClient : IDisposable
     {
@@ -25,19 +25,19 @@ namespace Matrix42.Client.Mail
 
 		Guid Template { get; }*/
 
-	    IList<string> GetUnreadMails();
+	    IReadOnlyList<string> GetUnreadMails();
 
-	    IList<string> GetAllMails();
+		IReadOnlyList<string> GetAllMails();
 
-	    IList<string> SearchMails(string[] terms);
+		IReadOnlyList<string> SearchMails(params string[] terms);
 
 		IMessage GetMessage(string id);
 
-	    void MarkMessagesAsRead(string[] ids);
+	    void MarkMessagesAsRead(params string[] ids);
 
-	    void MoveMessages(string[] ids);
+	    void MoveMessages(params string[] ids);
 
-	    IList<string> GetFolderNames(FolderType type);
+		IReadOnlyList<string> GetFolderNames(FolderType type);
 
 	    IMessage LoadMessage(string fileName, string id);
 

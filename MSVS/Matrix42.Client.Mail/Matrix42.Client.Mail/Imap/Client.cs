@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MailKit;
 using MailKit.Search;
+using Matrix42.Client.Mail.Contracts;
 using Matrix42.Client.Mail.Utility;
 using MimeKit;
 using KitImapClient = MailKit.Net.Imap.ImapClient;
@@ -36,17 +37,17 @@ namespace Matrix42.Client.Mail.Imap
 
 		public string FolderToMove => _config.FolderToMove?.Name;
 
-		public IList<string> GetUnreadMails()
+		public IReadOnlyList<string> GetUnreadMails()
 		{
 			return SearchMailIDs(SearchQuery.NotSeen);
 		}
 
-		public IList<string> GetAllMails()
+		public IReadOnlyList<string> GetAllMails()
 		{
 			return SearchMailIDs(SearchQuery.All);
 		}
 
-		public IList<string> SearchMails(string[] terms)
+		public IReadOnlyList<string> SearchMails(string[] terms)
 		{
 			if (terms.Length > 0)
 			{
@@ -70,21 +71,21 @@ namespace Matrix42.Client.Mail.Imap
 			return Message.FromMessage(GetMimeMessage(id), id);
 		}
 
-		public void MarkMessagesAsRead(params string[] ids)
+		public void MarkMessagesAsRead(string[] ids)
 		{
 			EnsureInitialized(FolderAccess.ReadWrite, false);
 
 			_folder.AddFlags(Array.ConvertAll(ids, UniqueId.Parse), MessageFlags.Seen, true);
 		}
 
-		public void MoveMessages(params string[] ids)
+		public void MoveMessages(string[] ids)
 		{
 			EnsureInitialized(FolderAccess.ReadWrite, true);
 
 			_folder.MoveTo(Array.ConvertAll(ids, UniqueId.Parse), _folderToMove);
 		}
 
-		public IList<string> GetFolderNames(FolderType type)
+		public IReadOnlyList<string> GetFolderNames(FolderType type)
 		{
 			EnsureInitialized(FolderAccess.None, true);
 
