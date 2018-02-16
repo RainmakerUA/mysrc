@@ -106,10 +106,10 @@ namespace Matrix42.Client.Mail.Utility
 
 		private static string[] ReadMimeResource()
 		{
-			var @namespace = _thisType.Namespace ?? String.Empty;
-			@namespace = @namespace.Substring(0, @namespace.LastIndexOf(_dot, StringComparison.Ordinal));
+			var ns = _thisType.Namespace ?? String.Empty;
+			ns = ns.Substring(0, ns.LastIndexOf(_dot, StringComparison.Ordinal));
 
-			var resName = String.Join(_dot, @namespace, _resourceDir, _mimeResource);
+			var resName = String.Join(_dot, ns, _resourceDir, _mimeResource);
 			var lines = new List<string>();
 
 			using (var resStream = _thisType.Assembly.GetManifestResourceStream(resName))

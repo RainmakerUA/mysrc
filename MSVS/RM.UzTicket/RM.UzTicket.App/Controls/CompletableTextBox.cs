@@ -20,8 +20,8 @@ namespace RM.UzTicket.App.Controls
 		[EditorBrowsable(EditorBrowsableState.Always)]
 		public string Label
 		{
-			get { return labelLabel.Text; }
-			set { labelLabel.Text = value; }
+			get => labelLabel.Text;
+			set => labelLabel.Text = value;
 		}
 
 		[Category("Appearence")]
@@ -29,8 +29,8 @@ namespace RM.UzTicket.App.Controls
 		[EditorBrowsable(EditorBrowsableState.Always)]
 		public string Value
 		{
-			get { return textBoxText.Text; }
-			set { textBoxText.Text = value; }
+			get => textBoxText.Text;
+			set => textBoxText.Text = value;
 		}
 
 		[Description("Occurs when text must be completed")]
