@@ -245,7 +245,7 @@ namespace Matrix42.Client.Mail.Exchange
 
 			do
 			{
-				var view = new ItemView(_messageMaxCount, offset) {PropertySet = PropertySet.IdOnly};
+				var view = new ItemView(_messageMaxCount, offset) { PropertySet = PropertySet.IdOnly };
 				result = folder.FindItems(filter, view);
 				offset += result.Items.Count;
 				resultIDs.AddRange(result.Items.Select(it => it.Id.UniqueId));

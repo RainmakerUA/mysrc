@@ -71,14 +71,14 @@ namespace Matrix42.Client.Mail.Imap
 			return Message.FromMessage(GetMimeMessage(id), id);
 		}
 
-		public void MarkMessagesAsRead(params string[] ids)
+		public void MarkMessagesAsRead(string[] ids)
 		{
 			EnsureInitialized(FolderAccess.ReadWrite, false);
 
 			_folder.AddFlags(Array.ConvertAll(ids, UniqueId.Parse), MessageFlags.Seen, true);
 		}
 
-		public void MoveMessages(params string[] ids)
+		public void MoveMessages(string[] ids)
 		{
 			EnsureInitialized(FolderAccess.ReadWrite, true);
 

@@ -29,13 +29,13 @@ namespace Matrix42.Client.Mail.Contracts
 
 		IReadOnlyList<string> GetAllMails();
 
-		IReadOnlyList<string> SearchMails(string[] terms);
+		IReadOnlyList<string> SearchMails(params string[] terms);
 
 		IMessage GetMessage(string id);
 
-	    void MarkMessagesAsRead(string[] ids);
+	    void MarkMessagesAsRead(params string[] ids);
 
-	    void MoveMessages(string[] ids);
+	    void MoveMessages(params string[] ids);
 
 		IReadOnlyList<string> GetFolderNames(FolderType type);
 

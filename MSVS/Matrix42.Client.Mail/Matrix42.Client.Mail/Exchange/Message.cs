@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Matrix42.Client.Mail.Contracts;
 using Matrix42.Client.Mail.Utility;
 using Microsoft.Exchange.WebServices.Data;
-using Importance = Matrix42.Client.Mail.Contracts.Importance;
+using ExchImportance = Microsoft.Exchange.WebServices.Data.Importance;
 
 namespace Matrix42.Client.Mail.Exchange
 {
@@ -71,7 +71,7 @@ namespace Matrix42.Client.Mail.Exchange
 
 		public DateTime? ReceivedDate { get; }
 
-		public Importance? Importance { get; }
+		public Contracts.Importance? Importance { get; }
 
 		public bool OutOfOfficeReply { get; }
 
@@ -90,21 +90,21 @@ namespace Matrix42.Client.Mail.Exchange
 			}
 		}
 
-		private static Importance? ConvertImportance(Microsoft.Exchange.WebServices.Data.Importance importance)
+		private static Contracts.Importance? ConvertImportance(ExchImportance importance)
 		{
 			switch (importance)
 			{
-				case Microsoft.Exchange.WebServices.Data.Importance.Low:
+				case ExchImportance.Low:
 					return Contracts.Importance.Low;
 
-				case Microsoft.Exchange.WebServices.Data.Importance.Normal:
+				case ExchImportance.Normal:
 					return Contracts.Importance.Normal;
 
-				case Microsoft.Exchange.WebServices.Data.Importance.High:
+				case ExchImportance.High:
 					return Contracts.Importance.High;
 
 				default:
-					return new Importance?();
+					return new Contracts.Importance?();
 			}
 		}
 	}
