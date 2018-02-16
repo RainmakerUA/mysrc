@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using Matrix42.Client.Mail.Contracts;
 
 namespace Matrix42.Client.Mail.Utility
 {

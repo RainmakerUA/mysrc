@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Matrix42.Client.Mail
+namespace Matrix42.Client.Mail.Contracts
 {
     public interface IMessage
     {

@@ -9,12 +9,7 @@ namespace RM.UzTicket.Lib.Utils
 
 		public AsyncLock(AutoResetEvent value, int milliseconds = Timeout.Infinite)
 		{
-			if (value == null)
-			{
-				throw new ArgumentNullException(nameof(value));
-			}
-
-			_value = value;
+			_value = value ?? throw new ArgumentNullException(nameof(value));
 			IsCaptured = value.WaitOne(milliseconds);
 		}
 

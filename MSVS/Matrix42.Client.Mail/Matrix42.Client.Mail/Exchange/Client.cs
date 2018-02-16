@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
+using System.Text;
+using Matrix42.Client.Mail.Contracts;
 using Matrix42.Client.Mail.Utility;
 using Microsoft.Exchange.WebServices.Data;
 
@@ -37,17 +39,17 @@ namespace Matrix42.Client.Mail.Exchange
 
 		public string FolderToMove => _config.FolderToMove?.Name;
 
-		public IList<string> GetUnreadMails()
+		public IReadOnlyList<string> GetUnreadMails()
 		{
 			return GetMails(true);
 		}
 
-		public IList<string> GetAllMails()
+		public IReadOnlyList<string> GetAllMails()
 		{
 			return GetMails(false);
 		}
 
-		public IList<string> SearchMails(string[] terms)
+		public IReadOnlyList<string> SearchMails(string[] terms)
 		{
 			if (terms.Length > 0)
 			{
@@ -69,36 +71,70 @@ namespace Matrix42.Client.Mail.Exchange
 		{
 			EnsureInitialized(false);
 
-			// var properties = new PropertySet(BasePropertySet.IdOnly, ItemSchema.MimeContent, ItemSchema.TextBody, ItemSchema.Attachments);
+			var item = GetItem(id, ItemSchema.TextBody, ItemSchema.Attachments);
+			
+			return Message.FromItem(item, id);
 
-			var properties = new PropertySet(BasePropertySet.FirstClassProperties, ItemSchema.TextBody, ItemSchema.Attachments);
+			// Optional impl.: use MimeKit to parse mail
+			// var item = GetItem(id, new PropertySet(BasePropertySet.IdOnly, ItemSchema.MimeContent));
 
-			var email = EmailMessage.Bind(_service, new ItemId(id), properties);
-
-			return Message.FromMessage(email, id);
-
-			//using (var ms = new System.IO.MemoryStream(email.MimeContent.Content))
+			//using (var ms = new System.IO.MemoryStream(item.MimeContent.Content))
 			//{
 			//	var mimeMsg = MimeKit.MimeMessage.Load(ms);
 			//	return Imap.ImapMessage.FromMessage(mimeMsg, id);
 			//}
-
-			throw new NotImplementedException();
 		}
 
 		public void MarkMessagesAsRead(string[] ids)
 		{
-			throw new NotImplementedException();
+			if (ids != null)
+			{
+				EnsureInitialized(false);
+
+				foreach (var id in ids)
+				{
+					if (GetItem(id) is EmailMessage message)
+					{
+						message.IsRead = true;
+						message.Update(ConflictResolutionMode.AutoResolve);
+					}
+				}
+			}
 		}
 
 		public void MoveMessages(string[] ids)
 		{
-			throw new NotImplementedException();
+			if (ids != null)
+			{
+				EnsureInitialized(true);
+
+				foreach (var id in ids)
+				{
+					GetItem(id)?.Move(_folderToMoveID);
+				}
+			}
 		}
 
-		public IList<string> GetFolderNames(FolderType type)
+		public IReadOnlyList<string> GetFolderNames(FolderType type)
 		{
-			throw new NotImplementedException();
+			EnsureInitialized(false);
+
+			var rootFolderID = GetRootFolderID(type);
+			var result = _service.FindFolders(rootFolderID, new FolderView(Int32.MaxValue) { Traversal = FolderTraversal.Deep });
+			var idFolders = new Dictionary<string, string>();
+
+			foreach (var folder in result.Folders.Where(IsMessageFolder))
+			{
+				var uniqueId = folder.Id.UniqueId;
+				var fullName = (idFolders.TryGetValue(folder.ParentFolderId.UniqueId, out var parentName) ? parentName + _folderSeparator : String.Empty) + folder.DisplayName;
+
+				if (!idFolders.ContainsKey(uniqueId))
+				{
+					idFolders.Add(uniqueId, fullName);
+				}
+			}
+
+			return idFolders.Values.OrderBy(s => s).ToArray();
 		}
 
 		public IMessage LoadMessage(string fileName, string id)
@@ -108,7 +144,35 @@ namespace Matrix42.Client.Mail.Exchange
 
 		public void SaveMessage(string fileName, string id)
 		{
-			throw new NotImplementedException();
+			// GetItem(id, new PropertySet(BasePropertySet.IdOnly, ItemSchema.MimeContent)) is EmailMessage message
+
+			/*
+			var messageContent = "N/A";
+
+			try
+			{
+				var item = GetItem(id);
+
+				if (item?.MimeContent?.Content != null && item.MimeContent.Content.Length > 0)
+				{
+					var encoding = Encoding.GetEncoding(item.MimeContent.CharacterSet);
+					messageContent = encoding.GetString(item.MimeContent.Content);
+				}
+			}
+			catch (Exception)
+			{
+				// Ignore exceptions
+			}
+
+			FileHelper.WriteToFile(filePath, messageContent);
+			*/
+
+			var content = GetItem(id, new PropertySet(BasePropertySet.IdOnly, ItemSchema.MimeContent))?.MimeContent?.Content;
+
+			if (content != null)
+			{
+				FileHelper.SaveMimeContent(content, fileName, DecodeID(id));
+			}
 		}
 
 		public void Dispose()
@@ -147,11 +211,11 @@ namespace Matrix42.Client.Mail.Exchange
 
 			if (withFolderToMove && _folderToMoveID == null && _config.FolderToMove != null)
 			{
-				_folderID = FindFolderID(_config.FolderToMove.Name, null, _config.FolderToMove.Type);
+				_folderToMoveID = FindFolderID(_config.FolderToMove.Name, null, _config.FolderToMove.Type);
 			}
 		}
 
-		private IList<string> GetMails(bool unreadOnly)
+		private IReadOnlyList<string> GetMails(bool unreadOnly)
 		{
 			var filter = new SearchFilter.SearchFilterCollection(
 															LogicalOperator.And,
@@ -170,7 +234,7 @@ namespace Matrix42.Client.Mail.Exchange
 			return SearchMailIDs(filter);
 		}
 
-		private IList<string> SearchMailIDs(SearchFilter filter)
+		private IReadOnlyList<string> SearchMailIDs(SearchFilter filter)
 		{
 			EnsureInitialized(false);
 
@@ -181,7 +245,7 @@ namespace Matrix42.Client.Mail.Exchange
 
 			do
 			{
-				var view = new ItemView(_messageMaxCount, offset) {PropertySet = PropertySet.IdOnly};
+				var view = new ItemView(_messageMaxCount, offset) { PropertySet = PropertySet.IdOnly };
 				result = folder.FindItems(filter, view);
 				offset += result.Items.Count;
 				resultIDs.AddRange(result.Items.Select(it => it.Id.UniqueId));
@@ -220,11 +284,17 @@ namespace Matrix42.Client.Mail.Exchange
 						: new FolderId(GetFolderType(folderType));
 		}
 
-		private Item GetItem(string itemID)
+		private Item GetItem(string itemID, params PropertyDefinitionBase[] additionalProperties)
 		{
-			var props = new PropertySet(BasePropertySet.FirstClassProperties, new PropertySet(ItemSchema.MimeContent));
-			return Item.Bind(_service, new ItemId(itemID), props);
+			var props = new PropertySet(BasePropertySet.FirstClassProperties, additionalProperties);
+			return GetItem(itemID, props);
 		}
+
+		private Item GetItem(string itemID, PropertySet properties)
+		{
+			return Item.Bind(_service, new ItemId(itemID), properties);
+		}
+
 		/*
 		private IEnumerable<FolderInfo> GetFoldersRecursive(FolderInfo parentFolder, Predicate<MxFolder> filter, bool skipParent)
 		{
@@ -307,6 +377,16 @@ namespace Matrix42.Client.Mail.Exchange
 			} while (separatorIndex >= 0);
 
 			return folder;
+		}
+
+		private static bool IsMessageFolder(Folder f)
+		{
+			return f.FolderClass != null && (f.FolderClass.Equals("IPF.Note") || f.FolderClass.Equals("IPF.StickyNote"));
+		}
+
+		private static string DecodeID(string exchangeID)
+		{
+			return Encoding.ASCII.GetString(Convert.FromBase64String(exchangeID)).Substring(4, 36);
 		}
 	}
 }
