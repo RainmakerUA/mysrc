@@ -49,7 +49,7 @@ namespace RM.UzTicket.Lib
 
 		#endregion
 
-		public event EventHandler<UzTicketScanResult<string>>  ScanResult;
+		public event EventHandler<ScanResult<string>>  ScanResult;
 
 		#region Methods
 
@@ -78,7 +78,7 @@ namespace RM.UzTicket.Lib
 
 		private Task ScanCallbackAsync(string scanId, string sessionId)
 		{
-			ScanResult?.Invoke(this, new UzTicketScanResult<string>(scanId, $"document.cookie='{sessionId}'"));
+			ScanResult?.Invoke(this, new ScanResult<string>(scanId, $"document.cookie='{sessionId}'"));
 			return Task.Delay(0);
 		}
 	}

@@ -7,69 +7,67 @@ namespace RM.UzTicket.Lib.Model
 {
 	public class Train : ModelBase
 	{
-		public string Number { get; set; }
+		public string Number { get; private set; }
 
-		public int Model { get; set; }
+		public int Category { get; private set; }
 
-		public int Category { get; set; }
+		public TimeSpan TravelTime { get; private set; }
 
-		public TimeSpan TravelTime { get; set; }
+		public CoachType[] CoachTypes { get; private set; }
 
-		public CoachType[] CoachTypes { get; set; }
+		public Station SourceStation { get; private set; }
 
-		public Station SourceStation { get; set; }
+		public Station DestinationStation { get; private set; }
 
-		public Station DestinationStation { get; set; }
+		public UzTime DepartureTime { get; private set; }
 
-		public UzTimestamp DepartureTime { get; set; }
+		public UzTime ArrivalTime { get; private set; }
 
-		public UzTimestamp ArrivalTime { get; set; }
+		public string TrainSourceStation { get; private set; }
+
+		public string TrainDestinationStation { get; private set; }
 
 		protected override void FromJsonObject(JsonObject obj)
 		{
 			Number = obj["num"].ReadAs<string>();
-			Model = obj["model"].ReadAs<int>();
 			Category = obj["category"].ReadAs<int>();
-			TravelTime = TimeSpan.Parse(obj["travel_time"].ReadAs<string>());
+			TravelTime = TimeSpan.Parse(obj["travelTime"].ReadAs<string>());
 			CoachTypes = FromJsonArray<CoachType>(obj["types"]);
 			SourceStation = StationFromJson(obj["from"]);
-			DestinationStation = StationFromJson(obj["till"]);
-			DepartureTime = FromJson<UzTimestamp>(obj["from"]);
-			ArrivalTime = FromJson<UzTimestamp>(obj["till"]);
-		}
-
-		public override IDictionary<string, string> ToDictionary()
-		{
-			throw new NotImplementedException();
+			DestinationStation = StationFromJson(obj["to"]);
+			DepartureTime = FromJson<UzTime>(obj["from"]);
+			ArrivalTime = FromJson<UzTime>(obj["to"]);
+			TrainSourceStation = obj["from"]["stationTrain"].ReadAs<string>();
+			TrainDestinationStation = obj["to"]["stationTrain"].ReadAs<string>();
 		}
 
 		public override string ToString()
 		{
-			return $"{Number}: {SourceStation} - {DestinationStation}, {DepartureTime}";
+			return $"{Number}: {TrainSourceStation} - {TrainDestinationStation}";
 		}
 
 		public string GetInfo()
 		{
 			var list = new List<string>
 							{
-								"Train: {0}",
-								"Departure time: {1}",
-								"Arrival time: {2}",
-								"Travel time: {3}",
+								"Train: {0} {1} - {2}",
+								"Departure time: {3}",
+								"Arrival time: {4}",
+								"Travel time: {5}",
 								"~~~~~~~~~~~~~~~~~~"
 							};
 			list.AddRange(CoachTypes.Select(ct => ct.ToString()));
-			return String.Format(String.Join(Environment.NewLine, list), Number, DepartureTime, ArrivalTime, TravelTime);
+			return String.Format(
+							String.Join(Environment.NewLine, list),
+							Number, TrainSourceStation, TrainDestinationStation,
+							DepartureTime, ArrivalTime, TravelTime
+						);
 		}
 
 		private static Station StationFromJson(JsonValue json)
 		{
 			var obj = CheckJson(json);
-			return new Station
-						{
-							Id = obj["station_id"].ReadAs<int>(),
-							Title = obj["station"].ReadAs<string>()
-						};
+			return Station.Create(Int32.Parse(obj["code"].ReadAs<string>()), obj["station"].ReadAs<string>());
 		}
 	}
 }

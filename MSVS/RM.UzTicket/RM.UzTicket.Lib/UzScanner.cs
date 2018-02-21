@@ -62,6 +62,7 @@ namespace RM.UzTicket.Lib
 		{
 			_successCallbackAsync = successCallbackAsync;
 			_delay = secondsDelay;
+
 			_scanStates = new ConcurrentDictionary<string, ScanData>();
 			_client = new UzService();
 			_cancelTokenSource = new CancellationTokenSource();
@@ -118,9 +119,7 @@ namespace RM.UzTicket.Lib
 
 		public Tuple<int, string> GetStatus(string scanId)
 		{
-			ScanData data;
-
-			if (_scanStates.TryGetValue(scanId, out data))
+			if (_scanStates.TryGetValue(scanId, out var data))
 			{
 				return Tuple.Create(data.Attempts, data.Error);
 			}
@@ -247,9 +246,10 @@ namespace RM.UzTicket.Lib
 					// TODO: Smart coach and seat selection algorythm
 					foreach (var coach in coaches.OrderByDescending(c => c.PlacesCount))
 					{
-						var seats = await client.ListSeatsAsync(train, coach);
+						var allSeats = await client.ListSeatsAsync(train, coach);
+						var seats = coach.GetSeats(allSeats);
 
-						foreach (var seat in seats)
+						foreach (var seat in seats.OrderBy(s => (s.Number - 1) % 2).ThenBy(s => s.Price).ThenBy(s => s.Number))
 						{
 							try
 							{

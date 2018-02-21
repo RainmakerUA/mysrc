@@ -15,17 +15,18 @@ namespace RM.UzTicket.Lib
 {
 	internal sealed class UzService : IDisposable
 	{
-		private const string _baseUrl = "http://booking.uz.gov.ua/en"; // strict without trailing '/'!
+		private const string _baseUrl = "https://booking.uz.gov.ua"; // strict without trailing '/'!
 		private const string _sessionIdKey = "_gv_sessid";
 		private const int _requestTimeout = 10;
-		private const int _tokenMaxAge = 600;
+		//private const int _tokenMaxAge = 600;
+		private const string _dataKey = "data";
 
 		private readonly AutoResetEvent _tokenLock;
 		private HttpClientHandler _httpHandler;
 		private HttpClient _httpClient;
 
-		private string _token;
-		private int _tokenTime;
+		//private string _token;
+		//private int _tokenTime;
 		private string _userAgent;
 		private bool _isDisposed;
 
@@ -75,8 +76,8 @@ namespace RM.UzTicket.Lib
 
 		public string GetSessionId()
 		{
-			var value = _httpHandler.CookieContainer.GetCookies(new Uri(_baseUrl))[_sessionIdKey].Value;
-			return _sessionIdKey + "=" + value;
+			var value = _httpHandler.CookieContainer.GetCookies(new Uri(_baseUrl))[_sessionIdKey]?.Value;
+			return value != null ? _sessionIdKey + "=" + value : null;
 		}
 
 		public async Task<Station[]> SearchStationsAsync(string name)
@@ -96,18 +97,17 @@ namespace RM.UzTicket.Lib
 		{
 			var data = new Dictionary<string, string>
 							{
-								["station_id_from"] = source.Id.ToString(),
-								["station_id_till"] = destination.Id.ToString(),
-								["date_dep"] = date.ToMmDdYyyyString(),
-								["time_dep"] = "00:00",
-								["time_dep_till"] = "",
+								["from"] = source.ID.ToString(),
+								["to"] = destination.ID.ToString(),
+								["date"] = date.ToRequestString(),
+								["time"] = "00:00",
 								["another_ec"] = "0",
-								["search"] = ""
+								["get_tpl"] = "1"
 							};
 
-			var result = await GetJson("purchase/search/", data: data);
+			var result = await GetJson("train_search/", data: data);
 
-			return ModelBase.FromJsonArray<Train>(result["value"]);
+			return ModelBase.FromJsonArray<Train>(result["list"]);
 		}
 
 		public async Task<Train> FetchTrainAsync(DateTime date, Station source, Station destination, string trainNumber)
@@ -127,102 +127,95 @@ namespace RM.UzTicket.Lib
 		{
 			var data = new Dictionary<string, string>
 							{
-								["station_id_from"] = train.SourceStation.Id.ToString(),
-								["station_id_till"] = train.DestinationStation.Id.ToString(),
+								["from"] = train.SourceStation.ID.ToString(),
+								["to"] = train.DestinationStation.ID.ToString(),
 								["train"] = train.Number,
-								["model"] = train.Model.ToString(),
-								["date_dep"] = train.DepartureTime.Timestamp.ToString(),
-								["round_trip"] = "0",
-								["another_ec"] = "0",
-								["coach_type"] = coachType.Letter
+								["date"] = train.DepartureTime.DateTime.ToRequestString(),
+								["wagon_type_id"] = coachType.Letter,
+								["another_ec"] = "0"
 							};
-			var result = await GetJson("purchase/coaches/", data: data);
-			return ModelBase.FromJsonArray<Coach>(result["coaches"]);
+			var result = await GetJson("train_wagons/", data: data);
+			return ModelBase.FromJsonArray<Coach>(result["wagons"]);
 		}
 
-		public async Task<int[]> ListSeatsAsync(Train train, Coach coach)
+		public async Task<IReadOnlyDictionary<string, int[]>> ListSeatsAsync(Train train, Coach coach)
 		{
 			var data = new Dictionary<string, string>
 							{
-								["station_id_from"] = train.SourceStation.Id.ToString(),
-								["station_id_till"] = train.DestinationStation.Id.ToString(),
+								["from"] = train.SourceStation.ID.ToString(),
+								["to"] = train.DestinationStation.ID.ToString(),
 								["train"] = train.Number,
-								["coach_num"] = coach.Number.ToString(),
-								["coach_class"] = coach.Class,
-								["coach_type_id"] = coach.TypeId.ToString(),
-								["date_dep"] = train.DepartureTime.Timestamp.ToString()
+								["date"] = train.DepartureTime.DateTime.ToRequestString(),
+								["wagon_num"] = coach.Number.ToString(),
+								["wagon_type"] = coach.Type,
+								["wagon_class"] = coach.Class
 							};
-			var result = await GetJson("purchase/coach/", data: data);
-			return ConcatValuesAndParseInt32(result["value"]["places"] as JsonObject);
+			var result = await GetJson("train_wagon/", data: data);
+			return ParseSeats(result["places"] as JsonObject);
 		}
 
-		public async Task<JsonValue> BookSeatAsync(Train train, Coach coach, int seat, string firstName, string lastName, bool? bedding = null)
+		public async Task<JsonValue> BookSeatAsync(Train train, Coach coach, Seat seat, string firstName, string lastName, bool? bedding = null)
 		{
 			var addBedding = bedding ?? coach.HasBedding;
 			var data = new Dictionary<string, string>
 							{
-								["code_station_from"] = train.SourceStation.Id.ToString(),
-								["code_station_to"] = train.DestinationStation.Id.ToString(),
-								["train"] = train.Number,
-								["date"] = train.DepartureTime.Timestamp.ToString(),
-								["round_trip"] = "0"
+								["roundtrip"] = "0"
 							};
 			var place = new Dictionary<string, string>
 							{
 								["ord"] = "0",
-								["coach_num"] = coach.Number.ToString(),
-								["coach_class"] = coach.Class,
-								["coach_type_id"] = coach.TypeId.ToString(),
-								["place_num"] = seat.ToString(),
+								["from"] = train.SourceStation.ID.ToString(),
+								["to"] = train.DestinationStation.ID.ToString(),
+								["train"] = train.Number,
+								["date"] = train.DepartureTime.DateTime.ToRequestString(),
+								["wagon_num"] = coach.Number.ToString(),
+								["wagon_class"] = coach.Class,
+								["wagon_type"] = coach.Type,
+								["wagon_railway"] = coach.Railway.ToString(),
+								["charline"] = seat.CharLine,
+								["place_num"] = seat.Number.ToString(),
 								["firstname"] = firstName,
 								["lastname"] = lastName,
 								["bedding"] = addBedding ? "1" : "0",
 								["child"] = "",
 								["stud"] = "",
-								["transp"] = "0",
 								["reserve"] = "0"
 							};
+
 			foreach (var key in place.Keys)
 			{
 				data[$"places[0][{key}]"] = place[key];
 			}
 
 			var result = await GetJson("cart/add/", data: data);
+
 			return result;
 		}
 
-		private async Task<string> GetTokenAsync()
+		public async Task<Route[]> GetTrainRoutes(params RouteData[] routes)
 		{
-			if (IsTokenOutdated())
+			var data = new Dictionary<string, string>();
+
+			for (int i = 0; i < routes.Length; i++)
 			{
-				using (new AsyncLock(_tokenLock))
+				var routeData = routes[i].ToDictionary();
+
+				foreach (var key in routeData.Keys)
 				{
-					if (IsTokenOutdated())
-					{
-						InitializeHttpClient();
-
-						var resp = await GetString("", null, new Dictionary<string, string> { ["User-Agent"] = _userAgent }, null);
-						_token = TokenParser.ParseGvToken(resp);
-
-						if (String.IsNullOrEmpty(_token))
-						{
-							throw new TokenException(resp);
-						}
-
-						_tokenTime = DateTimeExtensions.GetUnixTime();
-					}
+					data.Add($"routes[{i}][{key}]", routeData[key]);
 				}
 			}
 
-			return _token;
+			var result = await GetJson("route/", data: data);
+
+			return ModelBase.FromJsonArray<Route>(result["routes"]);
 		}
 
 		private async Task<IDictionary<string, string>> GetDefaultHeadersAsync()
 		{
-			var referer = await Task.FromResult(_baseUrl + "/");
 			return new Dictionary<string, string>
 						{
-							["User-Agent"] = _userAgent,
+							["User-Agent"] = await Task.FromResult(_userAgent),
 							/*["GV-Ajax"] = "1",
 							["GV-Referer"] = referer,
 							["GV-Token"] = await GetTokenAsync()*/
@@ -270,13 +263,23 @@ namespace RM.UzTicket.Lib
 												IDictionary<string, string> data = null)
 		{
 			var str = await GetString(path, method, headers, data);
-			var json = JsonValue.Parse(str);
+
+			JsonValue json;
+
+			try
+			{
+				json = JsonValue.Parse(str);
+			}
+			catch (FormatException)
+			{
+				throw new ResponseException("Invalid JSON response!", str);
+			}
 
 			if (json.ContainsKey("error") && json["error"] != null
 				&& (!json["error"].TryReadAs(out bool isError) || isError))
 			{
 				string message;
-				var value = json["value"];
+				var value = json[_dataKey];
 
 
 				if (value is JsonObject valueObj && valueObj.TryGetValue("errors", out var errorsArray))
@@ -291,7 +294,7 @@ namespace RM.UzTicket.Lib
 				throw new ResponseException(message, str);
 			}
 
-			return json;
+			return json.ContainsKey(_dataKey) ? json[_dataKey] : json;
 		}
 
 		private void InitializeHttpClient()
@@ -305,11 +308,41 @@ namespace RM.UzTicket.Lib
 								};
 		}
 
+		/*
+
+		private async Task<string> GetTokenAsync()
+		{
+			if (IsTokenOutdated())
+			{
+				using (new AsyncLock(_tokenLock))
+				{
+					if (IsTokenOutdated())
+					{
+						InitializeHttpClient();
+
+						var resp = await GetString("", null, new Dictionary<string, string> { ["User-Agent"] = _userAgent }, null);
+						_token = TokenParser.ParseGvToken(resp);
+
+						if (String.IsNullOrEmpty(_token))
+						{
+							throw new TokenException(resp);
+						}
+
+						_tokenTime = DateTimeExtensions.GetUnixTime();
+					}
+				}
+			}
+
+			return _token;
+		}
+
 		private bool IsTokenOutdated()
 		{
 			var unixNow = DateTimeExtensions.GetUnixTime();
 			return unixNow - _tokenTime > _tokenMaxAge;
 		}
+
+		*/
 
 		private static string GetUrl(string relPath)
 		{
@@ -324,21 +357,9 @@ namespace RM.UzTicket.Lib
 			}
 		}
 
-		private static int[] ConcatValuesAndParseInt32(IDictionary<string, JsonValue> values)
+		private static IReadOnlyDictionary<string, int[]> ParseSeats(IDictionary<string, JsonValue> values)
 		{
-			if (values != null)
-			{
-				var strings = Enumerable.Empty<string>();
-
-				foreach (var value in values.Values)
-				{
-					strings = strings.Concat((value as IEnumerable<JsonValue>).Select(jv => jv.ReadAs<string>()));
-				}
-
-				return strings.Select(Int32.Parse).ToArray();
-			}
-
-			return new int[0];
+			return values?.ToDictionary(kv => kv.Key, kv => (kv.Value as IEnumerable<JsonValue>)?.Select(jv => jv.ReadAs<int>()).ToArray());
 		}
 	}
 }

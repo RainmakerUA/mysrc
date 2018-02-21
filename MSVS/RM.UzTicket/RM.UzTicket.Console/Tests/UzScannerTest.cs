@@ -18,9 +18,9 @@ namespace RM.UzTicket.Console.Tests
 			using (var scanner = new UzScanner(ScanCallback, 120))
 			{
 				scanner.AddItem(new ScanItem(
-								"VZH", "Ivan", "Ivanov", DateTime.Now,//.AddDays(7),
-								new Station { Id = 2200001, Title = "Kyiv" },
-								new Station { Id = 2210700, Title = "Dnipropetrovsk Holovny" },
+								"VZH", "Іван", "Івашко", DateTime.Now.AddDays(7),
+								Station.Create(2200001, "Kyiv"),
+								Station.Create(2210700, "Dnipropetrovsk Holovny"),
 								"080К", "П"
 							));
 				_lock.WaitOne();

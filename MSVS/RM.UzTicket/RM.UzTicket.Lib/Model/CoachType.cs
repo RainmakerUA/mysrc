@@ -1,31 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Json;
+﻿using System.Json;
 
 namespace RM.UzTicket.Lib.Model
 {
 	public class CoachType : ModelBase
 	{
-		public string Title { get; set; }
+		public string Title { get; private set; }
 
-		public string Letter { get; set; }
+		public string Letter { get; private set; }
 
-		public int PlacesCount { get; set; }
+		public int PlacesCount { get; private set; }
 
 		protected override void FromJsonObject(JsonObject obj)
 		{
 			Title = obj["title"].ReadAs<string>();
 			Letter = obj["letter"].ReadAs<string>();
 			PlacesCount = obj["places"].ReadAs<int>();
-		}
-
-		public override IDictionary<string, string> ToDictionary()
-		{
-			return new Dictionary<string, string>
-						{
-							["title"] = Title,
-							["letter"] = Letter,
-							["places"] = PlacesCount.ToString()
-						};
 		}
 
 		public override string ToString()
