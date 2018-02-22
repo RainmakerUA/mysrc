@@ -55,7 +55,7 @@ namespace RM.UzTicket.Lib
 
 		public Task<Station[]> GetStationsAsync(string name)
 		{
-			return _service.SearchStationsAsync(name);
+			return _service.SearchStationAsync(name);
 		}
 
 		public Task<Station> GetFirstStationAsync(string name)

@@ -52,19 +52,19 @@ namespace RM.UzTicket.Lib
 		private readonly Func<string, string, Task> _successCallbackAsync;
 		private readonly int _delay;
 		private readonly IDictionary<string, ScanData> _scanStates;
-		private readonly UzService _client;
+		private readonly Test.IUzService _service;
 		private readonly CancellationTokenSource _cancelTokenSource;
 		
 		private volatile bool _isRunning;
 		private bool _isDisposed;
 
-		public UzScanner(Func<string, string, Task> successCallbackAsync, int secondsDelay = _defaultDelay)
+		public UzScanner(Func<string, string, Task> successCallbackAsync, int secondsDelay = _defaultDelay, Test.IUzService service = null)
 		{
 			_successCallbackAsync = successCallbackAsync;
 			_delay = secondsDelay;
 
 			_scanStates = new ConcurrentDictionary<string, ScanData>();
-			_client = new UzService();
+			_service = service ?? new UzService();
 			_cancelTokenSource = new CancellationTokenSource();
 		}
 
@@ -84,7 +84,7 @@ namespace RM.UzTicket.Lib
 					// Free managed resources
 					Reset();
 
-					_client.Dispose();
+					_service.Dispose();
 					_cancelTokenSource.Dispose();
 				}
 
@@ -192,7 +192,7 @@ namespace RM.UzTicket.Lib
 					data.IncAttempts();
 
 					var item = data.Item;
-					var train = await _client.FetchTrainAsync(item.Date, item.Source, item.Destination, item.TrainNumber);
+					var train = await _service.FetchTrainAsync(item.Date, item.Source, item.Destination, item.TrainNumber);
 
 					if (train != null)
 					{

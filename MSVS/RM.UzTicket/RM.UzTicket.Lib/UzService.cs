@@ -13,7 +13,7 @@ using RM.UzTicket.Lib.Utils;
 
 namespace RM.UzTicket.Lib
 {
-	internal sealed class UzService : IDisposable
+	internal sealed class UzService : Test.IUzService
 	{
 		private const string _baseUrl = "https://booking.uz.gov.ua"; // strict without trailing '/'!
 		private const string _sessionIdKey = "_gv_sessid";
@@ -80,7 +80,7 @@ namespace RM.UzTicket.Lib
 			return value != null ? _sessionIdKey + "=" + value : null;
 		}
 
-		public async Task<Station[]> SearchStationsAsync(string name)
+		public async Task<Station[]> SearchStationAsync(string name)
 		{
 			var path = $"train_search/station/?term={name}";
 			var json = await GetJson(path, HttpMethod.Get);
@@ -89,7 +89,7 @@ namespace RM.UzTicket.Lib
 
 		public async Task<Station> FetchFirstStationAsync(string name)
 		{
-			var stations = await SearchStationsAsync(name);
+			var stations = await SearchStationAsync(name);
 			return stations.FirstOrDefault();
 		}
 
