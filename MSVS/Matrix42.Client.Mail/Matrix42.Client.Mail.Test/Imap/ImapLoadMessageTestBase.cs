@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Matrix42.Client.Mail.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Matrix42.Client.Mail.Test.Imap
@@ -134,7 +135,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 
 		private static bool AddressIsEmpty(MailAddress address)
 		{
-			return address == null || String.IsNullOrEmpty(address.Address) || String.IsNullOrEmpty(address.DisplayName);
+			return String.IsNullOrEmpty(address?.Address) || String.IsNullOrEmpty(address.DisplayName);
 		}
 	}
 }

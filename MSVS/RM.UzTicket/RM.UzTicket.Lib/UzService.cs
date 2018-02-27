@@ -81,9 +81,9 @@ namespace RM.UzTicket.Lib
 
 		public async Task<Station[]> SearchStationsAsync(string name)
 		{
-			var path = $"purchase/station/{name}/";
-			var json = await GetJson(path);
-			return ModelBase.FromJsonArray<Station>(json["value"]);
+			var path = $"train_search/station/?term={name}";
+			var json = await GetJson(path, HttpMethod.Get);
+			return ModelBase.FromJsonArray<Station>(json);
 		}
 
 		public async Task<Station> FetchFirstStationAsync(string name)
@@ -219,13 +219,13 @@ namespace RM.UzTicket.Lib
 
 		private async Task<IDictionary<string, string>> GetDefaultHeadersAsync()
 		{
-			var referer = _baseUrl + "/";
+			var referer = await Task.FromResult(_baseUrl + "/");
 			return new Dictionary<string, string>
 						{
 							["User-Agent"] = _userAgent,
-							["GV-Ajax"] = "1",
+							/*["GV-Ajax"] = "1",
 							["GV-Referer"] = referer,
-							["GV-Token"] = await GetTokenAsync()
+							["GV-Token"] = await GetTokenAsync()*/
 						};
 		}
 
@@ -271,21 +271,17 @@ namespace RM.UzTicket.Lib
 		{
 			var str = await GetString(path, method, headers, data);
 			var json = JsonValue.Parse(str);
-			bool isError;
 
 			if (json.ContainsKey("error") && json["error"] != null
-				&& (!json["error"].TryReadAs(out isError) || isError))
+				&& (!json["error"].TryReadAs(out bool isError) || isError))
 			{
 				string message;
-				JsonValue errorsArray;
 				var value = json["value"];
-				var valueObj = value as JsonObject;
 
 
-				if (valueObj != null && valueObj.TryGetValue("errors", out errorsArray))
+				if (value is JsonObject valueObj && valueObj.TryGetValue("errors", out var errorsArray))
 				{
-					var errors = errorsArray as IEnumerable<JsonValue>;
-					message = errors != null ? String.Join(" | ", errors.Select(jv => jv.ReadAs<string>())) : null;
+					message = errorsArray is IEnumerable<JsonValue> errors ? String.Join(" | ", errors.Select(jv => jv.ReadAs<string>())) : null;
 				}
 				else
 				{
@@ -303,10 +299,10 @@ namespace RM.UzTicket.Lib
 			_userAgent = UserAgentSelector.GetRandomAgent();
 			_httpHandler = new HttpClientHandler();
 			_httpClient = new HttpClient(_httpHandler)
-			{
-				BaseAddress = new Uri(_baseUrl),
-				Timeout = TimeSpan.FromSeconds(_requestTimeout)
-			};
+								{
+									BaseAddress = new Uri(_baseUrl),
+									Timeout = TimeSpan.FromSeconds(_requestTimeout)
+								};
 		}
 
 		private bool IsTokenOutdated()
@@ -315,7 +311,7 @@ namespace RM.UzTicket.Lib
 			return unixNow - _tokenTime > _tokenMaxAge;
 		}
 
-		private string GetUrl(string relPath)
+		private static string GetUrl(string relPath)
 		{
 			return $"{_baseUrl}/{relPath}";
 		}

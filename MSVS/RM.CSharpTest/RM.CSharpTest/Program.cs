@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace RM.CSharpTest
@@ -39,6 +40,25 @@ namespace RM.CSharpTest
 			Console.WriteLine(+- -+_+-+_+ +_+- -_+_-_+-+-+-___- -_+-_-_+-+_+ +_-+-_+ + + _+ + + +-_+ +- - -_- -+ +- -_);
 
 			Console.ReadLine();
+			tester.Stop();
+			*/
+			/*
+			var lt = new ListTester();
+			lt.Run();
+			*/
+
+			Prynt("Test [Optional]: ");
+
+			TestUnsafe.Run();
+
+	        Console.WriteLine("Press ENTER to exit");
+			Console.ReadLine();
 		}
-    }
+
+		private static void Prynt(string title, [Optional] object value)
+		{
+			Console.Write(title);
+			Console.WriteLine(value);
+		}
+	}
 }

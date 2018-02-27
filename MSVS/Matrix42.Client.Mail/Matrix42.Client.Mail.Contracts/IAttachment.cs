@@ -1,5 +1,5 @@
 ﻿
-namespace Matrix42.Client.Mail
+namespace Matrix42.Client.Mail.Contracts
 {
     public interface IAttachment
     {

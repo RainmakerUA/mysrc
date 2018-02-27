@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.Win32;
+using Matrix42.Client.Mail.Contracts;
 using MimeKit;
 
 namespace Matrix42.Client.Mail.Utility
@@ -34,21 +34,15 @@ namespace Matrix42.Client.Mail.Utility
 
 		public static void SaveMimeMessage(MimeMessage message, string fileName, string id)
 		{
-			if (String.IsNullOrEmpty(Path.GetExtension(fileName)))
-			{
-				fileName = Path.ChangeExtension(fileName, _emr);
-			}
-
-			var header = String.Concat(_emrHeader, id, _newline);
-			var headerBytes = Encoding.ASCII.GetBytes(header);
-
-			using (var fs = File.Create(fileName))
-			{
-				fs.Write(headerBytes, 0, headerBytes.Length);
-				message.WriteTo(fs);
-			}
+			SaveToFile(fileName, id, s => message.WriteTo(s));
 		}
 
+		public static void SaveMimeContent(byte[] mimeContent, string fileName, string id)
+		{
+			SaveToFile(fileName, id, s => s.Write(mimeContent, 0, mimeContent.Length));
+		}
+
+		/* TODO: Unused
 		public static void SaveMessage(IMessage message, string fileName, string id)
 		{
 			if (message is IWriteable writeable)
@@ -73,6 +67,7 @@ namespace Matrix42.Client.Mail.Utility
 				throw new NotSupportedException($"Cannot save message of type {message.GetType().FullName}");
 			}
 		}
+		*/
 
 		public static void ConvertMessageFile(string filename, string defaultID)
 		{
@@ -131,6 +126,23 @@ namespace Matrix42.Client.Mail.Utility
 			}
 
 			return ReadMessageID(fs, isDat);
+		}
+
+		private static void SaveToFile(string fileName, string id, Action<Stream> writeContent)
+		{
+			if (String.IsNullOrEmpty(Path.GetExtension(fileName)))
+			{
+				fileName = Path.ChangeExtension(fileName, _emr);
+			}
+
+			var header = String.Concat(_emrHeader, id, _newline);
+			var headerBytes = Encoding.ASCII.GetBytes(header);
+
+			using (var fs = File.Create(fileName))
+			{
+				fs.Write(headerBytes, 0, headerBytes.Length);
+				writeContent(fs);
+			}
 		}
 
 		private static string ReadMessageID(Stream fs, bool isDat)

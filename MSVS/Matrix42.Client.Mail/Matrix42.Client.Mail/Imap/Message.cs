@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Matrix42.Client.Mail.Contracts;
+using Matrix42.Client.Mail.Utility;
 using MimeKit;
 
 namespace Matrix42.Client.Mail.Imap
 {
-	internal sealed class Message : IMessage, Utility.IWriteable
+	internal sealed class Message : IMessage, IWriteable
 	{
 		private readonly MimeMessage _message;
 
@@ -14,11 +16,11 @@ namespace Matrix42.Client.Mail.Imap
 			_message = message;
 
 			ID = id;
-			From = MailAddress.From(message.From);
-			Sender = MailAddress.From(message.Sender);
-			To = MailAddress.ListFrom(message.To);
-			Cc = MailAddress.ListFrom(message.Cc);
-			Bcc = MailAddress.ListFrom(message.Bcc);
+			From = message.From.ToMailAddress();
+			Sender = message.Sender.ToMailAddress();
+			To = message.To.ToMailAddresses();
+			Cc = message.Cc.ToMailAddresses();
+			Bcc = message.Bcc.ToMailAddresses();
 			Subject = message.Subject;
 			BodyText = message.TextBody;
 			BodyHtml = message.HtmlBody; //TODO: Handle text-only & html-only messages
@@ -73,13 +75,13 @@ namespace Matrix42.Client.Mail.Imap
 			switch (importance)
 			{
 				case MessageImportance.Low:
-					return Mail.Importance.Low;
+					return Contracts.Importance.Low;
 
 				case MessageImportance.Normal:
-					return Mail.Importance.Normal;
+					return Contracts.Importance.Normal;
 
 				case MessageImportance.High:
-					return Mail.Importance.High;
+					return Contracts.Importance.High;
 
 				default:
 					return new Importance?();
