@@ -43,8 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Morse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Static.cs" />
+    <Compile Include="StaticBfi.cs" />
     <Compile Include="Tester.cs" />
   </ItemGroup>
   <ItemGroup>
