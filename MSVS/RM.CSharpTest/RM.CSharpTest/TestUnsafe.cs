@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RM.CSharpTest
 {
@@ -17,8 +13,9 @@ namespace RM.CSharpTest
 
 
 			Console.WriteLine("SizeOf(...) = {0}", Unsafe.SizeOf<ValueTuple<int, int, UIntPtr>>());
-			Console.WriteLine("Offset = {0}", Unsafe.ByteOffset(ref z2, ref z1));
-			Console.WriteLine(Unsafe.AddByteOffset(ref zz, new IntPtr(1)));
+			Console.WriteLine("SizeOf(...) = {0}", Unsafe.SizeOf<ValueTuple<string>>());
+			Console.WriteLine("Offset = {0}", Unsafe.ByteOffset(ref z2.Item4, ref z1.Item4));
+			Console.WriteLine(Unsafe.AddByteOffset(ref z1.Item4, new IntPtr(8)));
 		}
 	}
 }

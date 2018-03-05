@@ -38,11 +38,9 @@ namespace RM.CSharpTest
 			var ___ = new Morse(withSpace: true);
 
 			Console.WriteLine(+- -+_+-+_+ +_+- -_+_-_+-+-+-___- -_+-_-_+-+_+ +_-+-_+ + + _+ + + +-_+ +- - -_- -+ +- -_);
+			
 
-			Console.ReadLine();
-			tester.Stop();
-			*/
-			/*
+	        /*
 			var lt = new ListTester();
 			lt.Run();
 			*/
