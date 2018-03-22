@@ -17,5 +17,10 @@ namespace RM.UzTicket.Lib.Model
 		{
 			return DateTime.ToString("dd MMMM HH:mm");
 		}
+
+		internal static UzTime Create(DateTime dateTime)
+		{
+			return new UzTime { DateTime = dateTime };
+		}
 	}
 }

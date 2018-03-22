@@ -52,19 +52,19 @@ namespace RM.UzTicket.Lib
 		private readonly Func<string, string, Task> _successCallbackAsync;
 		private readonly int _delay;
 		private readonly IDictionary<string, ScanData> _scanStates;
-		private readonly Test.IUzService _service;
+		private readonly Func<Test.IUzService> _serviceCreator;
 		private readonly CancellationTokenSource _cancelTokenSource;
 		
 		private volatile bool _isRunning;
 		private bool _isDisposed;
 
-		public UzScanner(Func<string, string, Task> successCallbackAsync, int secondsDelay = _defaultDelay, Test.IUzService service = null)
+		public UzScanner(Func<string, string, Task> successCallbackAsync, int secondsDelay = _defaultDelay, Func<Test.IUzService> serviceCreator = null)
 		{
 			_successCallbackAsync = successCallbackAsync;
 			_delay = secondsDelay;
 
 			_scanStates = new ConcurrentDictionary<string, ScanData>();
-			_service = service ?? new UzService();
+			_serviceCreator = serviceCreator;
 			_cancelTokenSource = new CancellationTokenSource();
 		}
 
@@ -84,7 +84,6 @@ namespace RM.UzTicket.Lib
 					// Free managed resources
 					Reset();
 
-					_service.Dispose();
 					_cancelTokenSource.Dispose();
 				}
 
@@ -149,6 +148,11 @@ namespace RM.UzTicket.Lib
 			_scanStates.Clear();
 		}
 
+		private Test.IUzService CreateService()
+		{
+			return _serviceCreator?.Invoke() ?? new UzService();
+		}
+
 		private void Start()
 		{
 			Task.Run(Run, _cancelTokenSource.Token);
@@ -191,53 +195,56 @@ namespace RM.UzTicket.Lib
 				{
 					data.IncAttempts();
 
-					var item = data.Item;
-					var train = await _service.FetchTrainAsync(item.Date, item.Source, item.Destination, item.TrainNumber);
-
-					if (train != null)
+					using (var service = CreateService())
 					{
-						CoachType[] coachTypes;
+						var item = data.Item;
+						var train = await service.FetchTrainAsync(item.Date, item.Source, item.Destination, item.TrainNumber);
 
-						if (!String.IsNullOrEmpty(item.CoachType))
+						if (train != null)
 						{
-							var coachType = FindCoachType(train, item.CoachType);
+							CoachType[] coachTypes;
 
-							if (coachType == null)
+							if (!String.IsNullOrEmpty(item.CoachType))
 							{
-								HandleError(scanId, data, $"Coach type {item.CoachType} not found");
-								return;
+								var coachType = FindCoachType(train, item.CoachType);
+
+								if (coachType == null)
+								{
+									HandleError(scanId, data, $"Coach type {item.CoachType} not found");
+									return;
+								}
+
+								coachTypes = new[] { coachType };
+							}
+							else
+							{
+								coachTypes = train.CoachTypes;
 							}
 
-							coachTypes = new[] { coachType };
+							var sessionId = await BookAsync(train, coachTypes, item.FirstName, item.LastName);
+
+							if (!String.IsNullOrEmpty(sessionId))
+							{
+								await _successCallbackAsync(item.CallbackId, sessionId);
+								Abort(scanId);
+							}
+							else
+							{
+								HandleError(scanId, data, "No vacant seats");
+							}
 						}
 						else
 						{
-							coachTypes = train.CoachTypes;
+							HandleError(scanId, data, $"Train {item.TrainNumber} not found");
 						}
-
-						var sessionId = await BookAsync(train, coachTypes, item.FirstName, item.LastName);
-
-						if (!String.IsNullOrEmpty(sessionId))
-						{
-							await _successCallbackAsync(item.CallbackId, sessionId);
-							Abort(scanId);
-						}
-						else
-						{
-							HandleError(scanId, data, "No vacant seats");
-						}
-					}
-					else
-					{
-						HandleError(scanId, data, $"Train {item.TrainNumber} not found");
 					}
 				}
 			}
 		}
 
-		private static async Task<string> BookAsync(Train train, CoachType[] coachTypes, string firstName, string lastName)
+		private async Task<string> BookAsync(Train train, CoachType[] coachTypes, string firstName, string lastName)
 		{
-			using (var client = new UzService())
+			using (var client = CreateService())
 			{
 				foreach (var coachType in coachTypes)
 				{

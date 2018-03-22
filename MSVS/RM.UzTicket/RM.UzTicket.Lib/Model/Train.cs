@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace RM.UzTicket.Lib.Model
 {
-	public class Train : ModelBase
+	public sealed class Train : ModelBase
 	{
 		public string Number { get; private set; }
 
@@ -62,6 +62,22 @@ namespace RM.UzTicket.Lib.Model
 							Number, TrainSourceStation, TrainDestinationStation,
 							DepartureTime, ArrivalTime, TravelTime
 						);
+		}
+
+		internal static Train Create(string number, Station from, Station to, DateTime departure, DateTime arrival, CoachType[] types)
+		{
+			return new Train
+						{
+							Number = number,
+							SourceStation = from,
+							DestinationStation = to,
+							DepartureTime = UzTime.Create(departure),
+							ArrivalTime = UzTime.Create(arrival),
+							TrainSourceStation = $"Before_{from.Title}",
+							TrainDestinationStation = $"After_{to.Title}",
+							TravelTime = arrival - departure,
+							CoachTypes = types
+						};
 		}
 
 		private static Station StationFromJson(JsonValue json)

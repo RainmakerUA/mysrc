@@ -2,7 +2,7 @@
 
 namespace RM.UzTicket.Lib.Model
 {
-	public class Station : ModelBase
+	public sealed class Station : ModelBase
 	{
 		public int ID { get; private set; }
 
@@ -22,7 +22,7 @@ namespace RM.UzTicket.Lib.Model
 			return $"{Title} ({ID})";
 		}
 
-		public static Station Create(int id, string title, string region = null)
+		internal static Station Create(int id, string title, string region = null)
 		{
 			return new Station { ID = id, Title = title, Region = region };
 		}

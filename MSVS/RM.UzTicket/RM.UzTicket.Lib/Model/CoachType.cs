@@ -21,5 +21,15 @@ namespace RM.UzTicket.Lib.Model
 		{
 			return $"{Letter}: {PlacesCount} ({Title})";
 		}
+
+		internal static CoachType Create(string title, string letter, int placesCount = 0)
+		{
+			return new CoachType
+						{
+							Title = title,
+							Letter = letter,
+							PlacesCount = placesCount
+						};
+		}
 	}
 }
