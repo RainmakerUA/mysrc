@@ -11,9 +11,9 @@ namespace RM.UzTicket.Lib.Utils
 			return (int)(dateTime.ToUniversalTime() - _unixEpoch).TotalSeconds;
 		}
 
-		public static string ToMmDdYyyyString(this DateTime dateTime)
+		public static string ToRequestString(this DateTime dateTime)
 		{
-			return dateTime.ToString("MM.dd.yyyy");
+			return dateTime.ToString("yyyy-MM-dd");
 		}
 
 		public static DateTime FromUnixTime(int unixTime)

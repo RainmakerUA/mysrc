@@ -2,9 +2,9 @@
 
 namespace RM.UzTicket.Lib
 {
-	public class UzTicketScanResult<T> : EventArgs
+	public class ScanResult<T> : EventArgs
 	{
-		public UzTicketScanResult(string scanID, T data)
+		public ScanResult(string scanID, T data)
 		{
 			ScanID = scanID;
 			Data = data;

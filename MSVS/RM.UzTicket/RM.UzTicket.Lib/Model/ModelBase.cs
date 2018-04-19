@@ -9,13 +9,6 @@ namespace RM.UzTicket.Lib.Model
 	{
 		protected abstract void FromJsonObject(JsonObject obj);
 
-		public abstract IDictionary<string, string> ToDictionary();
-
-		protected T GetValueOrDefault<T>(JsonObject jobj, string key)
-		{
-			return jobj?[key] != null && jobj[key].TryReadAs<T>(out T result) ? result : default;
-		}
-
 		public static T FromJson<T>(JsonValue json) where T : ModelBase, new()
 		{
 			var obj = CheckJson(json);
@@ -33,14 +26,7 @@ namespace RM.UzTicket.Lib.Model
 
 		protected static JsonObject CheckJson(JsonValue json)
 		{
-			var jsonObj = json as JsonObject;
-
-			if (jsonObj == null)
-			{
-				throw new ArgumentException("Argument must be a JsonObject", nameof(json));
-			}
-
-			return jsonObj;
+			return json as JsonObject ?? throw new ArgumentException("Argument must be a JsonObject", nameof(json));
 		}
 	}
 }

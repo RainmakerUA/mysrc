@@ -7,51 +7,38 @@ namespace RM.UzTicket.Lib.Model
 {
 	public class Coach : ModelBase
 	{
-		public bool AllowBonus { get; set; }
+		public bool AllowBonus { get; private set; }
 
-		public string Class { get; set; }
+		public string Class { get; private set; }
 
-		public int TypeId { get; set; }
+		public string Type { get; private set; }
 
-		public bool HasBedding { get; set; }
+		public int Railway { get; private set; }
 
-		public int Number { get; set; }
+		public bool HasBedding { get; private set; }
 
-		public int PlacesCount { get; set; }
+		public int Number { get; private set; }
 
-		public IDictionary<string, decimal> Prices { get; set; }
+		public int PlacesCount { get; private set; }
 
-		public decimal ReservePrice { get; set; }
+		public IDictionary<string, decimal> Prices { get; private set; }
 
-		public string[] Services { get; set; }
+		public decimal ReservePrice { get; private set; }
+
+		public string[] Services { get; private set; }
 
 		protected override void FromJsonObject(JsonObject obj)
 		{
-			AllowBonus = obj["allow_bonus"].ReadAs<bool>();
-			Class = obj["coach_class"].ReadAs<string>();
-			TypeId = obj["coach_type_id"].ReadAs<int>();
-			HasBedding = obj["has_bedding"].ReadAs<bool>();
+			AllowBonus = obj["allowBonus"].ReadAs<bool>();
+			Class = obj["class"].ReadAs<string>();
+			Type = obj.GetValueOrDefault<string>("type") ?? obj.GetValueOrDefault<string>("id");
+			Railway = obj["railway"].ReadAs<int>();
+			HasBedding = obj["hasBedding"].ReadAs<bool>();
 			Number = obj["num"].ReadAs<int>();
-			PlacesCount = obj["places_cnt"].ReadAs<int>();
-			ReservePrice = (decimal)obj["reserve_price"].ReadAs<int>() / 100;
-			Services = (obj["services"] as IEnumerable<JsonValue>).Select(jv => jv.ReadAs<string>()).ToArray();
-			Prices = (obj["prices"] as JsonObject).ToDictionary(kv => kv.Key, kv => (decimal)kv.Value.ReadAs<int>() / 100);
-		}
-
-		public override IDictionary<string, string> ToDictionary()
-		{
-			return new Dictionary<string, string>
-						{
-							["allow_bonus"] = AllowBonus ? "true" : "false",
-							["coach_class"] = Class,
-							["coach_type_id"] = TypeId.ToString(),
-							["has_bedding"] = HasBedding ? "true" : "false",
-							["num"] = Number.ToString(),
-							["places_cnt"] = PlacesCount.ToString(),
-							["reserve_price"] = (100 * ReservePrice).ToString("F0"),
-							//["services"] = ?
-							//["prices"] = ?
-						};
+			PlacesCount = obj["placesCnt"].ReadAs<int>();
+			ReservePrice = (decimal)obj["reservePrice"].ReadAs<int>() / 100;
+			Services = (obj["services"] as IEnumerable<JsonValue>)?.Select(jv => jv.ReadAs<string>()).ToArray();
+			Prices = (obj["prices"] as JsonObject)?.ToDictionary(kv => kv.Key, kv => (decimal)kv.Value.ReadAs<int>() / 100);
 		}
 
 		public string GetInfo()

@@ -56,6 +56,11 @@ namespace RM.UzTicket.App.Controls
 			}
 		}
 
+		private void buttonComplete_Click(object sender, EventArgs e)
+		{
+			UpdateTextAsync();
+		}
+
 		#region Private methods
 
 		private void OnComplete(CompleteAsyncEventArgs e)
@@ -64,10 +69,5 @@ namespace RM.UzTicket.App.Controls
 		}
 
 		#endregion
-
-		private void buttonComplete_Click(object sender, EventArgs e)
-		{
-			UpdateTextAsync();
-		}
 	}
 }

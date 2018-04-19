@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
 using Con = System.Console;
 
@@ -10,6 +11,10 @@ namespace RM.UzTicket.Console
 
 		private static void Main(string[] args)
 		{
+			Con.InputEncoding = Encoding.UTF8;
+			Con.OutputEncoding = Encoding.UTF8;
+
+
 			RunTests();
 			
 			IDisposable locker = new Lib.Utils.AsyncLock(_locker);
@@ -28,12 +33,13 @@ namespace RM.UzTicket.Console
 
 			try
 			{
-				InlineTest();
-				Tests.JjDecoderTest.Run();
-				Tests.UtilsTest.TestParseToken();
-				Tests.ModelTest.Run();
+				//InlineTest();
+				//Tests.JjDecoderTest.Run();
+				//Tests.UtilsTest.TestParseToken();
+				//Tests.ModelTest.Run();
 				//await Tests.UzClientTest.Run();
-				Tests.UzScannerTest.Run();
+				//Tests.UzScannerTest.Run();
+				await Tests.UzServiceTest.Run(true);
 				// ...
 
 				Con.WriteLine("Tests completed!");

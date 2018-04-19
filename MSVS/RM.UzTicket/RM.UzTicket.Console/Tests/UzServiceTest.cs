@@ -11,7 +11,7 @@ namespace RM.UzTicket.Console.Tests
 {
 	internal static class UzServiceTest
 	{
-		public static async Task Run()
+		public static async Task Run(bool routeTest = false)
 		{
 			Station startStation, endStation;
 			Train train;
@@ -72,6 +72,16 @@ namespace RM.UzTicket.Console.Tests
 					coachType = train?.CoachTypes?.FirstOrDefault(ct => ct.Letter == coachLetter);
 				} while (train == null || coachType == null);
 
+				if (routeTest)
+				{
+					var routes = await client.GetTrainRoutes(
+												RouteData.Create(startStation, endStation, train.DepartureTime, train)
+											);
+
+					Con.WriteLine(routes[0].GetInfo());
+					return;
+				}
+
 				var coaches = await client.ListCoachesAsync(train, coachType);
 
 				if (coaches != null)
@@ -98,9 +108,9 @@ namespace RM.UzTicket.Console.Tests
 				} while (coach == null);
 
 				var seats = await client.ListSeatsAsync(train, coach);
-
+				
 				Con.WriteLine("Seats: ");
-				Con.WriteLine(String.Join("\u0020", seats.Select(s => s.ToString("D2"))));
+				Con.WriteLine(String.Join(Environment.NewLine, seats.Select(kv => $"{kv.Key}: {String.Join("\u0020", kv.Value.Select(v => v.ToString("D2")))}")));
 
 				do
 				{
@@ -109,13 +119,29 @@ namespace RM.UzTicket.Console.Tests
 					seatNumber = Int32.Parse(seatNum);
 				} while (seatNumber == 0);
 
+				Seat seat = null;
+
+				foreach (var charline in seats.Keys)
+				{
+					if ( Array.IndexOf(seats[charline], seatNumber) >= 0)
+					{
+						seat = Seat.Create(charline, seatNumber);
+						break;
+					}
+				}
+
+				if (seat == null)
+				{
+					throw new Exception("Seat is not found!");
+				}
+
 				Con.Write("Enter firstname and lastname: ");
 
 				res = Con.ReadLine().Split(new[] {'\u0020', ',', ';'}, StringSplitOptions.RemoveEmptyEntries);
 
 				Con.WriteLine("Booking selected seat...");
 
-				var bl = await client.BookSeatAsync(train, coach, seatNumber, res[0], res[1]);
+				var bl = await client.BookSeatAsync(train, coach, seat, res[0], res[1]);
 
 				var sessionId = client.GetSessionId();
 				Con.WriteLine($"In console: document.cookie='{sessionId}'");

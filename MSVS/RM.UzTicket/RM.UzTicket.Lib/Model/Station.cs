@@ -1,36 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Json;
+﻿using System.Json;
 
 namespace RM.UzTicket.Lib.Model
 {
-	public class Station : ModelBase
+	public sealed class Station : ModelBase
 	{
-		public int Id { get; set; }
+		public int ID { get; private set; }
 
-		public string Title { get; set; }
+		public string Title { get; private set; }
 
-		public string Region { get; set; }
+		public string Region { get; private set; }
 
 		protected override void FromJsonObject(JsonObject obj)
 		{
-			Id = GetValueOrDefault<int>(obj, "value");
-			Title = GetValueOrDefault<string>(obj, "title");
-			Region = GetValueOrDefault<string>(obj, "region");
-		}
-
-		public override IDictionary<string, string> ToDictionary()
-		{
-			return new Dictionary<string, string>
-						{
-							["value"] = Id.ToString(),
-							["title"] = Title,
-							["region"] = Region
-						};
+			ID = obj["value"].ReadAs<int>();
+			Title = obj["title"].ReadAs<string>();
+			Region = obj.GetValueOrDefault<string>("region");
 		}
 
 		public override string ToString()
 		{
-			return $"{Title} ({Id})";
+			return $"{Title} ({ID})";
+		}
+
+		internal static Station Create(int id, string title, string region = null)
+		{
+			return new Station { ID = id, Title = title, Region = region };
 		}
 	}
 }
