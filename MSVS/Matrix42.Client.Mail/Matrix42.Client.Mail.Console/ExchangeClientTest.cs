@@ -5,6 +5,15 @@ namespace Matrix42.Client.Mail.Console
 {
 	internal class ExchangeClientTest
 	{
+		private const string _akLogin = "andreykostenko@matrix42Office365GER.onmicrosoft.de";
+		private const string _akPwd = "Matrix42!";
+		private const string _akFolder = "Inbox\\emr";
+
+		private const string _m42Login = "matrix42Office365GER@matrix42Office365GER.onmicrosoft.de";
+		private const string _m42Pwd = "8tzT8ErszHa0fO9K";
+		private const string _m42Folder = "Inbox\\subin2";
+
+
 		private readonly string _host;
 		private readonly int? _port;
 		private readonly bool _useSsl;
@@ -16,9 +25,9 @@ namespace Matrix42.Client.Mail.Console
 		private readonly bool _ignoreOoo;
 
 		public ExchangeClientTest()
-			: this("outlook.office.de", null, true, "matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", "8tzT8ErszHa0fO9K",
-					"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", new MailFolder { Name = "Inbox\\subin2", Type = FolderType.Message },
-					new MailFolder { Name = "Inbox\\subin1", Type = FolderType.Message }, false)
+			: this("outlook.office.de", null, true, _akLogin, _akPwd, _akLogin,
+					new MailFolder { Name = _akFolder, Type = FolderType.Message },
+					null/*new MailFolder { Name = "Inbox\\subin1", Type = FolderType.Message }*/, false)
 		{
 			// Do nothing
 		}
