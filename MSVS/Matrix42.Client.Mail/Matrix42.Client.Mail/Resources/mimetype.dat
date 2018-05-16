@@ -15,7 +15,7 @@ application/davmount+xml davmount
 application/docbook+xml dbk
 application/dssc+der dssc
 application/dssc+xml xdssc
-application/ecmascript ecma
+application/ecmascript ecma es
 application/emma+xml emma
 application/epub+zip epub
 application/exi exi
@@ -33,7 +33,7 @@ application/hyperstudio stk
 application/inkml+xml ink inkml
 application/ipfix ipfix
 application/java-archive jar war ear
-application/javascript js
+application/javascript js mjs
 application/java-serialized-object ser
 application/java-vm class
 application/json json map
@@ -159,6 +159,7 @@ application/vnd.businessobjects rep
 application/vnd.chemdraw+xml cdxml
 application/vnd.chipnuts.karaoke-mmd mmd
 application/vnd.cinderella cdy
+application/vnd.citationstyles.style+xml csl
 application/vnd.claymore cla
 application/vnd.cloanto.rp9 rp9
 application/vnd.clonk.c4group c4g c4d c4f c4p c4u
@@ -350,7 +351,7 @@ application/vnd.ms-powerpoint.template.macroenabled.12 potm
 application/vnd.ms-powerpoint.template.macroEnabled.12 potm
 application/vnd.ms-project mpp mpt
 application/vnd.ms-publisher pub
-application/vnd.ms-visio.viewer vsd
+application/vnd.ms-visio.viewer vsd vdx
 application/vnd.ms-word.document.12 docx
 application/vnd.ms-word.document.macroenabled.12 docm
 application/vnd.ms-word.document.macroEnabled.12 docm
@@ -450,6 +451,7 @@ application/vnd.stardivision.writer sdw vor
 application/vnd.stardivision.writer-global sgl
 application/vnd.stepmania.package smzip
 application/vnd.stepmania.stepchart sm
+application/vnd.sun.wadl+xml wadl
 application/vnd.sun.xml.calc sxc
 application/vnd.sun.xml.calc.template stc
 application/vnd.sun.xml.draw sxd
@@ -532,8 +534,9 @@ application/x-cfs-compressed cfs
 application/x-chat chat
 application/x-chess-pgn pgn
 application/x-cocoa cco
-application/x-col-launch citrixonline
+application/x-col-launch citrixonline gotoopener
 application/x-col-launch408 citrixonline408
+application/x-col-launch473 gotoopener473
 application/x-compress z
 application/x-compressed solitairetheme8
 application/x-conference nsc
@@ -572,6 +575,15 @@ application/x-gotomeeting6871 gotomeeting6871
 application/x-gotomeeting6956 gotomeeting6956
 application/x-gotomeeting7092 gotomeeting7092
 application/x-gotomeeting7107 gotomeeting7107
+application/x-gotomeeting8199 gotomeeting8199
+application/x-gotomeeting8404 gotomeeting8404
+application/x-gotomeeting8473 gotomeeting8473
+application/x-gotomeeting8557 gotomeeting8557
+application/x-gotomeeting8569 gotomeeting8569
+application/x-gotomeeting8625 gotomeeting8625
+application/x-gotomeeting8679 gotomeeting8679
+application/x-gotomeeting8789 gotomeeting8789
+application/x-gotomeeting8794 gotomeeting8794
 application/x-gramps-xml gramps
 application/x-gtar gtar
 application/x-gzip gz
@@ -721,12 +733,20 @@ chemical/x-cmdf cmdf
 chemical/x-cml cml
 chemical/x-csml csml
 chemical/x-xyz xyz
-image/bmp bmp
+font/collection ttc
+font/otf otf
+font/ttf ttf
+font/woff woff
+font/woff2 woff2
+image/bmp bmp dib
 image/cgm cgm
 image/g3fax g3
 image/gif gif
 image/ief ief
+image/jp2 jp2 jpg2
 image/jpeg jpeg jpg jpe jfif
+image/jpm jpm
+image/jpx jpx jpf
 image/ktx ktx
 image/pjpeg jpg
 image/png png
@@ -774,8 +794,16 @@ image/x-wmf wmf
 image/x-xbitmap xbm
 image/x-xpixmap xpm
 image/x-xwindowdump xwd
+message/disposition-notification disposition-notification
+message/global u8msg
+message/global-delivery-status u8dsn
+message/global-disposition-notification u8mdn
+message/global-headers u8hdr
 message/rfc822 eml mime
+message/vnd.wfa.wsc wsc
 midi/mid mid
+model/gltf+json gltf
+model/gltf-binary glb
 model/iges igs iges
 model/mesh msh mesh silo
 model/vnd.collada+xml dae

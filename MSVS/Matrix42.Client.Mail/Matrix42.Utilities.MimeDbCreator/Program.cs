@@ -18,11 +18,15 @@ namespace Matrix42.Utilities.MimeDbCreator
 
 			public bool UseRegistry;
 
+			public bool UpdateFile;
+
 			public string OutFileName;
 		}
 
+		private const char _space = '\u0020';
+		private const string _strSpace = "\u0020";
 		private const string _mimeDbUrl = "https://cdn.rawgit.com/jshttp/mime-db/master/db.json";
-		private const string _help = "Usage:\r\ncreator.exe -m|-r|-mr outfile.txt";
+		private const string _help = "Usage:\r\ncreator.exe -m|-r|-u|-mr|-mu|-ru|-mru outfile.txt";
 
 		private static void Main(string[] args)
 		{
@@ -36,10 +40,10 @@ namespace Matrix42.Utilities.MimeDbCreator
 			{
 				var mdb = options.UseMimeDB ? GetMimeDb() : null;
 				var result = options.UseRegistry ? AddRegistryData(mdb) : mdb;
-				var written = WriteMimeData(options.OutFileName, result);
+				var written = WriteMimeData(options.OutFileName, result, options.UpdateFile);
 				Console.WriteLine($"{written} entries were written to {options.OutFileName}");
 			}
-			
+
 			Console.WriteLine("Press any key to exit");
 			Console.ReadKey(true);
 		}
@@ -56,9 +60,9 @@ namespace Matrix42.Utilities.MimeDbCreator
 				{
 					if (kv.Value is JsonObject obj && obj.TryGetValue("source", out var sourceJv))
 					{
-						var entry = new MimeDbEntry{source = sourceJv.ReadAs<string>()}	;
+						var entry = new MimeDbEntry { source = sourceJv.ReadAs<string>() };
 
-						if(obj.TryGetValue("compressible", out var comprJv))
+						if (obj.TryGetValue("compressible", out var comprJv))
 						{
 							entry.compressible = comprJv.ReadAs<bool>();
 						}
@@ -67,7 +71,7 @@ namespace Matrix42.Utilities.MimeDbCreator
 						{
 							entry.extensions = extJv is JsonArray jarr ? jarr.Cast<JsonValue>().Select(jv => jv.ReadAs<string>()).ToArray() : null;
 						}
-					
+
 						return entry;
 					}
 
@@ -76,7 +80,7 @@ namespace Matrix42.Utilities.MimeDbCreator
 
 				return result;
 			}
-			
+
 			return null;
 		}
 
@@ -117,10 +121,10 @@ namespace Matrix42.Utilities.MimeDbCreator
 									{
 										entry.extensions = new[] { ext };
 									}
-									else if (Array.IndexOf(entry.extensions, ext) == -1)
+									else
 									{
-										var list = new List<string>(entry.extensions) { ext };
-										entry.extensions = list.ToArray();
+										var set = new HashSet<string>(entry.extensions) { ext };
+										entry.extensions = set.ToArray();
 									}
 								}
 							}
@@ -132,9 +136,52 @@ namespace Matrix42.Utilities.MimeDbCreator
 			return dict;
 		}
 
-		private static int WriteMimeData(string filename, IDictionary<string, MimeDbEntry> mimeData)
+		private static int WriteMimeData(string filename, IDictionary<string, MimeDbEntry> mimeData, bool update)
 		{
 			var numWritten = 0;
+
+			if (File.Exists(filename))
+			{
+				if (update)
+				{
+					using (var sr = File.OpenText(filename))
+					{
+						do
+						{
+							string str;
+
+							if (!String.IsNullOrEmpty(str = sr.ReadLine()))
+							{
+								var parts = str.Split(new[] { _strSpace }, StringSplitOptions.RemoveEmptyEntries);
+
+								if (parts.Length > 1)
+								{
+									var mimeType = parts[0];
+									var extensions = new HashSet<string>();
+
+									extensions.UnionWith(parts.Skip(1));
+
+									if (!mimeData.TryGetValue(mimeType, out var entry) || entry == null)
+									{
+										entry = new MimeDbEntry();
+										mimeData[mimeType] = entry;
+									}
+
+									if (entry.extensions != null && entry.extensions.Length != 0)
+									{
+										extensions.UnionWith(entry.extensions);
+									}
+
+									entry.extensions = extensions.ToArray();
+								}
+							}
+						}
+						while (!sr.EndOfStream);
+					}
+				}
+
+				File.Copy(filename, filename + ".bak", true);
+			}
 
 			using (var fs = File.OpenWrite(filename))
 			{
@@ -149,7 +196,8 @@ namespace Matrix42.Utilities.MimeDbCreator
 
 						if (extensions != null && extensions.Length > 0)
 						{
-							tw.WriteLine("{0} {1}", key, String.Join("\u0020", extensions));
+							// Do not sort extensions due to priority.
+							tw.WriteLine("{0} {1}", key, String.Join(_strSpace, extensions));
 							numWritten += 1;
 						}
 					}
@@ -179,6 +227,11 @@ namespace Matrix42.Utilities.MimeDbCreator
 							case 'R':
 							case 'r':
 								result.UseRegistry = true;
+								break;
+
+							case 'U':
+							case 'u':
+								result.UpdateFile = true;
 								break;
 
 							default:
