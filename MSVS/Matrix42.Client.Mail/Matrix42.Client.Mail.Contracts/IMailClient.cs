@@ -5,7 +5,7 @@ namespace Matrix42.Client.Mail.Contracts
 {
     public interface IMailClient : IDisposable
     {
-		//int ServerType { get; }
+		/*int ServerType { get; }
 
 		ClientConfig Connection { get; }
 
@@ -13,7 +13,7 @@ namespace Matrix42.Client.Mail.Contracts
 
 		string FolderToMove { get; }
 
-		/*string FolderSeparator { get; }
+		string FolderSeparator { get; }
 
 		bool IgnoreAbsenceMails { get; }
 

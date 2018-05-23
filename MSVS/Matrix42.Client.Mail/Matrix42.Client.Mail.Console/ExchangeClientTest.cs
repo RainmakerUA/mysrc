@@ -5,48 +5,22 @@ namespace Matrix42.Client.Mail.Console
 {
 	internal class ExchangeClientTest
 	{
-		private readonly string _host;
-		private readonly int? _port;
-		private readonly bool _useSsl;
-		private readonly string _username;
-		private readonly string _password;
-		private readonly string _mailAddress;
-		private readonly MailFolder _folder;
-		private readonly MailFolder _folderToMove;
-		private readonly bool _ignoreOoo;
+		private readonly ClientConfig _config;
 
-		public ExchangeClientTest()
-			: this("outlook.office.de", null, true, "matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", "8tzT8ErszHa0fO9K",
-					"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", new MailFolder { Name = "Inbox\\subin2", Type = FolderType.Message },
-					new MailFolder { Name = "Inbox\\subin1", Type = FolderType.Message }, false)
+		public ExchangeClientTest(ClientConfig config)
 		{
-			// Do nothing
-		}
-
-		public ExchangeClientTest(string host, int? port, bool useSsl, string username, string password, string mailAddress, MailFolder folder, MailFolder folderToMove, bool ignoreOoo)
-		{
-			_host = host;
-			_port = port;
-			_useSsl = useSsl;
-			_username = username;
-			_password = password;
-			_mailAddress = mailAddress;
-			_folder = folder;
-			_folderToMove = folderToMove;
-			_ignoreOoo = ignoreOoo;
+			_config = config;
 		}
 
 		public void Execute()
 		{
 			try
 			{
-				var config = ClientConfig.MakeConfig(MailServerType.Exchange2010Sp2, _host, _port, _useSsl, _mailAddress, _username, _password, _folder, _folderToMove, _ignoreOoo);
-
-				using (var client = MailClientFactory.GetClient(config, true))
+				using (var client = MailClientFactory.GetClient(_config))
 				{
 					//FetchAndProcessMessage(client);
-					SaveMessage(client);
-					//ListFolders(client);
+					//SaveMessage(client);
+					ListFolders(client, FolderType.Public);
 
 					//SearchMessages(client);
 				}
@@ -79,11 +53,11 @@ namespace Matrix42.Client.Mail.Console
 			client.SaveMessage(@"E:\_Temp\out.emr", id);
 		}
 
-		private static void ListFolders(IMailClient client)
+		private static void ListFolders(IMailClient client, FolderType folderType)
 		{
-			var folders = client.GetFolderNames(FolderType.Message);
+			var folders = client.GetFolderNames(folderType);
 
-			System.Console.WriteLine(folders.Count > 0 ? "Folders found:" : "No folders found.");
+			System.Console.WriteLine(folders.Count > 0 ? "{0} folders found:" : "No {0} folders found.", folderType);
 
 			foreach (var folder in folders)
 			{

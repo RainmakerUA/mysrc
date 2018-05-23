@@ -87,7 +87,7 @@ namespace Matrix42.Client.Mail.Imap
 
 		public IReadOnlyList<string> GetFolderNames(FolderType type)
 		{
-			EnsureInitialized(FolderAccess.None, true);
+			EnsureInitialized(FolderAccess.None, false);
 
 			var folders = _client.GetFolders(new FolderNamespace(_defaultSeparator, String.Empty));
 
@@ -144,14 +144,15 @@ namespace Matrix42.Client.Mail.Imap
 				throw new InvalidOperationException("IMAP Client is not configured!");
 			}
 
-			if (_client.ServerCertificateValidationCallback == null)
-			{
-				_client.ServerCertificateValidationCallback = NetworkHelper.ServerCertificateValidationCallback;
-			}
+			// MailKit uses default validation which allows self-signed certificates.
+			//if (_client.ServerCertificateValidationCallback == null)
+			//{
+			//	_client.ServerCertificateValidationCallback = NetworkHelper.ServerCertificateValidationCallback;
+			//}
 
 			if (!_client.IsConnected)
 			{
-				_client.Connect(_config.Host, _config.Port.GetValueOrDefault(), _config.UseSsl);
+				_client.Connect(_config.Host, _config.Port ?? 0, _config.UseSsl);
 			}
 
 			if (!_client.IsAuthenticated)

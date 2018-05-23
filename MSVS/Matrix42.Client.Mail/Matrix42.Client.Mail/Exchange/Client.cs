@@ -12,23 +12,44 @@ namespace Matrix42.Client.Mail.Exchange
 {
 	internal sealed class Client : IMailClient
 	{
-		private const string _serviceUrlFormat = "{0}://{1}/EWS/Exchange.asmx";
+		private struct FolderInfo
+		{
+			public readonly string FullName;
+			public readonly Folder Folder;
+
+			public FolderInfo(Folder folder)
+			{
+				FullName = folder.DisplayName;
+				Folder = folder;
+			}
+
+			public FolderInfo(string fullName, Folder folder)
+			{
+				FullName = fullName;
+				Folder = folder;
+			}
+		}
+
+		private const string _serviceUrlPath = "/EWS/Exchange.asmx";
 		private const string _folderSeparator = @"\";
 		private const int _messageMaxCount = 128;
 		private const int _subfolderLimit = 100;
 
 		private readonly ClientConfig _config;
-		private readonly ExchangeVersion _serverVersion; //TODO: Replace with GSS type.
 
 		private ExchangeService _service;
 		private FolderId _folderID;
 		private FolderId _folderToMoveID;
 		private RemoteCertificateValidationCallback _oldGlobalCertificateValidationCallback;
 
-		public Client(ClientConfig config, ExchangeVersion serverVersion)
+		public Client(ClientConfig config)
 		{
 			_config = config;
-			_serverVersion = serverVersion;
+		}
+
+		~Client()
+		{
+			Dispose(false);
 		}
 
 		#region IMailClient members
@@ -72,7 +93,7 @@ namespace Matrix42.Client.Mail.Exchange
 			EnsureInitialized(false);
 
 			var item = GetItem(id, ItemSchema.TextBody, ItemSchema.Attachments);
-			
+
 			return Message.FromItem(item, id);
 
 			// Optional impl.: use MimeKit to parse mail
@@ -119,8 +140,15 @@ namespace Matrix42.Client.Mail.Exchange
 		{
 			EnsureInitialized(false);
 
-			var rootFolderID = GetRootFolderID(type);
-			var result = _service.FindFolders(rootFolderID, new FolderView(Int32.MaxValue) { Traversal = FolderTraversal.Deep });
+			var rootFolder = GetRootFolder(type, null);
+
+			if (type == FolderType.Public)
+			{
+				return GetFoldersRecursive(new FolderInfo(rootFolder), IsMessageFolder, true).Select(fi => fi.FullName).ToArray();
+			}
+
+			var folderView = new FolderView(Int32.MaxValue) { Traversal = FolderTraversal.Deep };
+			var result = _service.FindFolders(rootFolder.Id, folderView);
 			var idFolders = new Dictionary<string, string>();
 
 			foreach (var folder in result.Folders.Where(IsMessageFolder))
@@ -177,31 +205,37 @@ namespace Matrix42.Client.Mail.Exchange
 
 		public void Dispose()
 		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		#endregion
+
+		private void Dispose(bool disposing)
+		{
 			_folderToMoveID = null;
 			_folderID = null;
 			_service = null;
 			ServicePointManager.ServerCertificateValidationCallback = _oldGlobalCertificateValidationCallback;
 		}
 
-		#endregion
-
 		private void EnsureInitialized(bool withFolderToMove)
 		{
 			if (_service == null)
 			{
-				var serverVersion = _serverVersion; // TODO: switch on GSS type.
-				var protocol = _config.UseSsl ? "https" : "http";
+				var serverVersion = GetExchangeVersion(_config.ServerType);
+				var uriBuilder = new UriBuilder(_config.UseSsl ? "https" : "http", _config.Host, _config.Port ?? -1, _serviceUrlPath);
 
 				_oldGlobalCertificateValidationCallback = ServicePointManager.ServerCertificateValidationCallback;
 				ServicePointManager.ServerCertificateValidationCallback = NetworkHelper.ServerCertificateValidationCallback;
 
 				_service = new ExchangeService(serverVersion)
-								{
-									Url = new Uri(String.Format(_serviceUrlFormat, protocol, _config.Host)),
-									Credentials = new NetworkCredential(_config.Username, _config.Password),
-									PreAuthenticate = true,
-									Timeout = 10 * 1000
-								};
+				{
+					Url = uriBuilder.Uri,
+					Credentials = new NetworkCredential(_config.Username, _config.Password),
+					PreAuthenticate = true,
+					Timeout = 10 * 1000
+				};
 			}
 
 			if (_folderID == null)
@@ -295,6 +329,39 @@ namespace Matrix42.Client.Mail.Exchange
 			return Item.Bind(_service, new ItemId(itemID), properties);
 		}
 
+		private IEnumerable<FolderInfo> GetFoldersRecursive(FolderInfo parentFolder, Predicate<Folder> filter, bool skipParent)
+		{
+			if (skipParent || filter == null || filter(parentFolder.Folder))
+			{
+				string parentName = null;
+
+				if (!skipParent)
+				{
+					parentName = parentFolder.FullName;
+					yield return parentFolder;
+				}
+
+				var findFoldersResult = parentFolder.Folder.FindFolders(new FolderView(_subfolderLimit));
+				var children = findFoldersResult?.Folders;
+
+				if (children != null)
+				{
+					foreach (var child in children)
+					{
+						var childName = parentName != null
+											? String.Join(_folderSeparator, parentName, child.DisplayName)
+											: child.DisplayName;
+						var childInfo = new FolderInfo(childName, child);
+
+						foreach (var folder in GetFoldersRecursive(childInfo, filter, false))
+						{
+							yield return folder;
+						}
+					}
+				}
+			}
+		}
+
 		/*
 		private IEnumerable<FolderInfo> GetFoldersRecursive(FolderInfo parentFolder, Predicate<MxFolder> filter, bool skipParent)
 		{
@@ -328,6 +395,28 @@ namespace Matrix42.Client.Mail.Exchange
 			}
 		}
 		*/
+
+		private static ExchangeVersion GetExchangeVersion(MailServerType serverType)
+		{
+			switch (serverType)
+			{
+				case MailServerType.Exchange2007:
+				case MailServerType.Exchange2007Sp1:
+					return ExchangeVersion.Exchange2007_SP1;
+
+				case MailServerType.Exchange2007Sp2:
+				case MailServerType.Exchange2007Sp3:
+				case MailServerType.Exchange2010:
+					return ExchangeVersion.Exchange2010;
+
+				case MailServerType.Exchange2010Sp1:
+				case MailServerType.Exchange2010Sp2:
+					return ExchangeVersion.Exchange2010_SP2;
+
+				default:
+					throw new NotSupportedException($"Server type '{serverType}' is not supported by Exchange Client!");
+			}
+		}
 
 		private static WellKnownFolderName GetFolderType(FolderType type)
 		{

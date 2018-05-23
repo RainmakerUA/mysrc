@@ -5,42 +5,22 @@ namespace Matrix42.Client.Mail.Console
 {
 	internal class ImapClientTest
 	{
-		private readonly string _host;
-		private readonly int? _port;
-		private readonly bool _useSsl;
-		private readonly string _username;
-		private readonly string _password;
-		private readonly MailFolder _folder;
-		private readonly MailFolder _folderToMove;
+		private readonly ClientConfig _config;
 
-		public ImapClientTest()
-			: this("imap.gmail.com", null, true, "update4u.info", "update4u.", "Inbox/Incident/VZH test", "Inbox/Incident/VZH processed")
+		public ImapClientTest(ClientConfig config)
 		{
-			// Do nothing
-		}
-
-		public ImapClientTest(string host, int? port, bool useSsl, string username, string password, string folder, string folderToMove)
-		{
-			_host = host;
-			_port = port;
-			_useSsl = useSsl;
-			_username = username;
-			_password = password;
-			_folder = new MailFolder { Name = folder, Type = FolderType.Message };
-			_folderToMove = new MailFolder { Name = folderToMove, Type = FolderType.Message };
+			_config = config;
 		}
 
 		public void Execute()
 		{
 			try
 			{
-				var config = ClientConfig.MakeConfig(MailServerType.Imap4, _host, _port, _useSsl, null, _username, _password, _folder, _folderToMove);
-
-				using (var client = MailClientFactory.GetClient(config, false))
+				using (var client = MailClientFactory.GetClient(_config))
 				{
 					//FetchAndProcessMessage(client);
 					//SaveMessage(client);
-					//ListFolders(client);
+					ListFolders(client);
 
 					SearchMessages(client);
 				}

@@ -16,7 +16,7 @@ namespace Matrix42.Client.Mail.Console
 			{
 				IMessage msg;
 
-				using (var client = MailClientFactory.GetClient(null, false))
+				using (var client = MailClientFactory.GetClient(MailServerType.Imap4))
 				{
 					msg = client.LoadMessage(filename, "-19");
 				}
