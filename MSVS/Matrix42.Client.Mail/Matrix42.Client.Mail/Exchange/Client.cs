@@ -329,7 +329,7 @@ namespace Matrix42.Client.Mail.Exchange
 			return Item.Bind(_service, new ItemId(itemID), properties);
 		}
 
-		private IEnumerable<FolderInfo> GetFoldersRecursive(FolderInfo parentFolder, Predicate<Folder> filter, bool skipParent)
+		private static IEnumerable<FolderInfo> GetFoldersRecursive(FolderInfo parentFolder, Predicate<Folder> filter, bool skipParent)
 		{
 			if (skipParent || filter == null || filter(parentFolder.Folder))
 			{
@@ -361,40 +361,6 @@ namespace Matrix42.Client.Mail.Exchange
 				}
 			}
 		}
-
-		/*
-		private IEnumerable<FolderInfo> GetFoldersRecursive(FolderInfo parentFolder, Predicate<MxFolder> filter, bool skipParent)
-		{
-			if (skipParent || filter == null || filter(parentFolder.Folder))
-			{
-				string parentName = null;
-
-				if (!skipParent)
-				{
-					parentName = parentFolder.FullName;
-					yield return parentFolder;
-				}
-
-				var findFoldersResult = parentFolder.Folder.FindFolders(new FolderView(_subfolderLimit));
-				var children = findFoldersResult?.Folders;
-
-				if (children != null)
-				{
-					foreach (var child in children)
-					{
-						var childName = parentName != null
-							? String.Join(FolderSeparator, parentName, child.DisplayName)
-							: child.DisplayName;
-						var childInfo = new FolderInfo(childName, child);
-						foreach (var folder in GetFoldersRecursive(childInfo, filter, false))
-						{
-							yield return folder;
-						}
-					}
-				}
-			}
-		}
-		*/
 
 		private static ExchangeVersion GetExchangeVersion(MailServerType serverType)
 		{
