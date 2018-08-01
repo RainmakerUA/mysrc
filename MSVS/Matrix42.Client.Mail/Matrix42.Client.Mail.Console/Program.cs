@@ -35,15 +35,25 @@ namespace Matrix42.Client.Mail.Console
 												null, true,
 												"andreykostenko@matrix42Office365GER.onmicrosoft.de",
 												"andreykostenko@matrix42Office365GER.onmicrosoft.de", "Matrix42!",
-												new MailFolder { Name = "Inbox/emr", Type = FolderType.Message },
-												/*new MailFolder { Name = "Inbox/subin1", Type = FolderType.Message }*/null,
+												new MailFolder { Name = "Inbox/subin1", Type = FolderType.Message },
+												new MailFolder { Name = "Inbox/VZH/Störungen", Type = FolderType.Message },//*/null,
+												false
+											);
+			var imapExch2Config = ClientConfig.MakeConfig(
+												MailServerType.Imap4, //MailServerType.Exchange2010Sp2,
+												"outlook.office.de",
+												null, true,
+												"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de",
+												"matrix42Office365GER@matrix42Office365GER.onmicrosoft.de", "8tzT8ErszHa0fO9K",
+												new MailFolder { Name = "Inbox/subin1", Type = FolderType.Message },
+												new MailFolder { Name = "Inbox/VZH/Störungen", Type = FolderType.Message },//*/null,
 												false
 											);
 
 			//var parserTest = new ParserTest();
 			//parserTest.Execute();
 
-			var imapTest = new ExchangeClientTest(exchConfig2);
+			var imapTest = new ImapClientTest(imapExch2Config); //new ExchangeClientTest(exchConfig2);
 			imapTest.Execute();
 
 			//var mimeTest = new MimeTest();

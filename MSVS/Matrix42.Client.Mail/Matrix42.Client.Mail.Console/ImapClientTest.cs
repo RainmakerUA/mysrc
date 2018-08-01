@@ -18,11 +18,11 @@ namespace Matrix42.Client.Mail.Console
 			{
 				using (var client = MailClientFactory.GetClient(_config))
 				{
-					//FetchAndProcessMessage(client);
-					//SaveMessage(client);
 					ListFolders(client);
-
-					SearchMessages(client);
+					FetchAndProcessMessage(client);
+					//SaveMessage(client);
+					
+					//SearchMessages(client);
 				}
 			}
 			catch (Exception e)
