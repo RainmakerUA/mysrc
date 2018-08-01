@@ -27,18 +27,26 @@ namespace RM.UzTicket.Lib.Model
 
 		public string[] Services { get; private set; }
 
+		public bool ByWishes { get; private set; }
+
+		public bool AirConditioning { get; private set; }
+
 		protected override void FromJsonObject(JsonObject obj)
 		{
 			AllowBonus = obj["allowBonus"].ReadAs<bool>();
 			Class = obj["class"].ReadAs<string>();
-			Type = obj.GetValueOrDefault<string>("type") ?? obj.GetValueOrDefault<string>("id");
+			Type = obj.GetValueOrDefault<string>("type") ?? obj.GetValueOrDefault<string>("type_id");
 			Railway = obj["railway"].ReadAs<int>();
 			HasBedding = obj["hasBedding"].ReadAs<bool>();
 			Number = obj["num"].ReadAs<int>();
-			PlacesCount = obj["placesCnt"].ReadAs<int>();
+			PlacesCount = obj["free"].ReadAs<int>();
 			ReservePrice = (decimal)obj["reservePrice"].ReadAs<int>() / 100;
 			Services = (obj["services"] as IEnumerable<JsonValue>)?.Select(jv => jv.ReadAs<string>()).ToArray();
 			Prices = (obj["prices"] as JsonObject)?.ToDictionary(kv => kv.Key, kv => (decimal)kv.Value.ReadAs<int>() / 100);
+			ByWishes = obj.GetValueOrDefault<bool>("byWishes");
+			AirConditioning = obj.GetValueOrDefault("air", true);
+			
+			// Railways: 32: П-Зах., 35: Льв., 40: Од., 43: Півд., 45: Придн., 48: Дон.
 		}
 
 		public string GetInfo()
@@ -47,13 +55,14 @@ namespace RM.UzTicket.Lib.Model
 							{
 								"Coach #{0} class {1}",
 								"Places: {2}",
-								"Bedding: {3}",
-								"Services: {4}",
+								"Air Cond.: {3}",
+								"Bedding: {4}",
+								"Services: {5}",
 								"~~~~~~~~~~~~~"
 							};
 			var services = String.Join("\u0020", Services);
 			list.AddRange(Prices.Select(kv => $"{kv.Key}: {kv.Value} UAH"));
-			return String.Format(String.Join(Environment.NewLine, list), Number, Class, PlacesCount, HasBedding ? "+" : "-", services);
+			return String.Format(String.Join(Environment.NewLine, list), Number, Class, PlacesCount, AirConditioning ? "+" : "-", HasBedding ? "+" : "-", services);
 		}
 
 		public override string ToString()

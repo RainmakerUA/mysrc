@@ -11,7 +11,7 @@ namespace RM.UzTicket.Console
 
 		private static void Main(string[] args)
 		{
-			Con.InputEncoding = Encoding.UTF8;
+			//Con.InputEncoding = Encoding.UTF8;
 			Con.OutputEncoding = Encoding.UTF8;
 
 
@@ -39,7 +39,7 @@ namespace RM.UzTicket.Console
 				//Tests.ModelTest.Run();
 				//await Tests.UzClientTest.Run();
 				//Tests.UzScannerTest.Run();
-				await Tests.UzServiceTest.Run(true);
+				await Tests.UzServiceTest.Run();
 				// ...
 
 				Con.WriteLine("Tests completed!");

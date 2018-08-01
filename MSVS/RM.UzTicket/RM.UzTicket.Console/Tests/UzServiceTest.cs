@@ -144,7 +144,7 @@ namespace RM.UzTicket.Console.Tests
 				var bl = await client.BookSeatAsync(train, coach, seat, res[0], res[1]);
 
 				var sessionId = client.GetSessionId();
-				Con.WriteLine($"In console: document.cookie='{sessionId}'");
+				Con.WriteLine($"In console: document.cookie='{sessionId}'; window.location.pathname='/cart'");
 			}
 			catch (ResponseException re)
 			{

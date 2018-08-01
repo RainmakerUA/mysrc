@@ -23,7 +23,7 @@ namespace RM.UzTicket.Lib.Test
 											GetTrainNumber(), source, destination,
 											date.Date.AddHours(7).AddMinutes(15),
 											date.Date.AddHours(21).AddMinutes(53),
-											new CoachType[0]
+											new[] { CoachType.Create("Platzkarte", "П", 5), CoachType.Create("Coupe", "К", 10) }
 										));
 		}
 

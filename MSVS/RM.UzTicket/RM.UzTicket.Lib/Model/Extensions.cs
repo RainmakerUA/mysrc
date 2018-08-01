@@ -10,9 +10,9 @@ namespace RM.UzTicket.Lib.Model
 			return obj[key].ReadAs<T>();
 		}
 
-		public static T GetValueOrDefault<T>(this JsonObject jobj, string key)
+		public static T GetValueOrDefault<T>(this JsonObject jobj, string key, T defaultValue = default)
 		{
-			return jobj?[key] != null && jobj[key].TryReadAs(out T result) ? result : default;
+			return jobj?[key] != null && jobj[key].TryReadAs(out T result) ? result : defaultValue;
 		}
 
 		public static IEnumerable<Seat> GetSeats(this Coach coach, IReadOnlyDictionary<string, int[]> seatNumbers)
