@@ -11,13 +11,13 @@ namespace Matrix42.Client.Mail.Test.Imap
 	{
 		protected class MessageValidateParameters
 		{
-			public bool Attachments { get; set; }
+			public int? Attachments { get; set; }
 
 			public bool BccRecipients { get; set; }
 
-			public bool BodyHtml { get; set; }
+			public bool? BodyHtml { get; set; }
 
-			public bool BodyText { get; set; }
+			public bool? BodyText { get; set; }
 
 			public bool CcRecipients { get; set; }
 
@@ -31,14 +31,17 @@ namespace Matrix42.Client.Mail.Test.Imap
 
 			public bool ToRecipients { get; set; }
 
-			public static MessageValidateParameters GetDefault() => new MessageValidateParameters
+			public static MessageValidateParameters GetDefault(bool? withHtml = default) => new MessageValidateParameters
 																		{
 																			From = true,
 																			ToRecipients = true,
 																			Subject = true,
 																			BodyText = true,
+																			BodyHtml = withHtml,
 																			ReceiveDate = true
 																		};
+
+			public static MessageValidateParameters GetAttachments(int count) => new MessageValidateParameters { Attachments = count };
 		}
 
 		protected const char InvalidCharacter = '\uFFFD';
@@ -56,19 +59,22 @@ namespace Matrix42.Client.Mail.Test.Imap
 			}
 		}
 
-		protected static void LoadAndAssertMessage(string filename, MessageValidateParameters parameters = null)
+		protected static void LoadAndAssertMessage(string filename, MessageValidateParameters parameters = null,
+													Action<IMessage> extraChecks = null)
 		{
 			var message = GetMessage(filename);
 			AssertMessage(message, parameters ?? MessageValidateParameters.GetDefault());
+			extraChecks?.Invoke(message);
 		}
 
 		private static void AssertMessage(IMessage message, MessageValidateParameters parameters)
 		{
 			Assert.IsNotNull(message);
 
-			if (parameters.Attachments)
+			if (parameters.Attachments.HasValue)
 			{
-				Assert.AreNotEqual(0, message.Attachments.Count);
+				Assert.IsNotNull(message.Attachments);
+				Assert.AreEqual(parameters.Attachments.Value, message.Attachments.Count);
 			}
 
 			if (parameters.BccRecipients)
@@ -76,14 +82,14 @@ namespace Matrix42.Client.Mail.Test.Imap
 				AssertAddressesNotEmpty(message.Bcc);
 			}
 
-			if (parameters.BodyHtml)
+			if (parameters.BodyHtml.HasValue)
 			{
-				AssertStringIsNotNullOrEmpty(message.BodyHtml);
+				AssertStringIsNotNullOrEmptyEquals(message.BodyHtml, !parameters.BodyHtml.Value);
 			}
 
-			if (parameters.BodyText)
+			if (parameters.BodyText.HasValue)
 			{
-				AssertStringIsNotNullOrEmpty(message.BodyText);
+				AssertStringIsNotNullOrEmptyEquals(message.BodyText, !parameters.BodyText.Value);
 			}
 
 			if (parameters.CcRecipients)
@@ -122,6 +128,11 @@ namespace Matrix42.Client.Mail.Test.Imap
 			Assert.IsFalse(String.IsNullOrEmpty(str));
 		}
 
+		private static void AssertStringIsNotNullOrEmptyEquals(string str, bool isNullOrEmpty)
+		{
+			Assert.AreEqual(isNullOrEmpty, String.IsNullOrEmpty(str));
+		}
+
 		private static void AssertAddressNotEmpty(MailAddress address)
 		{
 			Assert.IsFalse(AddressIsEmpty(address));
@@ -135,7 +146,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 
 		private static bool AddressIsEmpty(MailAddress address)
 		{
-			return String.IsNullOrEmpty(address?.Address) || String.IsNullOrEmpty(address.DisplayName);
+			return String.IsNullOrEmpty(address?.Address);
 		}
 	}
 }

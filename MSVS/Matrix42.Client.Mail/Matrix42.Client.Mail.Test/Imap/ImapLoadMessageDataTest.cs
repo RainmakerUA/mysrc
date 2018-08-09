@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Matrix42.Client.Mail.Imap;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Matrix42.Client.Mail.Test.Imap
@@ -15,14 +14,10 @@ namespace Matrix42.Client.Mail.Test.Imap
 	[DeploymentItem("Files")]
 	public class ImapLoadMessageDataTest : ImapLoadMessageTestBase
 	{
-		// TODO: Refactor with LoadAndAssertMessage(...)
-
 		[TestMethod]
 		public void SubjectSpecialSymbols01Test()
 		{
-			var message = GetMessage("SubjectSpecialSymbols01.emr");
-
-			Assert.AreEqual("!@#$%^&*() ÄÖöäÜÜÜ_", message.Subject);
+			AssertMessageSubjectEqual("SubjectSpecialSymbols01.emr", "!@#$%^&*() ÄÖöäÜÜÜ_");
 		}
 
 		/// <summary>
@@ -31,9 +26,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void SubjectSpecialSymbols02Test()
 		{
-			var message = GetMessage("SubjectSpecialSymbols02.emr");
-
-			Assert.AreEqual("Verlängerung Dienstbescheinigung", message.Subject);
+			AssertMessageSubjectEqual("SubjectSpecialSymbols02.emr", "Verlängerung Dienstbescheinigung");
 		}
 
 		/// <summary>
@@ -42,9 +35,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void MultilineSubjectWithSpaceSeparatorTest()
 		{
-			var message = GetMessage("MultilineSubjectWithSpaceSeparator.emr");
-
-			Assert.AreEqual("abc", message.Subject);
+			AssertMessageSubjectEqual("MultilineSubjectWithSpaceSeparator.emr", "abc");
 		}
 
 		/// <summary>
@@ -53,9 +44,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void MultilineNonEncodedSubjectTest()
 		{
-			var message = GetMessage("MultilineNonEncodedSubject.emr");
-
-			Assert.AreEqual("a b c", message.Subject);
+			AssertMessageSubjectEqual("MultilineNonEncodedSubject.emr", "a b c");
 		}
 
 		[TestMethod]
@@ -63,24 +52,25 @@ namespace Matrix42.Client.Mail.Test.Imap
 		{
 			const string attachmentString = "AttachmentFileContent";
 
-			var message = GetMessage("TextAttachment001.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.IsInstanceOfType(message.Attachments[0], typeof(Attachment));
-			Assert.AreEqual("a.txt", message.Attachments[0].Name);
-			
 			var expectedAttachmentData = new byte[44];
 			expectedAttachmentData[0] = 255;
 			expectedAttachmentData[1] = 254;
-			
+
 			for (var i = 0; i < attachmentString.Length; i++)
 			{
 				expectedAttachmentData[2 * i + 2] = (byte)attachmentString[i];
 				expectedAttachmentData[2 * i + 3] = 0;
 			}
 
-			CollectionAssert.AreEqual(expectedAttachmentData, message.Attachments[0].Data);
+			LoadAndAssertMessage(
+							"TextAttachment001.emr",
+							new MessageValidateParameters { Attachments = 1 },
+							msg =>
+								{
+									Assert.AreEqual("a.txt", msg.Attachments[0].Name);
+									CollectionAssert.AreEqual(expectedAttachmentData, msg.Attachments[0].Data);
+								}
+						);
 		}
 
 		/// <summary>
@@ -89,12 +79,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TestEmlAttachments()
 		{
-			var message = GetMessage("EmlAttachments.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(2, message.Attachments.Count);
-			Assert.AreEqual("File.eml", message.Attachments[0].Name);
-			Assert.AreEqual("File.eml", message.Attachments[1].Name);
+			AssertAttachmentNames("EmlAttachments.emr", "File.eml", "File.eml");
 		}
 
 		/// <summary>
@@ -103,11 +88,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TestEmlAttachments02()
 		{
-			var message = GetMessage("EmlAttachments02.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.AreNotEqual("File.eml", message.Attachments[0].Name);
+			AssertAttachmentNames("EmlAttachments02.emr", "Test_ no attachments.eml");
 		}
 
 		/// <summary>
@@ -116,31 +97,19 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TestEmlAttachments03()
 		{
-			var message = GetMessage("EmlAttachments03.emr");
-
-			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.AreNotEqual("File.eml", message.Attachments[0].Name);
+			AssertAttachmentNames("EmlAttachments03.emr", "Testmail von Outlook über Exchange Server benötigt.eml");
 		}
 
 		[TestMethod]
 		public void TextAttachment002Test()
 		{
-			var message = GetMessage("TextAttachment002.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(2, message.Attachments.Count);
-			Assert.AreEqual("5x5.pdf", message.Attachments[0].Name);
-			Assert.AreEqual("smime.p7s", message.Attachments[1].Name);
+			AssertAttachmentNames("TextAttachment002.emr", "5x5.pdf", "smime.p7s");
 		}
 
 		[TestMethod]
 		public void TextAttachment003Test()
 		{
-			var message = GetMessage("TextAttachment003.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.AreEqual("4281e4ad931.0e50_0.pdf", message.Attachments[0].Name);
+			AssertAttachmentNames("TextAttachment003.emr", "4281e4ad931.0e50_0.pdf");
 		}
 
 		/// <summary>
@@ -149,11 +118,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TextAttachment004Test()
 		{
-			var message = GetMessage("TextAttachment004.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.AreEqual("a.txt", message.Attachments[0].Name);
+			AssertAttachmentNames("TextAttachment004.emr", "a.txt");
 		}
 
 		/// <summary>
@@ -162,14 +127,10 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TextAttachment005Test()
 		{
-			var message = GetMessage("TextAttachment005.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(4, message.Attachments.Count);
-			Assert.AreEqual("1.txt", message.Attachments[0].Name);
-			Assert.AreEqual("2.txt", message.Attachments[1].Name);
-			Assert.AreEqual("Bedienungsanleitung _Videokonferenzanlage_ HG-Informatikraum.txt", message.Attachments[2].Name);
-			Assert.AreEqual("4.txt", message.Attachments[3].Name);
+			AssertAttachmentNames(
+							"TextAttachment005.emr",
+							"1.txt", "2.txt", "Bedienungsanleitung _Videokonferenzanlage_ HG-Informatikraum.txt", "4.txt"
+						);
 		}
 
 		/// <summary>
@@ -179,14 +140,10 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TextAttachment006Test()
 		{
-			var message = GetMessage("TextAttachment006.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(4, message.Attachments.Count);
-			Assert.AreEqual("1üöä.txt", message.Attachments[0].Name);
-			Assert.AreEqual("2.txt", message.Attachments[1].Name);
-			Assert.AreEqual("3.txt", message.Attachments[2].Name);
-			Assert.AreEqual("4.txt", message.Attachments[3].Name);
+			AssertAttachmentNames(
+							"TextAttachment006.emr",
+							"1üöä.txt", "2.txt", "3.txt", "4.txt"
+						);
 		}
 
 		/// <summary>
@@ -196,13 +153,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void InvalidEncodedExtensionTest()
 		{
-			//IMAP.IMAP.ExtensionResolver =
-			//		new FakeExtensionResolver(new Dictionary<string, string> { { "application/vnd.oasis.opendocument.text", ".odt" } });
-			var message = GetMessage("InvalidEncodedExtension.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.AreEqual("Löschung Nutzer+_.odt", message.Attachments[0].Name);
+			AssertAttachmentNames("InvalidEncodedExtension.emr", "Löschung Nutzer+_.odt");
 		}
 
 		/// <summary>
@@ -211,9 +162,11 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void FromFieldIsEncodedTest()
 		{
-			var message = GetMessage("FromFieldIsEncoded.emr");
-
-			Assert.AreEqual("Сергей Мороз", message.From.DisplayName);
+			LoadAndAssertMessage(
+							"FromFieldIsEncoded.emr",
+							new MessageValidateParameters { From = true },
+							msg => Assert.AreEqual("Сергей Мороз", msg.From.DisplayName)
+						);
 		}
 
 		/// <summary>
@@ -222,11 +175,7 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void AttachmentWithDuplicationDataInHeaderTest()
 		{
-			var message = GetMessage("AttachmentWithDuplicationDataInHeader.emr");
-
-			Assert.IsNotNull(message.Attachments);
-			Assert.AreEqual(1, message.Attachments.Count);
-			Assert.AreEqual("a.txt", message.Attachments[0].Name);
+			AssertAttachmentNames("AttachmentWithDuplicationDataInHeader.emr", "a.txt");
 		}
 
 		/// <summary>
@@ -235,10 +184,10 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void BoundaryWrappedTest()
 		{
-			var message = GetMessage("BoundaryWrapped.emr");
-
-			Assert.IsFalse(string.IsNullOrEmpty(message.BodyText));
-			Assert.IsFalse(string.IsNullOrEmpty(message.BodyHtml));
+			LoadAndAssertMessage(
+							"BoundaryWrapped.emr",
+							new MessageValidateParameters { BodyText = true, BodyHtml = true }
+						);
 		}
 
 		/// <summary>
@@ -267,8 +216,11 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void NonEncodedBodyTest()
 		{
-			var message = GetMessage("NonEncodedBody.emr");
-			Assert.AreEqual("OMNI_P 130314110647 Inst=55 BST=6010 Geraet=61090 obere Tuer offen          \r\n", message.BodyText);
+			LoadAndAssertMessage(
+							"NonEncodedBody.emr",
+							new MessageValidateParameters { BodyText = true },
+							msg => Assert.IsTrue(msg.BodyText.Equals("OMNI_P 130314110647 Inst=55 BST=6010 Geraet=61090 obere Tuer offen          \r\n", StringComparison.Ordinal))
+					);
 		}
 
 		/// <summary>
@@ -277,8 +229,11 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void UTF8EncodedBodyTest()
 		{
-			var message = GetMessage("UTF8EncodedBody.emr");
-			Assert.AreEqual("Liebe Kollegen,A", message.BodyText);
+			LoadAndAssertMessage(
+							"UTF8EncodedBody.emr",
+							new MessageValidateParameters { BodyText = true },
+							msg => Assert.IsTrue(msg.BodyText.Equals("Liebe Kollegen,A", StringComparison.Ordinal))
+					);
 		}
 
 		/// <summary>
@@ -287,8 +242,11 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TestUTF8EncodedBody2()
 		{
-			var message = GetMessage("UTF8EncodedBody2.emr");
-			Assert.IsTrue(message.BodyHtml.Contains("SMO_Deutsch_!!!!! &nbsp;- ß!&quot;§$%&amp;/(/)=?`*'Ä*Ü_ÄÜ*Ü*ÄÖÖÄÄÜ?"));
+			LoadAndAssertMessage(
+							"UTF8EncodedBody2.emr",
+							new MessageValidateParameters { BodyHtml = true },
+							msg => Assert.IsTrue(msg.BodyHtml.IndexOf("SMO_Deutsch_!!!!! &nbsp;- ß!&quot;§$%&amp;/(/)=?`*'Ä*Ü_ÄÜ*Ü*ÄÖÖÄÄÜ?", StringComparison.Ordinal) >= 0)
+						);
 		}
 
 		/// <summary>
@@ -297,10 +255,11 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void Test3byteUtfCharacters()
 		{
-			const char fail = '\uFFFD';
-
-			var message = GetMessage("UTF8EncodedBody3.emr");
-			Assert.IsTrue(!String.IsNullOrEmpty(message.BodyText) && message.BodyText.IndexOf(fail) == -1);
+			LoadAndAssertMessage(
+							"UTF8EncodedBody3.emr",
+							new MessageValidateParameters { BodyText = true },
+							msg => Assert.IsTrue(msg.BodyText.IndexOf(InvalidCharacter) == -1)
+						);
 		}
 
 		/// <summary>
@@ -310,10 +269,10 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TestMultipartMixed()
 		{
-			var message = GetMessage("MultipartMixed.emr");
-
-			Assert.IsFalse(String.IsNullOrEmpty(message.BodyText));
-			Assert.IsTrue(String.IsNullOrEmpty(message.BodyHtml));
+			LoadAndAssertMessage(
+							"MultipartMixed.emr",
+							new MessageValidateParameters { BodyText = true, BodyHtml = false }
+						);
 		}
 
 		/// <summary>
@@ -365,95 +324,114 @@ namespace Matrix42.Client.Mail.Test.Imap
 		[TestMethod]
 		public void TestMessageAttachmentsParsing()
 		{
-			var msg = GetMessage("0_HierDieMails.emr");
-
-			Assert.IsFalse(String.IsNullOrEmpty(msg.BodyText));
-			Assert.IsFalse(String.IsNullOrEmpty(msg.BodyHtml));
-			Assert.IsNotNull(msg.Attachments);
-			Assert.AreEqual(2, msg.Attachments.Count);
-
-			Assert.IsTrue(msg.Attachments.All(att => att.MimeType == "message/rfc822"));
-			Assert.IsFalse(msg.Attachments.Any(att => att.Name == "File.eml"));
+			LoadAndAssertMessage(
+							"0_HierDieMails.emr",
+							new MessageValidateParameters { BodyText = true, BodyHtml = true, Attachments = 2 },
+							msg =>
+								{
+									Assert.IsTrue(msg.Attachments.All(att => att.MimeType == "message/rfc822"));
+									Assert.IsFalse(msg.Attachments.Any(att => att.Name == "File.eml"));
+								}
+						);
 		}
 
 		[TestMethod]
 		public void TestAttchmentQuotedPrintableWithoutCharset()
 		{
-			var msg = GetMessage("1_InitScripts.emr");
-
-			Assert.IsNotNull(msg.Attachments);
-			Assert.AreEqual(3, msg.Attachments.Count);
-
-			Assert.IsTrue(msg.Attachments.All(att => att.Name.EndsWith(".txt")));
-			Assert.IsTrue(msg.Attachments.All(att => !Encoding.UTF8.GetString(att.Data).Contains(InvalidCharacter)));
+			LoadAndAssertMessage(
+							"1_InitScripts.emr",
+							MessageValidateParameters.GetAttachments(3),
+							msg =>
+								{
+									Assert.IsTrue(msg.Attachments.All(att => att.Name.EndsWith(".txt")));
+									Assert.IsTrue(msg.Attachments.All(att => Encoding.UTF8.GetString(att.Data).IndexOf(InvalidCharacter) == -1));
+								}
+						);
 		}
 
 		[TestMethod]
 		public void TestContentDispositionInlineAttchment()
 		{
-			var msg = GetMessage("2_Re_Call.emr");
-
-			Assert.IsNotNull(msg.Attachments);
-			Assert.AreEqual(1, msg.Attachments.Count);
-			Assert.AreEqual("1204_ESIRU_cTTour_20160610084453013_84638.xml", msg.Attachments[0].Name);
+			AssertAttachmentNames("2_Re_Call.emr", "1204_ESIRU_cTTour_20160610084453013_84638.xml");
 		}
 
 		[TestMethod]
 		public void Test7BitCsvAttchmentQuotes()
 		{
-			var msg = GetMessage("3_Buchungen.emr");
-
-			Assert.IsNotNull(msg.Attachments);
-			Assert.AreEqual(1, msg.Attachments.Count);
-			Assert.AreEqual("SoftwareServiceBuchungen_TargetCC_unequal_BuchungCC.csv", msg.Attachments[0].Name);
+			AssertAttachmentNames("3_Buchungen.emr", "SoftwareServiceBuchungen_TargetCC_unequal_BuchungCC.csv");
 		}
 
 		[TestMethod]
 		public void TestAttchmentNameParsingNoQuotes()
 		{
-			var msg = GetMessage("4_#R00003575.emr");
-
-			Assert.IsNotNull(msg.Attachments);
-			Assert.AreEqual(1, msg.Attachments.Count);
-			Assert.AreEqual("160912_Korrekturen.xlsx", msg.Attachments[0].Name);
+			AssertAttachmentNames("4_#R00003575.emr", "160912_Korrekturen.xlsx");
 		}
 
 		[TestMethod]
 		public void TestSectionCharsetCpX()
 		{
-			var msg = GetMessage("5_DaimlerTest.emr");
-
-			Assert.IsFalse(String.IsNullOrEmpty(msg.BodyText));
-			Assert.IsFalse(msg.BodyText.Contains("Failed to decode"));
-
-			Assert.IsNotNull(msg.Attachments);
-			Assert.AreEqual(1, msg.Attachments.Count);
-			Assert.AreEqual("11851D6Z2.emr", msg.Attachments[0].Name);
+			LoadAndAssertMessage(
+							"5_DaimlerTest.emr",
+							new MessageValidateParameters { BodyText = true, Attachments = 1 },
+							msg =>
+								{
+									Assert.IsFalse(msg.BodyText.Contains("Failed to decode"));
+									Assert.AreEqual("11851D6Z2.DAT", msg.Attachments[0].Name);
+								}
+						);
+			
 		}
 
 		[TestMethod]
 		public void TestMultipartRelatedWithBoundary()
 		{
-			var msg = GetMessage("MultipartRelatedWithBoundary.emr");
-
-			Assert.IsFalse(String.IsNullOrEmpty(msg.BodyText));
-			Assert.IsTrue(msg.BodyText.StartsWith("Guten Tag,", StringComparison.Ordinal));
-
-			Assert.IsFalse(String.IsNullOrEmpty(msg.BodyHtml));
-			Assert.IsTrue(msg.BodyHtml.StartsWith("<font size=2", StringComparison.Ordinal));
-
-			Assert.IsNotNull(msg.Attachments);
-			Assert.AreEqual(1, msg.Attachments.Count);
-			Assert.AreEqual("image/jpeg", msg.Attachments[0].MimeType);
+			LoadAndAssertMessage(
+							"MultipartRelatedWithBoundary.emr",
+							new MessageValidateParameters { BodyText = true, BodyHtml = true, Attachments = 1 },
+							msg =>
+								{
+									Assert.IsTrue(msg.BodyText.StartsWith("Guten Tag,", StringComparison.Ordinal));
+									Assert.IsTrue(msg.BodyHtml.StartsWith("<font size=2", StringComparison.Ordinal));
+									Assert.AreEqual("image/jpeg", msg.Attachments[0].MimeType);
+								}
+						);
 		}
 
 		[TestMethod]
 		public void TestReadMailEncodingWith8bit()
 		{
-			var msg = GetMessage("8bitSection.emr");
+			LoadAndAssertMessage(
+							"8bitSection.emr",
+							new MessageValidateParameters { BodyText = true },
+							msg => Assert.IsTrue(msg.BodyText.IndexOf(InvalidCharacter) == -1)
+						);
+		}
 
-			Assert.IsFalse(String.IsNullOrEmpty(msg.BodyText));
-			Assert.IsFalse(msg.BodyText.Contains(InvalidCharacter));
+		/// <summary>
+		/// Test to successfully parse messages from IBM Domino with "phantom sections".
+		/// </summary>
+		[TestMethod]
+		public void TestReadMailWithPhantomSections()
+		{
+			LoadAndAssertMessage("4_Phantom.emr");
+		}
+
+		private static void AssertMessageSubjectEqual(string fileName, string subject)
+		{
+			LoadAndAssertMessage(
+							fileName,
+							new MessageValidateParameters { Subject = true },
+							msg => msg.Subject.Equals(subject, StringComparison.Ordinal)
+						);
+		}
+
+		private static void AssertAttachmentNames(string fileName, params string[] attachmentNames)
+		{
+			LoadAndAssertMessage(
+							fileName,
+							MessageValidateParameters.GetAttachments(attachmentNames.Length),
+							msg => CollectionAssert.AreEqual(attachmentNames, msg.Attachments.Select(a => a.Name).ToArray())
+						);
 		}
 	}
 }

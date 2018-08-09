@@ -50,11 +50,11 @@ namespace Matrix42.Client.Mail.Console
 												false
 											);
 
-			//var parserTest = new ParserTest();
-			//parserTest.Execute();
+			var parserTest = new ParserTest();
+			parserTest.Execute();
 
-			var imapTest = new ImapClientTest(imapExch2Config); //new ExchangeClientTest(exchConfig2);
-			imapTest.Execute();
+			//var imapTest = new ImapClientTest(imapExch2Config); //new ExchangeClientTest(exchConfig2);
+			//imapTest.Execute();
 
 			//var mimeTest = new MimeTest();
 			//mimeTest.Execute();
@@ -69,23 +69,23 @@ namespace Matrix42.Client.Mail.Console
 			Con.ReadKey(true);
 		}
 
-		private static void SendTest(string htmlPath)
-		{
-			var msg = new MimeMessage
-						{
-							Subject = "Bold spaces are weirdo!",
-							Body = new TextPart(TextFormat.Html){ Text = File.ReadAllText(htmlPath) }
-						};
-			msg.From.Add(new MailboxAddress("Update4u Mail", "update4u.info@gmail.com"));
-			msg.To.Add(new MailboxAddress("AK = You", "andreykostenko@matrix42Office365GER.onmicrosoft.de"));
+		//private static void SendTest(string htmlPath)
+		//{
+		//	var msg = new MimeMessage
+		//				{
+		//					Subject = "Bold spaces are weirdo!",
+		//					Body = new TextPart(TextFormat.Html){ Text = File.ReadAllText(htmlPath) }
+		//				};
+		//	msg.From.Add(new MailboxAddress("Update4u Mail", "update4u.info@gmail.com"));
+		//	msg.To.Add(new MailboxAddress("AK = You", "andreykostenko@matrix42Office365GER.onmicrosoft.de"));
 
-			using (var client = new SmtpClient())
-			{
-				client.Connect("smtp.gmail.com", 587);
-				client.Authenticate("update4u.info@gmail.com", "update4u.");
-				client.Send(msg);
-				client.Disconnect(true);
-			}
-		}
+		//	using (var client = new SmtpClient())
+		//	{
+		//		client.Connect("smtp.gmail.com", 587);
+		//		client.Authenticate("update4u.info@gmail.com", "update4u.");
+		//		client.Send(msg);
+		//		client.Disconnect(true);
+		//	}
+		//}
 	}
 }

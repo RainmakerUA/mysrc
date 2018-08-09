@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Matrix42.Client.Mail.Contracts;
 using Matrix42.Client.Mail.Utility;
 using MimeKit;
@@ -22,10 +23,20 @@ namespace Matrix42.Client.Mail.Imap
 			Cc = message.Cc.ToMailAddresses();
 			Bcc = message.Bcc.ToMailAddresses();
 			Subject = message.Subject;
-			BodyText = message.TextBody;
-			BodyHtml = message.HtmlBody; //TODO: Handle text-only & html-only messages
+
+			var alternativeSection = GetAlternativeSectionOfPhantomSectionMessage(message);
+
+			if (alternativeSection != null)
+			{
+				(BodyText, BodyHtml) = (alternativeSection.TextBody, alternativeSection.HtmlBody);
+			}
+			else
+			{
+				BodyText = message.TextBody;
+				BodyHtml = message.HtmlBody; //TODO: Handle text-only & html-only messages
+            }
 			Attachments = Attachment.ListFrom(message.BodyParts);
-			ReceivedDate = message.Date != DateTimeOffset.MinValue ? message.Date.DateTime : new DateTime?();
+			ReceivedDate = message.Date != DateTimeOffset.MinValue ? message.Date.ToUniversalTime().DateTime : new DateTime?();
 			Importance = ConvertImportance(message.Importance);
 			OutOfOfficeReply = false; // TODO: Do we need it for IMAP?
 		}
@@ -86,6 +97,14 @@ namespace Matrix42.Client.Mail.Imap
 				default:
 					return new Importance?();
 			}
+		}
+
+		private static MultipartAlternative GetAlternativeSectionOfPhantomSectionMessage(MimeMessage message)
+		{
+			return (message.Body as Multipart)?.OfType<MultipartAlternative>()
+						.FirstOrDefault(
+								ma => !String.IsNullOrEmpty(ma.HtmlBody) && !String.IsNullOrEmpty(ma.TextBody)
+							);
 		}
 	}
 }

@@ -75,7 +75,7 @@ namespace Matrix42.Client.Mail.Imap
 				}
 				else if (entity is MimePart part)
 				{
-					part.ContentObject.DecodeTo(stream);
+					part.Content.DecodeTo(stream);
 				}
 				else
 				{
