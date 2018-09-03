@@ -3,7 +3,7 @@ format PE64 GUI 5.0
 entry start
 
 include 'win64wx.inc'
-include '.\multi_icongroup.inc'
+include '..\multi_icongroup.inc'
 
 HTCAPTION =     2
 
@@ -11,14 +11,13 @@ WIN_W     =     100
 WIN_H     =     40
 MAX_LEN   =     16
 
-;DUMMY     =     InitCommonControls
+DUMMY     =     InitCommonControls
 
 section '.text' code readable executable
 
   start:
         sub     rsp,8           ; Make stack dqword aligned
 
-        ;TODO: Parse exe name to get alert ticks count
         invoke  GetModuleFileName,0,exePath,MAX_PATH
         stdcall ParseAlertTicks,exePath
         or      rax,rax
@@ -37,7 +36,7 @@ section '.text' code readable executable
         invoke  RegisterClassEx,wc
         test    rax,rax
         jz      error
-        ;       WINDOW|CLIENT|STATIC:edge
+
         invoke  CreateWindowEx,WS_EX_STATICEDGE+WS_EX_TOOLWINDOW+WS_EX_TOPMOST,\
                         _class,_title,WS_VISIBLE+WS_POPUP,0,0,WIN_W,WIN_H,NULL,NULL,[wc.hInstance],NULL
         test    rax,rax
@@ -60,7 +59,7 @@ section '.text' code readable executable
         ret
 
 proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
-        local   ps:PAINTSTRUCT;,hdc:QWORD,rect:RECT,size:SIZE,strlen:DWORD
+        local   ps:PAINTSTRUCT    s     s       s       s       s       s
 ; Note that first four parameters are passed in registers,
 ; while names given in the declaration of procedure refer to the stack
 ; space reserved for them - you may store them there to be later accessible
@@ -323,7 +322,7 @@ endp
 
 section '.data' data readable writeable
 
-  _cli_rect RECT 0,0,WIN_W,WIN_H
+  _cli_rect RECT  0,0,WIN_W,WIN_H
   _title    TCHAR '[RM] Uptime ticker',0
   _class    TCHAR 'UptimeWin64',0
   _error    TCHAR 'Startup failed.',0
@@ -343,7 +342,7 @@ section '.data' data readable writeable
   result    TCHAR MAX_LEN dup 0
   isAlert   db 0
 
-section '.idata' import data readable; writeable
+section '.idata' import data readable
 
   library kernel32,'KERNEL32.DLL',\
           user32,'USER32.DLL',\
