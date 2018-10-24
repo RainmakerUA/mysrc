@@ -1,5 +1,8 @@
 ﻿using System.Net;
-using System.Net.Mail;
+//using System.Net.Mail;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using MimeKit;
 
 namespace Matrix42.Client.Mail.Console
 {
@@ -7,19 +10,21 @@ namespace Matrix42.Client.Mail.Console
 	{
 		public void Execute()
 		{
-			using (var client = new SmtpClient("smtp.gmail.com"))
-			{
-				client.Credentials = new NetworkCredential("update4u.info", "update4u.");
-				client.EnableSsl = true;
+			System.Console.Write("Gimme file to send:");
+			var filename = System.Console.ReadLine();
+			var message = MimeMessage.Load(ParserOptions.Default, filename);
 
-				using (var message = new MailMessage(
-													"update4u.info@gmail.com", "vasiliy.zhusma@matrix42.com",
-													"Test SmtpClient via TLS", "If you've got this message, then the test is passed.\r\nRegards, RM (VZH)"
-												))
-				{
-					client.Send(message);
-					System.Console.WriteLine($"Message is sent via: {client.ServicePoint.Address}");
-				}
+			//message.To = new InternetAddressList(new []{ new MailboxAddress("matrix42Office365GER@matrix42Office365GER.onmicrosoft.de") });
+
+			using (var client = new SmtpClient())
+			{
+				client.Connect(/*"smtp.gmail.com"*/"smtp.rambler.ru", 465, SecureSocketOptions.SslOnConnect/**/);
+				var credentials = new NetworkCredential("raintrash", "<todo:password>"/*"update4u.info", "update4u."*/);
+				client.Authenticate(credentials);
+
+				var sender = new MailboxAddress("update4u.info@gmail.com");
+				client.Send(message/*, sender, new [] { new MailboxAddress("matrix42Office365GER@matrix42Office365GER.onmicrosoft.de") }*/);
+				System.Console.WriteLine($"Message is sent via: {client}");
 			}
 		}
 	}
