@@ -3,9 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.UzTicket.Bot", "RM.UzTicket.Bot\RM.UzTicket.Bot.csproj", "{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.Lib.Utility", "RM.Lib.Utility\RM.Lib.Utility.csproj", "{087774B2-0E0B-4F91-A731-9054E5CB2BA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMUzTicket.TeleBotTest", "RMUzTicket.TeleBotTest\RMUzTicket.TeleBotTest.csproj", "{2E36B1AB-6E6B-4428-A06A-B9234BD29BF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.Lib.UzTicket", "RM.Lib.UzTicket\RM.Lib.UzTicket.csproj", "{7EA9978C-C024-4294-8B32-FCA57C2B7DA1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.UzTicket.Telegram", "RM.UzTicket.Telegram\RM.UzTicket.Telegram.csproj", "{B236E680-AE6E-4A8D-BC10-CFC46BB493CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.UzTicket.Bot", "RM.UzTicket.Bot\RM.UzTicket.Bot.csproj", "{82454325-DFCA-4A53-BAFD-26264E7C6EE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A64EB960-9FFD-41A8-A27A-288DF11CEE25}"
+	ProjectSection(SolutionItems) = preProject
+		.env = .env
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +22,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E36B1AB-6E6B-4428-A06A-B9234BD29BF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E36B1AB-6E6B-4428-A06A-B9234BD29BF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E36B1AB-6E6B-4428-A06A-B9234BD29BF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E36B1AB-6E6B-4428-A06A-B9234BD29BF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{087774B2-0E0B-4F91-A731-9054E5CB2BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{087774B2-0E0B-4F91-A731-9054E5CB2BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{087774B2-0E0B-4F91-A731-9054E5CB2BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{087774B2-0E0B-4F91-A731-9054E5CB2BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EA9978C-C024-4294-8B32-FCA57C2B7DA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EA9978C-C024-4294-8B32-FCA57C2B7DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EA9978C-C024-4294-8B32-FCA57C2B7DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EA9978C-C024-4294-8B32-FCA57C2B7DA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B236E680-AE6E-4A8D-BC10-CFC46BB493CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B236E680-AE6E-4A8D-BC10-CFC46BB493CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B236E680-AE6E-4A8D-BC10-CFC46BB493CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B236E680-AE6E-4A8D-BC10-CFC46BB493CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82454325-DFCA-4A53-BAFD-26264E7C6EE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82454325-DFCA-4A53-BAFD-26264E7C6EE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82454325-DFCA-4A53-BAFD-26264E7C6EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82454325-DFCA-4A53-BAFD-26264E7C6EE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
