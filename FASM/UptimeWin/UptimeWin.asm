@@ -59,7 +59,7 @@ section '.text' code readable executable
         ret
 
 proc WindowProc uses rbx rsi rdi, hwnd,wmsg,wparam,lparam
-        local   ps:PAINTSTRUCT    s     s       s       s       s       s
+        local   ps:PAINTSTRUCT
 ; Note that first four parameters are passed in registers,
 ; while names given in the declaration of procedure refer to the stack
 ; space reserved for them - you may store them there to be later accessible
