@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace RM.CSharpTest
 {
-	internal class Program
-    {
-        private static void Main(string[] args)
-        {
+	internal static class Program
+	{
+		private static void Main(string[] args)
+		{
 			//var tester = new Tester("Mr. Tester", "mrtester@example.com");
 			//tester.TestingCompleted += (sender, message) => { Console.WriteLine(message); };
 
@@ -27,30 +25,50 @@ namespace RM.CSharpTest
 			//tester.Stop();
 
 			//Static.WriteLine("blah-blah!");
-	        //StaticBfi.WriteLine("blah-blah to you!");
+			//StaticBfi.WriteLine("blah-blah to you!");
 
 			//Console.WriteLine("Static prop: {0}", Static.Stat.GetHashCode());
 			//Console.WriteLine("StaticBfi prop: {0}", StaticBfi.Stat.GetHashCode());
-
+			/*
 			Console.WriteLine(Morse.ToCode("ПРИВЕТ, МАТРИКС42!"));
 
 			var _ = new Morse();
 			var ___ = new Morse(withSpace: true);
 
 			Console.WriteLine(+- -+_+-+_+ +_+- -_+_-_+-+-+-___- -_+-_-_+-+_+ +_-+-_+ + + _+ + + +-_+ +- - -_- -+ +- -_);
-			
+			*/
 
-	        /*
+			/*
 			var lt = new ListTester();
 			lt.Run();
 			*/
 
-			Prynt("Test [Optional]: ");
+			//Prynt("Test [Optional]: ");
 
-			TestUnsafe.Run();
+			//TestUnsafe.Run();
 
-	        Console.WriteLine("Press ENTER to exit");
+			QuickTest();
+
+			Console.WriteLine("Press ENTER to exit");
 			Console.ReadLine();
+		}
+
+		private static void QuickTest()
+		{
+			var rnd = new Random();
+			var srcArray = new byte[256];
+			var srcArr2 = new[] { "test1", "test2", Guid.NewGuid().ToString("D") };
+
+			rnd.NextBytes(srcArray);
+
+			var targArray = srcArray.Clone() as byte[];
+			var targArr2 = srcArr2.Clone() as string[];
+
+			Console.WriteLine(String.Join(", ", targArray));
+			Console.WriteLine(String.Join(", ", targArr2));
+
+			Console.WriteLine($"1: {srcArray.GetHashCode()} :: {targArray.GetHashCode()}");
+			Console.WriteLine($"2: {srcArr2.GetHashCode()} :: {targArr2.GetHashCode()}");
 		}
 
 		private static void Prynt(string title, [Optional] object value)
