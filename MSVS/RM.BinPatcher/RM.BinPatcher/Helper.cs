@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using RM.BinPatcher.Model;
 
 namespace RM.BinPatcher
 {
@@ -30,7 +31,7 @@ namespace RM.BinPatcher
 			}
 		}
 
-		public static bool CompareBytes(byte[] streamBytes, byte?[] patternBytes)
+		public static bool CompareBytes(byte[] streamBytes, BytePart[] patternBytes)
 		{
 			var length = streamBytes.Length;
 
@@ -41,7 +42,47 @@ namespace RM.BinPatcher
 
 			for (int i = 0; i < length; i++)
 			{
-				if (patternBytes[i].HasValue && patternBytes[i].Value != streamBytes[i])
+				if (patternBytes[i].IsMatch(streamBytes[i]))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public static bool CompareBytes(ArraySegment<byte> streamBytes, BytePart[] patternBytes)
+		{
+			var length = streamBytes.Count;
+
+			if (patternBytes.Length != length)
+			{
+				return false;
+			}
+
+			for (int i = 0; i < length; i++)
+			{
+				if (patternBytes[i].IsMatch(streamBytes.Array[streamBytes.Offset + i]))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		public static bool CompareBytes(ReadOnlySpan<byte> bytes, BytePart[] patternBytes)
+		{
+			var length = bytes.Length;
+
+			if (patternBytes.Length != length)
+			{
+				return false;
+			}
+
+			for (int i = 0; i < length; i++)
+			{
+				if (!patternBytes[i].IsMatch(bytes[i]))
 				{
 					return false;
 				}

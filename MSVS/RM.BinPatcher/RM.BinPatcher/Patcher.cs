@@ -95,7 +95,7 @@ namespace RM.BinPatcher
 		}
 
 		// Tests required
-		private Tuple<bool, string, long[]> ValidateEntry(PatchEntry entry)
+		private (bool, string, long[]) ValidateEntry(PatchEntry entry)
 		{
 			bool isSuccess = false;
 			string message = null;
@@ -167,10 +167,10 @@ namespace RM.BinPatcher
 					break;
 			}
 
-			return Tuple.Create(isSuccess, message, addresses);
+			return (isSuccess, message, addresses);
 		}
 
-		private Tuple<bool, string> ApplyEntry(PatchEntry entry, long[] addresses)
+		private (bool, string) ApplyEntry(PatchEntry entry, long[] addresses)
 		{
 			try
 			{
@@ -181,7 +181,7 @@ namespace RM.BinPatcher
 
 				if (addresses == null || addresses.Length == 0)
 				{
-					return Tuple.Create(false, "No address specified!");
+					return (false, "No address specified!");
 				}
 
 				var newBytes = entry.NewData.Bytes;
@@ -192,7 +192,7 @@ namespace RM.BinPatcher
 
 					foreach (var newByte in newBytes)
 					{
-						if (newByte.HasValue)
+						if (newByte.IsValue)
 						{
 							_stream.WriteByte(newByte.Value);
 						}
@@ -203,11 +203,11 @@ namespace RM.BinPatcher
 					}
 				}
 
-				return Tuple.Create(true, (string)null);
+				return (true, (string)null);
 			}
 			catch (Exception e)
 			{
-				return Tuple.Create(false, e.Message);
+				return (false, e.Message);
 			}
 		}
 	}

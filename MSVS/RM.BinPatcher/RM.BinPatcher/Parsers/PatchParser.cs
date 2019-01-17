@@ -263,7 +263,7 @@ namespace RM.BinPatcher.Parsers
 			return Tuple.Create(new long?(address), PatchEntry.MatchBy.Address);
 		}
 
-		private static void AdjustNewDataLength(byte?[] oldData, ref byte?[] newData)
+		private static void AdjustNewDataLength<T>(T[] oldData, ref T[] newData) where T : struct
 		{
 			var oldDataLength = oldData.Length;
 			var newDataLength = newData.Length;

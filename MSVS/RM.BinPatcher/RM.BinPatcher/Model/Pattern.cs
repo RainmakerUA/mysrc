@@ -1,20 +1,25 @@
-﻿
+﻿using System;
 using RM.BinPatcher.Parsers;
 
 namespace RM.BinPatcher.Model
 {
 	public class Pattern
 	{
-		internal Pattern(byte?[] bytes)
+		internal Pattern(BytePart[] bytes)
 		{
 			Bytes = bytes;
 		}
 
-		public byte? this[int index] => Bytes[index];
+		public BytePart this[int index] => Bytes[index];
 
 		public int Length => Bytes.Length;
 
-		internal byte?[] Bytes { get; }
+		internal BytePart[] Bytes { get; }
+
+		public override string ToString()
+		{
+			return Bytes == null ? "[Empty]" : String.Join("\u0020", Bytes);
+		}
 
 		public static Pattern Parse(string pattern)
 		{

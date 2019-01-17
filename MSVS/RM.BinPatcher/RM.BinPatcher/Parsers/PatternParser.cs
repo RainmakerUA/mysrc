@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using RM.BinPatcher.Exceptions;
+using RM.BinPatcher.Model;
 
 namespace RM.BinPatcher.Parsers
 {
@@ -13,16 +13,15 @@ namespace RM.BinPatcher.Parsers
 		private const char _a = 'a';
 		private const char _f = 'f';
 
-		public static byte?[] ParseBytes(string pattern)
+		public static BytePart[] ParseBytes(string pattern)
 		{
-			var lowPattern = pattern.ToLowerInvariant();
-			var bytes = new List<byte?>();
+			var bytes = new List<BytePart>();
 			var firstChar = pattern[0];
 			var index = 1;
 
-			while (index < lowPattern.Length)
+			while (index < pattern.Length)
 			{
-				var secondChar = lowPattern[index];
+				var secondChar = pattern[index];
 			
 				if (Char.IsWhiteSpace(firstChar))
 				{
@@ -31,40 +30,86 @@ namespace RM.BinPatcher.Parsers
 					continue;
 				}
 				
-				if (firstChar == _wildcard && secondChar == _wildcard)
+				if (firstChar == _wildcard)
 				{
-					bytes.Add(null);
-					firstChar = SafeGetChar(lowPattern, index + 1);
-					index += 2;
-					continue;
+					if (secondChar == _wildcard)
+					{
+						bytes.Add(BytePart.Any);
+					}
+					else if (CharIsHex(secondChar))
+					{
+						bytes.Add(BytePart.Low(ParseHex(secondChar)));
+					}
+					else
+					{
+						Throw();//(pattern, index);
+					}
+				}
+				else if (CharIsHex(firstChar))
+				{
+					if (secondChar == _wildcard)
+					{
+						bytes.Add(BytePart.High(ParseHex(firstChar)));
+					}
+					else if (CharIsHex(secondChar))
+					{
+						bytes.Add(BytePart.Full(ParseHexes(firstChar, secondChar)));
+					}
+					else
+					{
+						Throw();//(pattern, index);
+					}
+				}
+				else
+				{
+					Throw(); //(pattern, index);
 				}
 
-				if ((CharInRange(firstChar, _0, _9) || CharInRange(firstChar, _a, _f))
-				    && (CharInRange(secondChar, _0, _9) || CharInRange(secondChar, _a, _f)))
-				{
-					var hex = new String(new[] {firstChar, secondChar});
-					var value = Byte.Parse(hex, NumberStyles.AllowHexSpecifier);
-
-					bytes.Add(value);
-					firstChar = SafeGetChar(lowPattern, index + 1);
-					index += 2;
-					continue;
-				}
-
-				throw new PatternParseException(pattern, index);
+				firstChar = SafeGetChar(pattern, index + 1);
+				index += 2;
 			}
 
 			return bytes.ToArray();
-		}
 
-		private static char SafeGetChar(string str, int index)
-		{
-			return index < str.Length ? str[index] : '\0';
-		}
+			bool CharInRange(char ch, char low, char high)
+			{
+				return low <= ch && ch <= high;
+			}
 
-		private static bool CharInRange(char ch, char low, char high)
-		{
-			return low <= ch && ch <= high;
+			bool CharIsHex(char c)
+			{
+				return CharInRange(c, _0, _9) || CharInRange(Char.ToLowerInvariant(c), _a, _f);
+			}
+
+			char SafeGetChar(string str, int charIndex)
+			{
+				return charIndex < str.Length ? str[charIndex] : '\0';
+			}
+
+			byte ParseHex(char hex)
+			{
+				if (CharInRange(hex, _0, _9))
+				{
+					return (byte)(hex - 0x30);
+				}
+
+				var lower = Char.ToLowerInvariant(hex);
+
+				if (CharInRange(lower, _a, _f))
+				{
+					return (byte)(lower - 0x61 + 0x0A);
+				}
+
+				Throw();
+				return 0; // never returns
+			}
+
+			byte ParseHexes(char highHex, char lowHex) => (byte)(ParseHex(highHex) << 4 | ParseHex(lowHex));
+			
+			void Throw()//(string patternStr, int patternIndex)
+			{
+				throw new PatternParseException(pattern, index);
+			}
 		}
 	}
 }
