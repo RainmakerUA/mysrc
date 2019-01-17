@@ -20,3 +20,6 @@
 *.user
 *.tss
 
+# Rust ignorings
+/Rust/**/target
+

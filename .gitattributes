@@ -1,7 +1,22 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-* text=auto
+*		text=false
+# FASM files
+*.asm		text eol=crlf
+*.fasm		text eol=crlf
+*.inc		text eol=crlf
+# VS files
+*.config	text eol=crlf
+*.cs		text eol=crlf
+*.csproj	text eol=crlf
+*.settings	text eol=crlf
+*.sln		text eol=crlf
+*xaml		text eol=crlf
+*.xml		text eol=crlf
+# Rust files
+*.rs		text eol=lf
+*.toml		text eol=lf
 
 ###############################################################################
 # Set default behavior for command prompt diff.
