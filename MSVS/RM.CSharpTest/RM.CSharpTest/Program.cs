@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
 using System.Runtime.InteropServices;
 
 namespace RM.CSharpTest
@@ -55,20 +57,10 @@ namespace RM.CSharpTest
 
 		private static void QuickTest()
 		{
-			var rnd = new Random();
-			var srcArray = new byte[256];
-			var srcArr2 = new[] { "test1", "test2", Guid.NewGuid().ToString("D") };
-
-			rnd.NextBytes(srcArray);
-
-			var targArray = srcArray.Clone() as byte[];
-			var targArr2 = srcArr2.Clone() as string[];
-
-			Console.WriteLine(String.Join(", ", targArray));
-			Console.WriteLine(String.Join(", ", targArr2));
-
-			Console.WriteLine($"1: {srcArray.GetHashCode()} :: {targArray.GetHashCode()}");
-			Console.WriteLine($"2: {srcArr2.GetHashCode()} :: {targArr2.GetHashCode()}");
+			using (var ifs = File.OpenRead(@"E:\_Temp\RM_2.GM1"))
+			using (var ofs = File.OpenWrite(@"E:\_Temp\RM_2.GM1.U"))
+			using (var gzs = new GZipStream(ifs, CompressionMode.Decompress, true))
+				gzs.CopyTo(ofs);
 		}
 
 		private static void Prynt(string title, [Optional] object value)
