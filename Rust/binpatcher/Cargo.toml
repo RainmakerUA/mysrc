@@ -1,0 +1,13 @@
+[package]
+name = "binpatcher"
+version = "0.1.0"
+authors = ["Vasyl Zhushma <vazhushma@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+winapi = { version =  "*", features = ["winnt"] }
+
+[[example]]
+name = "dylib"
+path = "examples/dylib/lib.rs"
+crate-type = ["cdylib"]
