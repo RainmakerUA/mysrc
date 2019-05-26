@@ -2,6 +2,7 @@
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
 *		text=false
+*.md		text eol=crlf
 # FASM files
 *.asm		text eol=crlf
 *.fasm		text eol=crlf

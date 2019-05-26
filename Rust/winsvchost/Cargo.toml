@@ -1,0 +1,10 @@
+[package]
+name = "winsvchost"
+version = "0.1.0"
+authors = ["Vasyl Zhushma <vazhushma@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+# winapi = { version = "*", features = [ "std", "winsvc", "winerror" ] }
+chrono = { version = "*" }
+windows-service = { version = "*" }

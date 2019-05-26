@@ -7,4 +7,7 @@ Assembler sources for Flat Assembler
 ### MSVS ###
 Solutions for MS Visual Studio (various languages)
 
+### Rust ###
+Rust projects
+
 to be continued...
