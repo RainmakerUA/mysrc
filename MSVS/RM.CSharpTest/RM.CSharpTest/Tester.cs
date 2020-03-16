@@ -11,7 +11,7 @@ namespace RM.CSharpTest
 	internal class Tester
 	{
 		private readonly ConcurrentQueue<string> _testQueue;
-		private volatile CancellationTokenSource _ctoken;
+		private volatile CancellationTokenSource? _ctoken;
 		private /*volatile*/ int _testedCount;
 
 		public Tester(string name, string email)

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RM.CSharpTest
 {
@@ -71,7 +69,6 @@ namespace RM.CSharpTest
 
 		private static readonly IDictionary<string, char> _inverseMorseAlphabet = _morseAlphabet.ToDictionary(kv => kv.Value, kv => kv.Key);
 
-		private readonly string _buffer;
 		private readonly bool _withSpace;
 
 		//static Morse()
@@ -91,11 +88,11 @@ namespace RM.CSharpTest
 		//	}
 		//}
 
-		protected string Buffer => _buffer;
+		protected string? Buffer { get; }
 
-		public Morse(string buffer = null, bool withSpace = false)
+		public Morse(string? buffer = null, bool withSpace = false)
 		{
-			_buffer = buffer;
+			Buffer = buffer;
 			_withSpace = withSpace;
 		}
 
@@ -113,12 +110,12 @@ namespace RM.CSharpTest
 
 		public static Morse operator +(Morse morse)
 		{
-			return new Morse("." + (morse._buffer ?? String.Empty), morse._withSpace);
+			return new Morse("." + (morse.Buffer ?? String.Empty), morse._withSpace);
 		}
 
 		public static Morse operator -(Morse morse)
 		{
-			return new Morse("-" + (morse._buffer ?? String.Empty), morse._withSpace);
+			return new Morse("-" + (morse.Buffer ?? String.Empty), morse._withSpace);
 		}
 		
 		public static string operator +(Morse morseLeft, Morse morseRight)
@@ -143,7 +140,7 @@ namespace RM.CSharpTest
 
 		private static string Stringify(Morse morse)
 		{
-			return new String(_inverseMorseAlphabet[morse._buffer], 1) + (morse._withSpace ? "\u0020" : "");
+			return new String(_inverseMorseAlphabet[morse.Buffer], 1) + (morse._withSpace ? "\u0020" : "");
 		}
 	}
 

@@ -49,7 +49,9 @@ namespace RM.CSharpTest
 
 			//TestUnsafe.Run();
 
-			QuickTest();
+			//QuickTest();
+
+			Sharp8.Sharp8Test.Execute();
 
 			Console.WriteLine("Press ENTER to exit");
 			Console.ReadLine();
@@ -58,9 +60,9 @@ namespace RM.CSharpTest
 		private static void QuickTest()
 		{
 			using (var ifs = File.OpenRead(@"E:\_Temp\RM_2.GM1"))
-			using (var ofs = File.OpenWrite(@"E:\_Temp\RM_2.GM1.U"))
-			using (var gzs = new GZipStream(ifs, CompressionMode.Decompress, true))
-				gzs.CopyTo(ofs);
+				using (var ofs = File.OpenWrite(@"E:\_Temp\RM_2.GM1.U"))
+					using (var gzs = new GZipStream(ifs, CompressionMode.Decompress, true))
+						gzs.CopyTo(ofs);
 		}
 
 		private static void Prynt(string title, [Optional] object value)
