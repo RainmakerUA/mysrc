@@ -8,5 +8,6 @@ Assembler sources for Flat Assembler
 Solutions for MS Visual Studio (various languages)
 
 ### Rust ###
-Rust sources
+Rust projects
 
+to be continued...

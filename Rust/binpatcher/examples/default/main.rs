@@ -1,7 +1,7 @@
 extern crate binpatcher;
 
 use std::fs::File;
-use std::io::prelude::*;
+use std::io::{ prelude::*, SeekFrom };
 use std::time::{/*Duration,*/ Instant};
 
 use binpatcher::model::{ BytePart, Pattern };
@@ -49,15 +49,22 @@ fn main() {
     }
 
     println!("Loading a file...");
+    
     let mut f = File::open(r"e:\Torrents\x.bin").expect("Cannot open file!");
-    let mut v = Vec::new();
+    let len = f.seek(SeekFrom::End(0)).expect("Cannot seek in the file!") as usize;
+    f.seek(SeekFrom::Start(0)).expect("Cannot seek in the file!");
+    println!("File size = {} bytes", len);
+
+    let mut v = Vec::with_capacity(len + 16);
     let p = Pattern::parse("5? A2 ?? ?8 FF E?").unwrap();
     let start = Instant::now();
-    f.read_to_end(&mut v).expect("Cannot read file!");
-    println!("File read in {:?}", start.elapsed());
+    let len = f.read_to_end(&mut v).expect("Cannot read file!");
+    println!("File read in {:?} : {} bytes", start.elapsed(), len);
     println!("Scanning a file...");
+
+    //let len = v.len();
     for pos in p.matches(&v[..]) {
-        println!("Match found @ 0x{:02X} | Elapsed: {:?}", pos, start.elapsed());
+        println!("Match found @ 0x{:02X} : {:02}% | Elapsed: {:?}", pos, 100 * pos / len, start.elapsed());
     }
     println!("Scan finished after {:?}", start.elapsed());
 }
