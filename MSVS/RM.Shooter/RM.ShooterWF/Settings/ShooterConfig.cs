@@ -11,45 +11,23 @@ namespace RM.Shooter.Settings
 		private const string _defaultFolder = ".";
 		private const string _defaultNameFormat = "{0}_{1}";
 
-		private static readonly ShooterConfig _default = new ShooterConfig(_defaultFormat, _defaultQuality, _defaultFolder, _defaultNameFormat);
-
-		private readonly ImageFormat _format;
-		private readonly int _quality;
-		private readonly string _folder;
-		private readonly string _nameFormat;
-
 		public ShooterConfig(ImageFormat format, int quality, string folder, string nameFormat)
 		{
-			_format = format;
-			_quality = quality;
-			_folder = folder;
-			_nameFormat = nameFormat;
+			Format = format;
+			Quality = quality;
+			Folder = folder;
+			NameFormat = nameFormat;
 		}
 
-		public ImageFormat Format
-		{
-			get { return _format; }
-		}
+		public ImageFormat Format { get; }
 
-		public int Quality
-		{
-			get { return _quality; }
-		}
+		public int Quality { get; }
 
-		public string Folder
-		{
-			get { return _folder; }
-		}
+		public string Folder { get; }
 
-		public string NameFormat
-		{
-			get { return _nameFormat; }
-		}
+		public string NameFormat { get; }
 
-		public static ShooterConfig Default
-		{
-			get { return _default; }
-		}
+		public static ShooterConfig Default { get; } = new ShooterConfig(_defaultFormat, _defaultQuality, _defaultFolder, _defaultNameFormat);
 
 		public static ShooterConfig FromIni(IKeyedStorage<string, string> section)
 		{
