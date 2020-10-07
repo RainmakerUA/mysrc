@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.Lib.Wpf.Localization", "RM.Lib.Wpf.Localization\RM.Lib.Wpf.Localization.csproj", "{F4368A54-93A0-4DEB-849B-B07A0069B6AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.Lib.Wpf.Localization.JsonProvider", "RM.Lib.Wpf.Localization.JsonProvider\RM.Lib.Wpf.Localization.JsonProvider.csproj", "{484093D9-276A-417D-AB55-A5F45DA84FB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.Lib.Wpf.Localization.XmlProvider", "RM.Lib.Wpf.Localization.XmlProvider\RM.Lib.Wpf.Localization.XmlProvider.csproj", "{4A2E649F-A13B-446D-8B7C-70EBF709E0F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Localization", "Localization", "{4BC2C561-D1FA-48CA-B459-44B461EEA33C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.Lib.Wpf.Common", "RM.Lib.Wpf.Common\RM.Lib.Wpf.Common.csproj", "{6A67D77A-A993-4A8A-83BF-AE10D684B6D1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4368A54-93A0-4DEB-849B-B07A0069B6AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4368A54-93A0-4DEB-849B-B07A0069B6AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4368A54-93A0-4DEB-849B-B07A0069B6AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4368A54-93A0-4DEB-849B-B07A0069B6AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{484093D9-276A-417D-AB55-A5F45DA84FB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{484093D9-276A-417D-AB55-A5F45DA84FB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{484093D9-276A-417D-AB55-A5F45DA84FB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{484093D9-276A-417D-AB55-A5F45DA84FB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A2E649F-A13B-446D-8B7C-70EBF709E0F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A2E649F-A13B-446D-8B7C-70EBF709E0F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A2E649F-A13B-446D-8B7C-70EBF709E0F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A2E649F-A13B-446D-8B7C-70EBF709E0F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A67D77A-A993-4A8A-83BF-AE10D684B6D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A67D77A-A993-4A8A-83BF-AE10D684B6D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A67D77A-A993-4A8A-83BF-AE10D684B6D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A67D77A-A993-4A8A-83BF-AE10D684B6D1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F4368A54-93A0-4DEB-849B-B07A0069B6AC} = {4BC2C561-D1FA-48CA-B459-44B461EEA33C}
+		{484093D9-276A-417D-AB55-A5F45DA84FB8} = {4BC2C561-D1FA-48CA-B459-44B461EEA33C}
+		{4A2E649F-A13B-446D-8B7C-70EBF709E0F7} = {4BC2C561-D1FA-48CA-B459-44B461EEA33C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0DE1481-C9E0-41F8-868C-9233A535A186}
+	EndGlobalSection
+EndGlobal
