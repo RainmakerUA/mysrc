@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3D1ADCC9-7D96-42B5-BB1E-5345F21D998C}</ProjectGuid>
+    <ProjectGuid>{7EA04102-9453-4F12-8CD4-574B75059737}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RM.Win.ServiceController</RootNamespace>
     <AssemblyName>RM.Win.ServiceController</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -24,6 +25,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,10 +36,24 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>RM.Win.ServiceController.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\main.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -56,6 +73,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\MainModel.cs" />
+    <Compile Include="Service.xaml.cs">
+      <DependentUpon>Service.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\AppSettings.cs" />
+    <Compile Include="Settings\Geometry.cs" />
+    <Compile Include="Settings\UserSettings.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -64,48 +88,59 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\BindableBase.cs" />
+    <Compile Include="Common\DelegateCommand.cs" />
+    <Compile Include="Common\Extensions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Service.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Service.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Model\Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    <None Include="app.manifest" />
+    <None Include="config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AppDesigner Include="Properties\" />
+    <None Include="packages.config" />
+    <Resource Include="Resources\lng\en.json" />
+    <Resource Include="Resources\lng\ru.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\main.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization.JsonResourceProvider\RM.Lib.Common.Localization.JsonResourceProvider.csproj">
+      <Project>{7096c174-1efa-4078-bc64-ebfaf4bb9b47}</Project>
+      <Name>RM.Lib.Common.Localization.JsonResourceProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization\RM.Lib.Common.Localization.csproj">
+      <Project>{e9331bd7-8032-404b-a9b5-c56fee7c1ed2}</Project>
+      <Name>RM.Lib.Common.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings.JsonFileSerializer\RM.Lib.Common.Settings.JsonFileSerializer.csproj">
+      <Project>{8f9a278f-f876-4821-9a6f-044053d152ad}</Project>
+      <Name>RM.Lib.Common.Settings.JsonFileSerializer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings\RM.Lib.Common.Settings.csproj">
+      <Project>{b1e164e7-476d-4cba-a7de-98b03217b7f3}</Project>
+      <Name>RM.Lib.Common.Settings</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Localization\RM.Lib.Wpf.Localization.csproj">
+      <Project>{f4368a54-93a0-4deb-849b-b07a0069b6ac}</Project>
+      <Name>RM.Lib.Wpf.Localization</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

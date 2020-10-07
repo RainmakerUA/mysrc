@@ -1,0 +1,10 @@
+{
+	"assembly": {
+	},
+	"RM.Win.ServiceController": {
+		"App": {
+		},
+		"MainWindow": {
+		}
+	}
+}

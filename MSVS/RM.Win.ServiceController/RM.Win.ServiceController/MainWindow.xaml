@@ -4,9 +4,60 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RM.Win.ServiceController"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Button Click="OnDoClick">DO</Button>
+        xmlns:model="clr-namespace:RM.Win.ServiceController.Model"
+        mc:Ignorable="d" d:DesignWidth="595" d:DesignHeight="340"
+        MinWidth="595" MinHeight="340" ResizeMode="CanResizeWithGrip" WindowStyle="ThreeDBorderWindow"
+        WindowState="{Binding Geometry.State,Mode=TwoWay}" WindowStartupLocation="CenterScreen"
+        Left="{Binding Geometry.Left,Mode=TwoWay}" Top="{Binding Geometry.Top,Mode=TwoWay}"
+        Width="{Binding Geometry.Width,Mode=TwoWay}" Height="{Binding Geometry.Height,Mode=TwoWay}"
+        Title="RM Service Controller" Icon="Resources/main.ico">
+	<Window.DataContext>
+        <model:MainModel />
+    </Window.DataContext>
+	<Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+		<ScrollViewer x:Name="ServiceScroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+			<ItemsControl ItemsSource="{Binding Services}" Focusable="False" HorizontalContentAlignment="Stretch" >
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<local:Service DataContext="{TemplateBinding DataContext}" />
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+        <DockPanel LastChildFill="True" Grid.Row="1">
+	        <Rectangle DockPanel.Dock="Right" Width="{x:Static SystemParameters.VerticalScrollBarWidth}" Fill="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}"
+	                   Visibility="{Binding ElementName=ServiceScroller,Path=ComputedVerticalScrollBarVisibility}" />
+			<Border Style="{StaticResource ElementBorder}">
+	            <DockPanel LastChildFill="True" Margin="2">
+					<DockPanel.Resources>
+						<Style TargetType="Button" BasedOn="{StaticResource ControlButton}" />
+					</DockPanel.Resources>
+		            <Button Command="{Binding RestartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
+						<ContentControl Style="{StaticResource RestartIconContent}" />
+		            </Button>
+					<Button Command="{Binding StopCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
+						<ContentControl Style="{StaticResource StopIconContent}" />
+					</Button>
+					<Button Command="{Binding StartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
+						<ContentControl Style="{StaticResource StartIconContent}" />
+					</Button>
+					<Button Margin="20 3">
+						<ContentControl Style="{StaticResource SettingsIconContent}" />
+					</Button>
+					<Image Source="Resources/main.ico" Width="40" Height="40" DockPanel.Dock="Left" />
+					<TextBlock Text="© Copyright"
+					           VerticalAlignment="Center" Margin="10 0"
+					           FontFamily="Consolas" FontSize="20" FontWeight="DemiBold">
+						<TextBlock.Effect>
+							<DropShadowEffect Color="{DynamicResource {x:Static SystemColors.GrayTextColorKey}}" Direction="-45" ShadowDepth="3" />
+						</TextBlock.Effect>
+					</TextBlock>
+	            </DockPanel>
+			</Border>
+        </DockPanel>
     </Grid>
 </Window>

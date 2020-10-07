@@ -1,9 +1,130 @@
 ﻿<Application x:Class="RM.Win.ServiceController.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:RM.Win.ServiceController"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
-    </Application.Resources>
+	    <Style x:Key="ControlButton" TargetType="Button">
+			<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+		    <Setter Property="Width" Value="40" />
+			<Setter Property="Height" Value="40" />
+			<Setter Property="Margin" Value="3" />
+			<Setter Property="DockPanel.Dock" Value="Right" />
+		</Style>
+		<Style x:Key="ElementBorder" TargetType="Border">
+			<Setter Property="Margin" Value="2" />
+			<Setter Property="CornerRadius" Value="5" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" />
+		</Style>
+		<Style x:Key="IconContent" TargetType="ContentControl">
+			<Setter Property="Background" Value="Transparent" />
+		</Style>
+		<Style x:Key="StartIconContent" TargetType="ContentControl" BasedOn="{StaticResource IconContent}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ContentControl">
+						<ControlTemplate.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button},Path=IsEnabled}" Value="False">
+								<DataTrigger.Setters>
+									<Setter Property="Opacity" Value="0.5" />
+								</DataTrigger.Setters>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button},Path=IsEnabled}" Value="True">
+								<DataTrigger.Setters>
+									<Setter Property="Opacity" Value="1.0" />
+								</DataTrigger.Setters>
+							</DataTrigger>
+						</ControlTemplate.Triggers>
+						<Viewbox>
+							<Canvas Width="100" Height="100">
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 0,50 H 10 A 40,40 180 1 1 90,50 H 100 A 50,50 180 1 0 0,50 A 50,50 180 1 0 100,50 H 90 A 40,40 180 1 1 10,50" />
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 38,29.22 V 70.78 L 67,50 Z" Canvas.Left="40" Canvas.Top="29.22" />
+							</Canvas>
+						</Viewbox>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="StopIconContent" TargetType="ContentControl" BasedOn="{StaticResource IconContent}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ContentControl">
+						<ControlTemplate.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button},Path=IsEnabled}" Value="False">
+								<DataTrigger.Setters>
+									<Setter Property="Opacity" Value="0.5" />
+								</DataTrigger.Setters>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button},Path=IsEnabled}" Value="True">
+								<DataTrigger.Setters>
+									<Setter Property="Opacity" Value="1.0" />
+								</DataTrigger.Setters>
+							</DataTrigger>
+						</ControlTemplate.Triggers>
+						<Viewbox>
+							<Canvas Width="100" Height="100">
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 0,50 H 10 A 40,40 180 1 1 90,50 H 100 A 50,50 180 1 0 0,50 A 50,50 180 1 0 100,50 H 90 A 40,40 180 1 1 10,50" />
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 35,35 V 65 H 65 V 35 Z" Canvas.Left="35" Canvas.Top="35" />
+							</Canvas>
+						</Viewbox>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="RestartIconContent" TargetType="ContentControl" BasedOn="{StaticResource IconContent}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ContentControl">
+						<ControlTemplate.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button},Path=IsEnabled}" Value="False">
+								<DataTrigger.Setters>
+									<Setter Property="Opacity" Value="0.5" />
+								</DataTrigger.Setters>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button},Path=IsEnabled}" Value="True">
+								<DataTrigger.Setters>
+									<Setter Property="Opacity" Value="1.0" />
+								</DataTrigger.Setters>
+							</DataTrigger>
+						</ControlTemplate.Triggers>
+						<Viewbox>
+							<Canvas Width="100" Height="100">
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 0,50 H 10 A 40,40 180 1 1 90,50 H 100 A 50,50 180 1 0 0,50 A 50,50 180 1 0 100,50 H 90 A 40,40 180 1 1 10,50" />
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 38,29.22 V 70.78 L 67,50 Z" Canvas.Left="52" Canvas.Top="29.22" />
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 35,35 V 65 H 65 V 35 Z" Canvas.Left="18" Canvas.Top="35" />
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 30,45 H 70 V 55 H 30 Z" Canvas.Left="30" Canvas.Top="45" />
+							</Canvas>
+						</Viewbox>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style x:Key="SettingsIconContent" TargetType="ContentControl" BasedOn="{StaticResource IconContent}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="ContentControl">
+						<ControlTemplate.Triggers>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button},Path=IsEnabled}" Value="False">
+								<DataTrigger.Setters>
+									<Setter Property="Opacity" Value="0.5" />
+								</DataTrigger.Setters>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Button},Path=IsEnabled}" Value="True">
+								<DataTrigger.Setters>
+									<Setter Property="Opacity" Value="1.0" />
+								</DataTrigger.Setters>
+							</DataTrigger>
+						</ControlTemplate.Triggers>
+						<Viewbox>
+							<Canvas Width="100" Height="100">
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F1 M 0,50 H 10 A 40,40 180 1 1 90,50 H 100 A 50,50 180 1 0 0,50 A 50,50 180 1 0 100,50 H 90 A 40,40 180 1 1 10,50" />
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F0 M 25,20 V 80 H 35 V 20 H 25 M 30,50 M 45,20 V 80 H 55 V 20 H 45 M 65,20 V 80 H 75 V 20 H 65" Canvas.Left="25" Canvas.Top="20" />
+								<Path Stretch="UniformToFill" Fill="{TemplateBinding Foreground}" Data="F0 M 30,50 A 10,10 180 1 1 30,70 A 10,10 180 1 1 30,50 M 50,30 A 10,10 180 1 1 50,50 A 10,10 180 1 1 50,30 M 70,50 A 10,10 180 1 1 70,70 A 10,10 180 1 170,50" Canvas.Left="20" Canvas.Top="30" />
+							</Canvas>
+						</Viewbox>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Application.Resources>
 </Application>

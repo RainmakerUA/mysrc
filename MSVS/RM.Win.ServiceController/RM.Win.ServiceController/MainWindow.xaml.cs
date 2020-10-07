@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
+using RM.Win.ServiceController.Common;
+using RM.Win.ServiceController.Model;
 
 namespace RM.Win.ServiceController
 {
@@ -20,14 +11,30 @@ namespace RM.Win.ServiceController
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+
 		public MainWindow()
 		{
+			Model.Service.Dispatcher = Dispatcher;
+			Model.Service.ErrorAction = ShowError;
+			MainModel.ErrorAction = ShowError;
+
 			InitializeComponent();
 		}
 
-		private void OnDoClick(object sender, RoutedEventArgs e)
+		public MainModel ViewModel
 		{
-			
+			get => DataContext as MainModel;
+			set => DataContext = value;
+		}
+
+		private void ShowError(Exception exc)
+		{
+			Dispatcher.Invoke(new Action<Exception>(ShowErrorUnsafe), DispatcherPriority.Normal, exc);
+		}
+
+		private void ShowErrorUnsafe(Exception exc)
+		{
+			MessageBox.Show(this, exc.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 	}
 }

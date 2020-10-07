@@ -1,0 +1,16 @@
+{
+	"LaunchAtStartup": false,
+	"Language": "en",
+	"Services": {
+		"TermService": true,
+		"MSSQLSERVER": true,
+		"SQLSERVERAGENT": true,
+		"W3SVC": true,
+		"Matrix42.Data.Gateway": true,
+		"Matrix42.Worker": true,
+		"Matrix42.SPS.Engines.Common": true,
+		"Matrix42.SPS.Engines.CommonX86": true,
+		"Matrix42.SPS.Engines.Scheduler": true
+	},
+	"RefreshInterval": 1000
+}
