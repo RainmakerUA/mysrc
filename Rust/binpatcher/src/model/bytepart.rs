@@ -29,22 +29,12 @@ impl BytePart {
         BytePart { value: BytePartValue::Any }
     }
 
-    pub fn low(byte: u8) -> Option<Self> {
-        if is_nibble(byte) {
-            Some(BytePart { value: BytePartValue::Low(byte) })
-        }
-        else {
-            None
-        }
+    pub fn low(byte: u8) -> Self {
+        BytePart { value: BytePartValue::Low(low_nibble(byte)) }
     }
 
-    pub fn high(byte: u8) -> Option<Self> {
-        if is_nibble(byte) {
-            Some(BytePart { value: BytePartValue::High(byte) })
-        }
-        else {
-            None
-        }
+    pub fn high(byte: u8) -> Self {
+       BytePart { value: BytePartValue::High(low_nibble(byte)) }
     }
 
     pub fn full(byte: u8) -> Self {
@@ -134,8 +124,9 @@ impl BytePartValue {
     }
 }
 
-fn is_nibble(byte: u8) -> bool {
-    byte & 0xF0 == 0
+#[inline]
+fn low_nibble(byte: u8) -> u8 {
+    byte & 0xF0
 }
 
 fn nibble_to_hexchar(nibble: u8) -> u8 {
@@ -149,9 +140,9 @@ fn nibble_to_hexchar(nibble: u8) -> u8 {
 
 fn hexchar_to_nibble(hex: u8) -> Result<u8, ParseBytePartError> {
     match hex {
-        NUM_0..=NUM_9 => Ok(hex - NUM_0),
-        UPPER_A..=UPPER_F => Ok(hex - UPPER_A + TEN),
-        LOWER_A..=LOWER_F => Ok(hex - LOWER_A + TEN),
+        NUM_0 ..= NUM_9 => Ok(hex - NUM_0),
+        UPPER_A ..= UPPER_F => Ok(hex - UPPER_A + TEN),
+        LOWER_A ..= LOWER_F => Ok(hex - LOWER_A + TEN),
         _ => Err(ParseBytePartError::from_kind(BytePartErrorKind::InvalidChar(hex)))
     }
 }
@@ -176,25 +167,25 @@ mod bytepart_tests {
     #[test]
     fn bytepart_factory_low_ok() {
         let byte = 0x0D_u8;
-        assert_eq!(BytePartValue::Low(byte), BytePart::low(byte).unwrap().value);
+        assert_eq!(BytePartValue::Low(byte), BytePart::low(byte).value);
     }
 
     #[test]
-    fn bytepart_factory_low_fail() {
+    fn bytepart_factory_low_downcast() {
         let byte = 0xD2_u8;
-        assert_eq!(None, BytePart::low(byte));
+        assert_eq!(BytePartValue::Low(low_nibble(byte)), BytePart::low(byte).value);
     }
 
     #[test]
     fn bytepart_factory_high_ok() {
         let byte = 0x0B_u8;
-        assert_eq!(BytePartValue::High(byte), BytePart::high(byte).unwrap().value);
+        assert_eq!(BytePartValue::High(byte), BytePart::high(byte).value);
     }
 
     #[test]
-    fn bytepart_factory_high_fail() {
+    fn bytepart_factory_high_downcast() {
         let byte = 0x2D_u8;
-        assert_eq!(None, BytePart::high(byte));
+        assert_eq!(BytePartValue::High(low_nibble(byte)), BytePart::high(byte).value);
     }
 
     #[test]
@@ -393,18 +384,18 @@ mod bytepart_tests {
     }
 
     #[test]
-    fn is_nibble_true1() {
-        assert!(is_nibble(0x2));
+    fn low_nibble_result1() {
+        assert_eq!(0x02, low_nibble(0x02));
     }
 
     #[test]
-    fn is_nibble_true2() {
-        assert!(is_nibble(0xC));
+    fn low_nibble_result2() {
+        assert_eq!(0x00, low_nibble(0x40));
     }
 
     #[test]
-    fn is_nibble_false() {
-        assert!(!is_nibble(0x12));
+    fn low_nibble_result3() {
+        assert_eq!(0x02, low_nibble(0xD2));
     }
 
     #[test]
