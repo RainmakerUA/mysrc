@@ -14,8 +14,8 @@ fn main() {
     println!("{:?}", bp2);
 
     println!("Any byte: {}", BytePart::any());
-    println!("Low byte part: {}", BytePart::low(0xC).unwrap());
-    println!("High byte part: {}", BytePart::high(0xA).unwrap());
+    println!("Low byte part: {}", BytePart::low(0xC));
+    println!("High byte part: {}", BytePart::high(0xA));
     println!("Full byte: {}", BytePart::full(0x4A));
 
     println!("BytePart: {:?}", BytePart::low(0xFF));
@@ -55,18 +55,36 @@ fn main() {
     f.seek(SeekFrom::Start(0)).expect("Cannot seek in the file!");
     println!("File size = {} bytes", len);
 
-    let mut v = Vec::with_capacity(len + 16);
+    let mut v = Vec::with_capacity(len + 1);
     let p = Pattern::parse("5? A2 ?? ?8 FF E?").unwrap();
     let start = Instant::now();
     let len = f.read_to_end(&mut v).expect("Cannot read file!");
     println!("File read in {:?} : {} bytes", start.elapsed(), len);
+    println!("Vector capacity = {} bytes", v.capacity());
     println!("Scanning a file...");
 
-    //let len = v.len();
     for pos in p.matches(&v[..]) {
         println!("Match found @ 0x{:02X} : {:02}% | Elapsed: {:?}", pos, 100 * pos / len, start.elapsed());
     }
-    println!("Scan finished after {:?}", start.elapsed());
+
+    let elapsed_seconds = start.elapsed().as_secs_f64();
+    let mut speed = (len as f64) / elapsed_seconds;
+    let mut prefix_num = 0u8;
+
+    while speed > 1024f64 && prefix_num <= 3 {
+        speed /= 1024f64;
+        prefix_num += 1;
+    }
+
+    let prefix = match prefix_num {
+        0 => "",
+        1 => "ki",
+        2 => "Mi",
+        3 => "Gi",
+        _ => "?i"
+    };
+
+    println!("Scan finished after {:.2} s. Average speed: {:.3} {}B/s", elapsed_seconds, speed, prefix);
 }
 
 fn parse_bytepart(s: &str) -> BytePart {
