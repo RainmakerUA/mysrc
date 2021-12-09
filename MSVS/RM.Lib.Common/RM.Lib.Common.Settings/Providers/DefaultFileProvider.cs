@@ -12,12 +12,12 @@ namespace RM.Lib.Common.Settings.Providers
 		private const string _localAppFolder = "%LOCALAPPDATA%\\RM\\";
 
 		private readonly TSerializer _serializer;
-		private readonly Func<TApp> _defaultAppSettings;
+		private readonly Func<TApp>? _defaultAppSettings;
 		private readonly string _appSettingsFile;
 		private readonly string _userSettingsFile;
 		private readonly TApp _appSettings;
 
-		public DefaultFileProvider(TSerializer serializer = null, string appName = null, bool? useAppData = null, Func<TApp> defaultAppSettings = null)
+		public DefaultFileProvider(TSerializer? serializer = null, string? appName = null, bool? useAppData = null, Func<TApp>? defaultAppSettings = null)
 		{
 			var entryAssembly = Assembly.GetEntryAssembly();
 			_defaultAppSettings = defaultAppSettings;
@@ -57,7 +57,7 @@ namespace RM.Lib.Common.Settings.Providers
 			return ctor?.Invoke(null) as TSerializer ?? throw new ArgumentException($"Cannot instantiate serializer of class {serializerType.FullName}");
 		}
 
-		private static string GetApplicationName(Assembly entryAssembly)
+		private static string GetApplicationName(Assembly? entryAssembly)
 		{
 			var name = entryAssembly?.GetName().Name;
 
@@ -71,9 +71,9 @@ namespace RM.Lib.Common.Settings.Providers
 			return $"{name.GetHashCode():X8}";
 		}
 
-		private static string GetAppSettingsPath(Assembly entryAssembly)
+		private static string GetAppSettingsPath(Assembly? entryAssembly)
 		{
-			return Path.GetDirectoryName((entryAssembly ?? Assembly.GetExecutingAssembly()).Location);
+			return Path.GetDirectoryName((entryAssembly ?? Assembly.GetExecutingAssembly()).Location)!;
 		}
 
 		private static string GetAppDataUserSettingsPath(string appName) => Directory.CreateDirectory(Environment.ExpandEnvironmentVariables(_localAppFolder + appName)).FullName;

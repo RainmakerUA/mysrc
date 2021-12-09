@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using RM.Lib.Common.Localization;
@@ -35,7 +34,7 @@ namespace RM.Win.ServiceController
 
 		public LocalizationManager Localization { get; }
 
-		public new static App Current => Application.Current as App;
+		public new static App Current => (Application.Current as App)!;
 
 		protected override void OnExit(ExitEventArgs e)
 		{

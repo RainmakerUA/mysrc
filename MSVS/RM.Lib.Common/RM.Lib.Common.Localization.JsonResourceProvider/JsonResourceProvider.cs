@@ -19,14 +19,14 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 
 		private readonly IDictionary<int, IDictionary<string, string>> _strings;
 
-		public JsonResourceProvider(string assemblyName, Stream resourceStream, string resourceEntryPrefix)
+		public JsonResourceProvider(string assemblyName, Stream resourceStream, string? resourceEntryPrefix = null)
 		{
 			_strings = new Dictionary<int, IDictionary<string, string>>();
 			Key = assemblyName;
 			SupportedLocales = FillStrings(_strings, resourceStream, resourceEntryPrefix);
 		}
 
-		public JsonResourceProvider(Assembly resourceAssembly, string resourceEntryPrefix)
+		public JsonResourceProvider(Assembly resourceAssembly, string? resourceEntryPrefix = null)
 			: this(resourceAssembly.GetName().Name, GetAssemblyFirstResourceStream(resourceAssembly), resourceEntryPrefix)
 		{
 		}
@@ -35,7 +35,7 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 
 		public IReadOnlyList<int> SupportedLocales { get; }
 
-		public string GetString(string key, int lcid)
+		public string? GetString(string key, int lcid)
 		{
 			return _strings.TryGetValue(lcid, out var localeStrings) && localeStrings.TryGetValue(key, out var str) ? str : null;
 		}
@@ -44,10 +44,10 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 		{
 			var resName = assembly.GetManifestResourceNames().FirstOrDefault()
 							?? throw new ArgumentException($"Assembly {assembly.GetName().Name} does not contain resources!");
-			return assembly.GetManifestResourceStream(resName);
+			return assembly.GetManifestResourceStream(resName)!;
 		}
 
-		private static IReadOnlyList<int> FillStrings(IDictionary<int, IDictionary<string, string>> strings, Stream resStream, string prefix)
+		private static IReadOnlyList<int> FillStrings(IDictionary<int, IDictionary<string, string>> strings, Stream resStream, string? prefix)
 		{
 			var locales = new List<int>();
 			var regexString = _resNameRegex;
@@ -68,7 +68,7 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 			{
 				foreach (var (name, stream) in resReader.Cast<DictionaryEntry>().Select(de => (de.Key as string, de.Value as Stream)))
 				{
-					var match = regex.Match(name);
+					var match = regex.Match(name!);
 
 					if (match.Success)
 					{
@@ -76,7 +76,7 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 						{
 							var lcid = new CultureInfo(match.Groups[1].Value).LCID;
 							locales.Add(lcid);
-							strings[lcid] = GetStringsFromJson(stream);
+							strings[lcid] = GetStringsFromJson(stream!);
 						}
 						catch (CultureNotFoundException)
 						{
@@ -92,25 +92,22 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 		{
 			var result = new Dictionary<string, string>();
 
-			using (var textReader = new StreamReader(stream))
-			{
-				using (var jReader = new JsonTextReader(textReader))
-				{
-					var jObject = JObject.Load(jReader);
-					AddStrings(result, String.Empty, jObject);
-				}
-			}
+			using var textReader = new StreamReader(stream);
+			using var jReader = new JsonTextReader(textReader);
+
+			var jObject = JObject.Load(jReader);
+			AddStrings(result, String.Empty, jObject);
 
 			return result;
 
-			void AddStrings(IDictionary<string, string> strings, string prefix, JObject jObj)
+			static void AddStrings(IDictionary<string, string> strings, string prefix, JObject jObj)
 			{
 				if (!String.IsNullOrEmpty(prefix))
 				{
 					prefix += LocalizationManager.KeySeparator;
 				}
 
-				foreach (var (key, jToken) in jObj.Select((KeyValuePair<string, JToken> kv) => (kv.Key, kv.Value)))
+				foreach (var (key, jToken) in jObj!.Select((KeyValuePair<string, JToken> kv) => (kv.Key, kv.Value)))
 				{
 					if (jToken != null)
 					{
@@ -119,7 +116,7 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 						switch (jToken.Type)
 						{
 							case JTokenType.Object:
-								AddStrings(strings, fullKey, jToken as JObject);
+								AddStrings(strings, fullKey, (jToken as JObject)!);
 								break;
 							case JTokenType.None:
 							case JTokenType.Null:
@@ -128,7 +125,7 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 								// Do nothing?
 								break;
 							default:
-								strings.Add(fullKey, (string) jToken);
+								strings.Add(fullKey, (string) jToken!);
 								break;
 						}
 					}

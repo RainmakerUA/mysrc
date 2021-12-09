@@ -12,7 +12,7 @@ namespace RM.Lib.Common.Localization
 		{
 			_manager = manager;
 			_providerKey = type.Assembly.GetName().Name;
-			_typeKey = type.FullName;
+			_typeKey = type.FullName!;
 		}
 
 		public string GetString(string key) => _manager.GetString(_providerKey, LocalizationManager.CombineKey(_typeKey, key));

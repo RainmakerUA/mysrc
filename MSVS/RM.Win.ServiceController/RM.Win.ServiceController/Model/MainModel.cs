@@ -20,7 +20,7 @@ namespace RM.Win.ServiceController.Model
 
 		private readonly UserSettings _userSettings;
 
-		private Service[] _services;
+		private Service[]? _services;
 
 		static MainModel()
 		{
@@ -34,7 +34,7 @@ namespace RM.Win.ServiceController.Model
 			Refresh();
 		}
 
-		public IEnumerable<Service> Services => _services;
+		public IEnumerable<Service>? Services => _services;
 
 		public Geometry Geometry { get; }
 
@@ -44,12 +44,13 @@ namespace RM.Win.ServiceController.Model
 
 		public ICommand RestartCommand => _restartCommand;
 
-		public static Action<Exception> ErrorAction { get; set; }
+		public static Action<Exception>? ErrorAction { get; set; }
 
 		private void Refresh()
 		{
-			Service.RefreshInterval = _userSettings.RefreshInterval;
-			SetProperty(ref _services, _userSettings.Services.ToArray().Select(CreateService).ToArray(), nameof(Services));
+			Service.Reset();
+			SetProperty(ref _services, _userSettings.Services.Select(CreateService).ToArray(), nameof(Services));
+			Service.UpdateTimer(TimeSpan.FromMilliseconds(_userSettings.RefreshInterval));
 		}
 
 		private static Geometry AdjustGeometry(Geometry geometry)
@@ -79,26 +80,30 @@ namespace RM.Win.ServiceController.Model
 			}
 		}
 
-		private static async void StartServices(Panel panel)
+		private static async void StartServices(Panel? panel)
 		{
 			await ExecuteControlActionAsync(panel, Service.StartAllAsync);
 		}
 
-		private static async void StopServices(Panel panel)
+		private static async void StopServices(Panel? panel)
 		{
 			await ExecuteControlActionAsync(panel, Service.StopAllAsync);
 		}
 
-		private static async void RestartServices(Panel panel)
+		private static async void RestartServices(Panel? panel)
 		{
 			await ExecuteControlActionAsync(panel, Service.RestartAllAsync);
 		}
 
-		private static async Task ExecuteControlActionAsync(UIElement element, Func<Task> actionAsync)
+		private static async Task ExecuteControlActionAsync(UIElement? element, Func<Task> actionAsync)
 		{
 			try
 			{
-				element.IsEnabled = false;
+				if (element != null)
+				{
+					element.IsEnabled = false;
+				}
+
 				await actionAsync();
 			}
 			catch (Exception e)
@@ -112,7 +117,10 @@ namespace RM.Win.ServiceController.Model
 			}
 			finally
 			{
-				element.IsEnabled = true;
+				if (element != null)
+				{
+					element.IsEnabled = true;
+				}
 			}
 		}
 	}

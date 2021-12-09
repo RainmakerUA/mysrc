@@ -9,6 +9,6 @@ namespace RM.Lib.Common.Localization
 
 		IReadOnlyList<int> SupportedLocales { get; }
 
-		string GetString(string key, int lcid);
+		string? GetString(string key, int lcid);
 	}
 }

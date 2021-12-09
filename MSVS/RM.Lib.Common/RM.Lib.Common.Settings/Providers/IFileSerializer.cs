@@ -5,7 +5,7 @@ namespace RM.Lib.Common.Settings.Providers
 	{
 		string FileName { get; }
 
-		T ReadFile<T>(string fileName);
+		T? ReadFile<T>(string fileName);
 
 		void WriteFile(string fileName, object data);
 	}
