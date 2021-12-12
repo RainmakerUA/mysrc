@@ -19,7 +19,7 @@ namespace RM.Lib.Common.Localization
 		private readonly bool _throwOnMissing;
 		private readonly bool _enableFallbackLocale;
 
-		private CultureInfo _currentUICulture;
+		private CultureInfo? _currentUICulture;
 
 		public LocalizationManager(IReadOnlyList<ILocalizationProvider> providers, bool throwOnMissing = false, bool enableFallbackLocale = true)
 		{
@@ -31,16 +31,16 @@ namespace RM.Lib.Common.Localization
 		public CultureInfo CurrentUICulture
 		{
 			get => _currentUICulture ?? Thread.CurrentThread.CurrentUICulture;
-			set => _currentUICulture = value ?? Thread.CurrentThread.CurrentUICulture;
+			set => _currentUICulture = value;
 		}
 
 		public int? DefaultLocale { get; set; }
 
-		public TypeLocalization GetTypeLocalization(Type type) => new TypeLocalization(this, type);
+		public TypeLocalization GetTypeLocalization(Type type) => new(this, type);
 
 		public string GetAssemblyString(Assembly assembly, string key) => GetString(GetAssemblyName(assembly), key, true);
 
-		public string GetString(Type type, string key) => GetString(GetAssemblyName(type.Assembly), CombineKey(type.FullName, key));
+		public string GetString(Type type, string key) => GetString(GetAssemblyName(type.Assembly), CombineKey(type.FullName!, key));
 
 		public string GetString(string providerKey, string key, bool isAssemblyString = false)
 		{
@@ -67,7 +67,7 @@ namespace RM.Lib.Common.Localization
 			{
 				var lcid = culture.LCID;
 
-				string result;
+				string? result;
 
 				if (provider.SupportedLocales.Contains(lcid))
 				{

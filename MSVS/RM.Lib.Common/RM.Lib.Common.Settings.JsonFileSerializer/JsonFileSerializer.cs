@@ -20,7 +20,7 @@ namespace RM.Lib.Common.Settings.Serializers
 
 		public string FileName { get; }
 
-		public T ReadFile<T>(string fileName)
+		public T? ReadFile<T>(string fileName)
 		{
 			if (File.Exists(fileName))
 			{

@@ -13,7 +13,7 @@ namespace RM.Win.ServiceController.Common
 		/// <summary>
 		/// Occurs when a property value changes.
 		/// </summary>
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		public bool SetProperty<T>(ref T field, T value, Expression<Func<T>> property)
 		{
@@ -36,12 +36,12 @@ namespace RM.Win.ServiceController.Common
 		/// True if the value was changed, false if the existing value matched the
 		///     desired value.
 		/// </returns>
-		protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
+		protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null!)
 		{
 			if (!Equals(storage, value))
 			{
 				storage = value;
-				RaisePropertyChanged(propertyName ?? String.Empty);
+				RaisePropertyChanged(propertyName);
 
 				return true;
 			}
@@ -57,9 +57,9 @@ namespace RM.Win.ServiceController.Common
 		///     value is optional and can be provided automatically when invoked from compilers
 		///     that support <see cref="CallerMemberNameAttribute" />.
 		/// </param>
-		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		protected void OnPropertyChanged([CallerMemberName] string propertyName = null!)
 		{
-			RaisePropertyChanged(propertyName ?? String.Empty);
+			RaisePropertyChanged(propertyName);
 		}
 
 		/// <summary>

@@ -5,7 +5,7 @@ namespace RM.Lib.Common.Settings
 	{
 		private readonly ISettingsProvider<TUser, TApp> _provider;
 
-		private TUser _userSettings;
+		private TUser? _userSettings;
 
 		public SettingsManager(ISettingsProvider<TUser, TApp> provider)
 		{
@@ -15,7 +15,7 @@ namespace RM.Lib.Common.Settings
 
 		public TApp AppSettings { get; }
 
-		public TUser UserSettings => _userSettings = _userSettings ?? _provider.GetUserSettings();
+		public TUser UserSettings => _userSettings ??= _provider.GetUserSettings();
 
 		public void SaveSettings()
 		{

@@ -13,9 +13,11 @@ namespace RM.Win.ServiceController.Model
 {
 	public class Service : BindableBase
 	{
+		private const string _noStatus = "(no status text)";
+
 		private static readonly TimeSpan _waitTimeout = TimeSpan.FromMinutes(1);
 
-		private static readonly ConcurrentDictionary<string, Service> _services = new ConcurrentDictionary<string, Service>();
+		private static readonly ConcurrentDictionary<string, Service> _services = new();
 
 		private static readonly Action<Service> _startExecute = ExecuteStartCommand;
 		private static readonly Func<Service, bool> _startCanExecute = CanExecuteStartCommand;
@@ -26,9 +28,8 @@ namespace RM.Win.ServiceController.Model
 		private static readonly Action<Service> _restartExecute = ExecuteRestartCommand;
 		private static readonly Func<Service, bool> _restartCanExecute = CanExecuteRestartCommand;
 
-		private static DispatcherTimer _timer;
-		private static Dispatcher _dispatcher;
-		private static ushort _refreshInterval = 1_000;
+		private static DispatcherTimer? _timer;
+		private static Dispatcher? _dispatcher;
 
 		private readonly DelegateCommand<Service> _startCommand;
 		private readonly DelegateCommand<Service> _stopCommand;
@@ -36,10 +37,10 @@ namespace RM.Win.ServiceController.Model
 
 		private readonly string _serviceName;
 
-		private System.ServiceProcess.ServiceController _controller;
-		private string _displayName;
+		private System.ServiceProcess.ServiceController? _controller;
+		private string? _displayName;
 		private ServiceControllerStatus? _status;
-		private string _errorText;
+		private string? _errorText;
 		private bool _isEnabled;
 
 		public Service(string serviceName)
@@ -50,7 +51,15 @@ namespace RM.Win.ServiceController.Model
 			_stopCommand = new DelegateCommand<Service>(_stopExecute, _stopCanExecute);
 			_startCommand = new DelegateCommand<Service>(_startExecute, _startCanExecute);
 
-			Refresh();
+			if (_services.TryAdd(_serviceName, this))
+			{
+				Refresh();
+			}
+			else
+			{
+				_displayName = _serviceName;
+				_errorText = "Duplicate service in list";
+			}
 		}
 
 		public ICommand StartCommand => _startCommand;
@@ -75,7 +84,7 @@ namespace RM.Win.ServiceController.Model
 			}
 		}
 
-		public string DisplayName
+		public string? DisplayName
 		{
 			get => _displayName;
 			private set => SetProperty(ref _displayName, value);
@@ -95,9 +104,9 @@ namespace RM.Win.ServiceController.Model
 			}
 		}
 
-		public string StatusText => _status?.ToDisplayText() ?? _errorText;
+		public string StatusText => _status?.ToDisplayText() ?? _errorText ?? _noStatus;
 
-		public static Dispatcher Dispatcher
+		public static Dispatcher? Dispatcher
 		{
 			get => _dispatcher;
 			set
@@ -111,19 +120,9 @@ namespace RM.Win.ServiceController.Model
 			}
 		}
 
-		public static ushort RefreshInterval
-		{
-			get => _refreshInterval;
-			set
-			{
-				_refreshInterval = value;
-				UpdateTimer(null);
-			}
-		}
+		public static Action<string, bool>? SetServiceEnabled { get; set; }
 
-		public static Action<string, bool> SetServiceEnabled { get; set; }
-
-		public static Action<Exception> ErrorAction { get; set; }
+		public static Action<Exception>? ErrorAction { get; set; }
 
 		public static Task StartAllAsync()
 		{
@@ -147,9 +146,28 @@ namespace RM.Win.ServiceController.Model
 			_services.Clear();
 		}
 
+		public static void UpdateTimer(TimeSpan interval)
+		{
+			if (_timer == null)
+			{
+				_timer = new DispatcherTimer(
+										interval,
+										DispatcherPriority.Background,
+										OnRefreshTimerTick,
+										Dispatcher ?? Dispatcher.CurrentDispatcher
+									);
+			}
+			else
+			{
+				_timer.Stop();
+				_timer.Interval = interval;
+				_timer.Start();
+			}
+		}
+
 		private void Refresh()
 		{
-			string displayName = null;
+			string? displayName = null;
 			ServiceControllerStatus? status = null;
 
 			try
@@ -165,23 +183,12 @@ namespace RM.Win.ServiceController.Model
 
 				displayName = _controller.DisplayName;
 				status = _controller.Status;
-				//_errorText = null;
-				
-				if (_services.TryAdd(_serviceName, this))
-				{
-					UpdateTimer(!_services.IsEmpty);
-				}
 			}
 			catch (Exception e)
 			{
 				_controller?.Dispose();
 				_controller = null;
 				_errorText = e.Message;
-
-				if (_services.TryRemove(_serviceName, out _))
-				{
-					UpdateTimer(!_services.IsEmpty);
-				}
 			}
 
 			DisplayName = displayName ?? $"Error: {_serviceName}";
@@ -251,34 +258,7 @@ namespace RM.Win.ServiceController.Model
 			return Task.Run(Restart, cancellation);
 		}
 
-		private static void UpdateTimer(bool? hasServices)
-		{
-			if (_timer == null)
-			{
-				_timer = new DispatcherTimer(
-											TimeSpan.FromMilliseconds(RefreshInterval),
-											DispatcherPriority.Background,
-											OnRefreshTimerTick,
-											Dispatcher ?? Dispatcher.CurrentDispatcher
-										);
-			}
-			else if (!hasServices.HasValue)
-			{
-				_timer.Stop();
-				_timer.Interval = TimeSpan.FromMilliseconds(RefreshInterval);
-				_timer.Start();
-			}
-			else if (hasServices.Value)
-			{
-				_timer.Start();
-			}
-			else
-			{
-				_timer.Stop();
-			}
-		}
-
-		private static void OnRefreshTimerTick(object sender, EventArgs e)
+		private static void OnRefreshTimerTick(object? sender, EventArgs e)
 		{
 			foreach (var service in _services.Values)
 			{
