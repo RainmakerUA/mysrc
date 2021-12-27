@@ -45,7 +45,7 @@
 					<Button Command="{Binding StartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
 						<ContentControl Style="{StaticResource StartIconContent}" />
 					</Button>
-					<Button Margin="20 3">
+					<Button Margin="20 3" Command="{Binding ShowSettingsCommand}" CommandParameter="{Binding}">
 						<ContentControl Style="{StaticResource SettingsIconContent}" />
 					</Button>
 					<Image Source="Resources/main.ico" Width="40" Height="40" DockPanel.Dock="Left" />

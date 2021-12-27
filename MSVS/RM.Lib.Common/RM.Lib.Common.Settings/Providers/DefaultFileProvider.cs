@@ -53,7 +53,7 @@ namespace RM.Lib.Common.Settings.Providers
 		private static TSerializer CreateSerializer()
 		{
 			var serializerType = typeof(TSerializer);
-			var ctor = serializerType.GetConstructor(Array.Empty<Type>());
+			var ctor = serializerType.GetConstructor(Type.EmptyTypes);
 			return ctor?.Invoke(null) as TSerializer ?? throw new ArgumentException($"Cannot instantiate serializer of class {serializerType.FullName}");
 		}
 

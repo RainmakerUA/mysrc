@@ -18,6 +18,7 @@ namespace RM.Lib.Common.Localization
 		private readonly IReadOnlyDictionary<string, ILocalizationProvider> _providers;
 		private readonly bool _throwOnMissing;
 		private readonly bool _enableFallbackLocale;
+		private IReadOnlyList<int>? _supportedLocales;
 
 		private CultureInfo? _currentUICulture;
 
@@ -30,9 +31,11 @@ namespace RM.Lib.Common.Localization
 
 		public CultureInfo CurrentUICulture
 		{
-			get => _currentUICulture ?? Thread.CurrentThread.CurrentUICulture;
+			get => _currentUICulture ?? (DefaultLocale.HasValue ? CultureHelper.Get(DefaultLocale.Value) : Thread.CurrentThread.CurrentUICulture);
 			set => _currentUICulture = value;
 		}
+
+		public IReadOnlyList<int> SupportedLocales => _supportedLocales ??= GetSupportedLocales(_providers.Values);
 
 		public int? DefaultLocale { get; set; }
 
@@ -98,6 +101,21 @@ namespace RM.Lib.Common.Localization
 			while (culture != null);
 
 			return GetMissingKey(providerKey, key, CurrentUICulture.LCID);
+		}
+
+		private static IReadOnlyList<int> GetSupportedLocales(IEnumerable<ILocalizationProvider> providers)
+		{
+			var hash = new HashSet<int>();
+
+			foreach (var provider in providers)
+			{
+				foreach (var lcid in provider.SupportedLocales)
+				{
+					hash.Add(lcid);
+				}
+			}
+
+			return hash.ToArray();
 		}
 
 		private string GetMissingKey(string providerKey, string key, int lcid)

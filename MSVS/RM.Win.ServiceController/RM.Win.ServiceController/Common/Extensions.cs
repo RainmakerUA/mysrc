@@ -54,19 +54,19 @@ namespace RM.Win.ServiceController.Common
 			static string Evaluator(Match m) => $"{m.Groups[1].Value} {m.Groups[2].Value.ToLowerInvariant()}";
 		}
 
-		public static void Catch(this Task task, Action<Exception>? handler)
+		public static void Catch(this Task task, Action<Exception?>? handler)
 		{
 			task.ContinueWith(
 								t =>
 									{
 										if (t.IsFaulted && t.Exception != null)
 										{
-											handler?.Invoke(t.Exception.GetBaseException());
+											handler?.Invoke(t.Exception?.GetBaseException());
 										}
 									}
 							);
 		}
 
-		public static Exception GetInnerException(this AggregateException aggrExc) => aggrExc.Flatten().InnerException;
+		public static Exception? GetInnerException(this AggregateException aggrExc) => aggrExc.Flatten().InnerException;
 	}
 }

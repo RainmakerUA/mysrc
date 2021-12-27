@@ -1,6 +1,6 @@
 ﻿namespace RM.Lib.Common
 {
-	public sealed class EventArgs<T>
+	public sealed class EventArgs<T> : System.EventArgs
 	{
 		public EventArgs(T data)
 		{

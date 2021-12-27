@@ -19,14 +19,14 @@ namespace RM.Win.ServiceController.Model
 
 		private static readonly ConcurrentDictionary<string, Service> _services = new();
 
-		private static readonly Action<Service> _startExecute = ExecuteStartCommand;
-		private static readonly Func<Service, bool> _startCanExecute = CanExecuteStartCommand;
+		private static readonly Action<Service?> _startExecute = ExecuteStartCommand;
+		private static readonly Func<Service?, bool> _startCanExecute = CanExecuteStartCommand;
 
-		private static readonly Action<Service> _stopExecute = ExecuteStopCommand;
-		private static readonly Func<Service, bool> _stopCanExecute = CanExecuteStopCommand;
+		private static readonly Action<Service?> _stopExecute = ExecuteStopCommand;
+		private static readonly Func<Service?, bool> _stopCanExecute = CanExecuteStopCommand;
 
-		private static readonly Action<Service> _restartExecute = ExecuteRestartCommand;
-		private static readonly Func<Service, bool> _restartCanExecute = CanExecuteRestartCommand;
+		private static readonly Action<Service?> _restartExecute = ExecuteRestartCommand;
+		private static readonly Func<Service?, bool> _restartCanExecute = CanExecuteRestartCommand;
 
 		private static DispatcherTimer? _timer;
 		private static Dispatcher? _dispatcher;
@@ -122,7 +122,7 @@ namespace RM.Win.ServiceController.Model
 
 		public static Action<string, bool>? SetServiceEnabled { get; set; }
 
-		public static Action<Exception>? ErrorAction { get; set; }
+		public static Action<Exception?>? ErrorAction { get; set; }
 
 		public static Task StartAllAsync()
 		{
@@ -271,42 +271,42 @@ namespace RM.Win.ServiceController.Model
 			return Task.WhenAll(enumerable.Select(actionAsync));
 		}
 
-		private static void ExecuteStartCommand(Service service)
+		private static void ExecuteStartCommand(Service? service)
 		{
-			service.StartAsync().Catch(HandleException);
+			service?.StartAsync().Catch(HandleException);
 		}
 
-		private static bool CanExecuteStartCommand(Service service)
+		private static bool CanExecuteStartCommand(Service? service)
 		{
-			var status = service._controller?.Status ?? default;
-			return service.IsEnabled && status != ServiceControllerStatus.Running
-										&& status != ServiceControllerStatus.StartPending
-										&& status != ServiceControllerStatus.ContinuePending;
+			var status = service?._controller?.Status ?? default;
+			return service is { IsEnabled: true } && status != ServiceControllerStatus.Running
+													&& status != ServiceControllerStatus.StartPending
+													&& status != ServiceControllerStatus.ContinuePending;
 		}
 
-		private static void ExecuteStopCommand(Service service)
+		private static void ExecuteStopCommand(Service? service)
 		{
-			service.StopAsync().Catch(HandleException);
+			service?.StopAsync().Catch(HandleException);
 		}
 
-		private static bool CanExecuteStopCommand(Service service)
+		private static bool CanExecuteStopCommand(Service? service)
 		{
-			var status = service._controller?.Status ?? default;
-			return service.IsEnabled && status != ServiceControllerStatus.Stopped
-									&& status != ServiceControllerStatus.StopPending;
+			var status = service?._controller?.Status ?? default;
+			return service is { IsEnabled: true } && status != ServiceControllerStatus.Stopped
+													&& status != ServiceControllerStatus.StopPending;
 		}
 
-		private static void ExecuteRestartCommand(Service service)
+		private static void ExecuteRestartCommand(Service? service)
 		{
-			service.RestartAsync().Catch(HandleException);
+			service?.RestartAsync().Catch(HandleException);
 		}
 
-		private static bool CanExecuteRestartCommand(Service service)
+		private static bool CanExecuteRestartCommand(Service? service)
 		{
 			return CanExecuteStopCommand(service) || CanExecuteStartCommand(service);
 		}
 
-		private static void HandleException(Exception exception)
+		private static void HandleException(Exception? exception)
 		{
 			ErrorAction?.Invoke(exception);
 		}

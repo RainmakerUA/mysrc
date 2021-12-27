@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
+using RM.Lib.Common;
 using RM.Lib.Common.Localization;
 using RM.Lib.Common.Localization.JsonResourceProvider;
 using RM.Lib.Common.Settings;
 using RM.Lib.Common.Settings.Providers;
 using RM.Lib.Common.Settings.Serializers;
+using RM.Win.ServiceController.Common;
 using RM.Win.ServiceController.Settings;
 
 namespace RM.Win.ServiceController
@@ -25,39 +28,58 @@ namespace RM.Win.ServiceController
 																							defaultAppSettings: GetDefaultSettings
 																						);
 			_settingsManager = new SettingsManager<UserSettings, AppSettings>(provider);
+			_settingsManager.SettingsUpdated += OnSettingsSaved;
+
 			Localization = InitializeLocalization();
 		}
 
 		public AppSettings AppSettings => _settingsManager.AppSettings.Clone();
 
 		public UserSettings UserSettings => _settingsManager.UserSettings;
-
+		
 		public LocalizationManager Localization { get; }
 
 		public new static App Current => (Application.Current as App)!;
+
+		public void SaveSettings() => _settingsManager.SaveSettings();
 
 		protected override void OnExit(ExitEventArgs e)
 		{
 			base.OnExit(e);
 
-			_settingsManager.SaveSettings();
+			SaveSettings();
 		}
 
 		private static AppSettings GetDefaultSettings()
 		{
 			return new AppSettings
-					{
+						{
 							UseLocalAppData = false,
 							LaunchAtStartup = false,
 							Language = "en",
 							Services = new Dictionary<string, bool> { ["TermService"] = true },
 							RefreshInterval = 1000,
-					};
+						};
+		}
+
+		private static void OnSettingsSaved(object? sender, EventArgs<UserSettings> args)
+		{
+			var language = args.Data.Language;
+
+			if (!String.IsNullOrEmpty(language))
+			{
+				Current.Localization.CurrentUICulture = CultureHelper.Get(language);
+			}
+
+			RegistryHelper.RegisterExecutableForStartup(!args.Data.LaunchAtStartup);
 		}
 
 		private static LocalizationManager InitializeLocalization()
 		{
-			return new LocalizationManager(new []{ new JsonResourceProvider(Assembly.GetExecutingAssembly(), "resources/lng") }) { DefaultLocale = 9 };
+			return new LocalizationManager(new []{ new JsonResourceProvider(resourceEntryPrefix: "resources/lng") })
+						{
+							DefaultLocale = 9
+						};
 		}
 	}
 }

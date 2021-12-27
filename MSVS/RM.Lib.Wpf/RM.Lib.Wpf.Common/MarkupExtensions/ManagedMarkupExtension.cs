@@ -146,5 +146,44 @@ namespace RM.Lib.Wpf.Common.MarkupExtensions
 		{
 			_extensionRegistry[key] = _extensionRegistry[key].Where(ex => ex.IsActive).ToList();
 		}
+
+		private static void RunInDispatcher<T1>(Dispatcher dispatcher, Action<T1> action,
+												bool async, DispatcherPriority priority, T1 arg1)
+		{
+			if (async)
+			{
+				dispatcher.BeginInvoke(action, priority, arg1);
+			}
+			else
+			{
+				dispatcher.Invoke(action, priority, arg1);
+			}
+		}
+
+		private static void RunInDispatcher<T1, T2>(Dispatcher dispatcher, Action<T1, T2> action,
+													bool async, DispatcherPriority priority, T1 arg1, T2 arg2)
+		{
+			if (async)
+			{
+				dispatcher.BeginInvoke(action, priority, arg1, arg2);
+			}
+			else
+			{
+				dispatcher.Invoke(action, priority, arg1, arg2);
+			}
+		}
+
+		private static void RunInDispatcher<T1, T2, T3>(Dispatcher dispatcher, Action<T1, T2, T3> action,
+														bool async, DispatcherPriority priority, T1 arg1, T2 arg2, T3 arg3)
+		{
+			if (async)
+			{
+				dispatcher.BeginInvoke(action, priority, arg1, arg2, arg3);
+			}
+			else
+			{
+				dispatcher.Invoke(action, priority, arg1, arg2, arg3);
+			}
+		}
 	}
 }
