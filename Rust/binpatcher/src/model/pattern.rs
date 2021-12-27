@@ -14,12 +14,6 @@ pub struct Pattern {
     parts: Vec<BytePart>
 }
 
-pub struct PatternMatches<'a> {
-    source: &'a [u8],
-    pattern: &'a Pattern,
-    position: usize,
-}
-
 impl Pattern {
     pub fn parse(text: &str) -> Result<Self, ParseBytePartError> {
         let mut iter = text.bytes().filter(|b| !b.is_ascii_whitespace());
@@ -63,13 +57,6 @@ impl Pattern {
         self.parts.append(vec)
     }
 
-    pub fn matches<'a>(&'a self, bytes: &'a [u8]) -> PatternMatches<'a> {
-        if self.is_empty() {
-            panic!("Cannot match on empty pattern!")
-        }
-        PatternMatches{ source: bytes, pattern: self, position: 0 }
-    }
-
     pub fn is_match(&self, bytes: &[u8]) -> PatternMatchResult {
         if self.len() != bytes.len() {
             Err(PatternError::from_kind(PatternErrorKind::SizeMismatch))
@@ -87,25 +74,6 @@ impl Pattern {
             self.parts.iter().zip(bytes.iter_mut()).for_each(|pair| *(pair.1) = pair.0.apply(*pair.1));
             Ok(())
         }
-    }
-}
-
-impl <'a> Iterator for PatternMatches<'a> {
-    type Item = usize;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        let pattern_len = self.pattern.len();
-        let mut current_pos = self.position;
-        while current_pos + pattern_len < self.source.len() {
-            let window = &self.source[current_pos .. current_pos + pattern_len];
-            if self.pattern.is_match(window).unwrap() {
-                self.position = current_pos + pattern_len;
-                return Some(current_pos);
-            }
-            current_pos += 1;
-        }
-        self.position = current_pos;
-        None
     }
 }
 

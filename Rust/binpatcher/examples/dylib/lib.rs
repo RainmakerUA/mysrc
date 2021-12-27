@@ -3,10 +3,7 @@
 extern crate winapi;
 
 use winapi::{
-    shared::{
-        minwindef,
-        minwindef::{ BOOL, DWORD, HINSTANCE, LPVOID }
-    },
+    shared::minwindef::{ self, BOOL, DWORD, HINSTANCE, LPVOID },
     um::winnt::{
         DLL_PROCESS_ATTACH,
         DLL_PROCESS_DETACH

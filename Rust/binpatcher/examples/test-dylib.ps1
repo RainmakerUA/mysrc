@@ -10,7 +10,7 @@ $rustfn = Add-Type -MemberDefinition $extern -Name RustFn -Namespace RustLib -Pa
 
 $x = 13
 $y = 38
-$res = $rustfn::TestRust(13, 38)
+$res = $rustfn::TestRust($x, $y)
 
 Write-Host "$x + $y = $res"
 
