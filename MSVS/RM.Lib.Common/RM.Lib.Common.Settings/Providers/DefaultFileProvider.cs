@@ -48,13 +48,16 @@ namespace RM.Lib.Common.Settings.Providers
 
 		public void SaveUserSettings(TUser settings) => _serializer.WriteFile(_userSettingsFile, settings);
 
-		private TApp GetApplicationSettingsInternal() => _serializer.ReadFile<TApp>(_appSettingsFile) ?? _defaultAppSettings?.Invoke() ?? new TApp();
+		private TApp GetApplicationSettingsInternal() => _serializer.ReadFile<TApp>(_appSettingsFile)
+															?? _defaultAppSettings?.Invoke()
+															?? new TApp();
 
 		private static TSerializer CreateSerializer()
 		{
 			var serializerType = typeof(TSerializer);
 			var ctor = serializerType.GetConstructor(Type.EmptyTypes);
-			return ctor?.Invoke(null) as TSerializer ?? throw new ArgumentException($"Cannot instantiate serializer of class {serializerType.FullName}");
+			return ctor?.Invoke(null) as TSerializer
+						?? throw new ArgumentException($"Cannot instantiate serializer of class {serializerType.FullName}");
 		}
 
 		private static string GetApplicationName(Assembly? entryAssembly)

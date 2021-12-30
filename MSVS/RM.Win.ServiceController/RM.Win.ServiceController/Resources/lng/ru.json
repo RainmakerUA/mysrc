@@ -1,10 +1,14 @@
-{
+﻿{
 	"assembly": {
+		"Test": "Тестовый ресурс сборки"
 	},
 	"RM.Win.ServiceController": {
 		"App": {
+			"Global": "Глобально" 
 		},
 		"MainWindow": {
+			"Title": "RM® Service Controller",
+			"Settings": "Настройки"
 		}
 	}
 }

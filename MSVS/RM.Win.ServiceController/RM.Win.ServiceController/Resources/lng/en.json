@@ -1,10 +1,14 @@
-{
+﻿{
 	"assembly": {
+		"Test": "Test resource @assembly"
 	},
 	"RM.Win.ServiceController": {
 		"App": {
+			"Global": "App Global" 
 		},
 		"MainWindow": {
+			"Title": "RM® Service Controller",
+			"Settings": "Settings"
 		}
 	}
 }

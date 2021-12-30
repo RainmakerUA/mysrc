@@ -4,9 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace RM.Lib.Common.Localization.JsonResourceProvider
 {
@@ -29,7 +28,8 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 			_resourcePrefix = resourcePrefix;
 			_initializationLock = new object();
 
-			Key = _resourceAssembly.GetName().Name;
+			Key = _resourceAssembly.GetName().Name
+						?? throw new ArgumentException($"{nameof(resourceAssembly)} has no name", nameof(resourceAssembly));
 		}
 
 		public string Key { get; }
@@ -115,40 +115,36 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 		{
 			var result = new Dictionary<string, string>();
 
-			using var textReader = new StreamReader(stream);
-			using var jReader = new JsonTextReader(textReader);
-
-			var jObject = JObject.Load(jReader);
-			AddStrings(result, String.Empty, jObject);
+			if (JsonNode.Parse(stream) is JsonObject jsonObject)
+			{
+				AddStrings(result, String.Empty, jsonObject);
+			}
 
 			return result;
 
-			static void AddStrings(IDictionary<string, string> strings, string prefix, JObject jObj)
+			static void AddStrings(IDictionary<string, string> strings, string prefix, JsonObject jObj)
 			{
 				if (!String.IsNullOrEmpty(prefix))
 				{
 					prefix += LocalizationManager.KeySeparator;
 				}
 
-				foreach (var (key, jToken) in jObj!.Select((KeyValuePair<string, JToken> kv) => (kv.Key, kv.Value)))
+				foreach (var (key, jNode) in jObj.Select(kv => (kv.Key, kv.Value)))
 				{
-					if (jToken != null)
+					if (jNode != null)
 					{
 						var fullKey = prefix + key;
 
-						switch (jToken.Type)
+						switch (jNode)
 						{
-							case JTokenType.Object:
-								AddStrings(strings, fullKey, (jToken as JObject)!);
+							case JsonObject jsonObjInner:
+								AddStrings(strings, fullKey, jsonObjInner);
 								break;
-							case JTokenType.None:
-							case JTokenType.Null:
-							case JTokenType.Array:
-							case JTokenType.Constructor:
-								// Do nothing?
+							case JsonValue jValue when jValue.TryGetValue<string>(out var str):
+								strings.Add(fullKey, str);
 								break;
 							default:
-								strings.Add(fullKey, (string)jToken!);
+								// TODO: Do nothing?
 								break;
 						}
 					}
