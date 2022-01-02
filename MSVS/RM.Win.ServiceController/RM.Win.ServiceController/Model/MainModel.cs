@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using RM.Lib.Common.Localization;
+using RM.Lib.Wpf.Common.Commands;
+using RM.Lib.Wpf.Common.ViewModel;
 using RM.Win.ServiceController.Common;
 using RM.Win.ServiceController.Settings;
 

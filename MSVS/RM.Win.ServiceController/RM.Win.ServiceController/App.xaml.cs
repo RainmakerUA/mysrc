@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Windows;
 using RM.Lib.Common;
 using RM.Lib.Common.Localization;
@@ -76,10 +75,13 @@ namespace RM.Win.ServiceController
 
 		private static LocalizationManager InitializeLocalization()
 		{
-			return new LocalizationManager(new []{ new JsonResourceProvider(resourceEntryPrefix: "resources/lng") })
-						{
-							DefaultLocale = 9
-						};
+			LocalizationManager.Initialize(new []{ new JsonResourceProvider(resourceEntryPrefix: "resources/lng") });
+
+			var locMgr = LocalizationManager.Instance;
+
+			locMgr.DefaultLocale = 9;
+
+			return locMgr;
 		}
 	}
 }

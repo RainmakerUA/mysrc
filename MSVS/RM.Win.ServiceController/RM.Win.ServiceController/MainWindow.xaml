@@ -10,7 +10,7 @@
         WindowState="{Binding Geometry.State,Mode=TwoWay}" WindowStartupLocation="CenterScreen"
         Left="{Binding Geometry.Left,Mode=TwoWay}" Top="{Binding Geometry.Top,Mode=TwoWay}"
         Width="{Binding Geometry.Width,Mode=TwoWay}" Height="{Binding Geometry.Height,Mode=TwoWay}"
-        Title="RM Service Controller" Icon="Resources/main.ico">
+        Title="RM® Service Controller" Icon="Resources/main.ico">
 	<Window.DataContext>
         <model:MainModel />
     </Window.DataContext>
@@ -36,7 +36,7 @@
 					<DockPanel.Resources>
 						<Style TargetType="Button" BasedOn="{StaticResource ControlButton}" />
 					</DockPanel.Resources>
-		            <Button Command="{Binding RestartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
+					<Button Command="{Binding RestartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
 						<ContentControl Style="{StaticResource RestartIconContent}" />
 		            </Button>
 					<Button Command="{Binding StopCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">

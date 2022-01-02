@@ -1,14 +1,16 @@
 ﻿{
 	"assembly": {
-		"Test": "Тестовый ресурс сборки"
+		"Start": "Запуск",
+		"Stop": "Остановка",
+		"Restart": "Перезапуск",
+		"Settings": "Настройки"
 	},
 	"RM.Win.ServiceController": {
 		"App": {
 			"Global": "Глобально" 
 		},
 		"MainWindow": {
-			"Title": "RM® Service Controller",
-			"Settings": "Настройки"
+			"Title": "RM® Service Controller"
 		}
 	}
 }

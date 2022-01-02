@@ -1,14 +1,19 @@
 ﻿{
 	"assembly": {
-		"Test": "Test resource @assembly"
+		"Start": "Start",
+		"Stop": "Stop",
+		"Restart": "Restart",
+		"Settings": "Settings"
 	},
 	"RM.Win.ServiceController": {
 		"App": {
 			"Global": "App Global" 
 		},
 		"MainWindow": {
-			"Title": "RM® Service Controller",
-			"Settings": "Settings"
-		}
+			"Title": "RM® Service Controller"
+		},
+		"SettingsWindow": {
+
+		} 
 	}
 }

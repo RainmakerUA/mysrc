@@ -30,6 +30,7 @@
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings.JsonFileSerializer\RM.Lib.Common.Settings.JsonFileSerializer.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings\RM.Lib.Common.Settings.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common\RM.Lib.Common.csproj" />
+    <ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Common\RM.Lib.Wpf.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

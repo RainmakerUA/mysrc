@@ -13,16 +13,20 @@ namespace RM.Lib.Common.Localization
 		private const string _assemblyPrefix = "assembly";
 		private const string _missingStringFormat = "[!!!] {2}|{0}|{1}";
 
+		private static readonly object _lock = new();
+
+		private static LocalizationManager? _instance;
+
 		public static readonly string KeySeparator = Type.Delimiter.ToString();
 
 		private readonly IReadOnlyDictionary<string, ILocalizationProvider> _providers;
 		private readonly bool _throwOnMissing;
 		private readonly bool _enableFallbackLocale;
-		private IReadOnlyList<int>? _supportedLocales;
 
+		private IReadOnlyList<int>? _supportedLocales;
 		private CultureInfo? _currentUICulture;
 
-		public LocalizationManager(IReadOnlyList<ILocalizationProvider> providers, bool throwOnMissing = false, bool enableFallbackLocale = true)
+		private LocalizationManager(IReadOnlyList<ILocalizationProvider> providers, bool throwOnMissing, bool enableFallbackLocale)
 		{
 			_providers = providers != null ? GetProviderKeys(providers) : throw new ArgumentNullException(nameof(providers));
 			_throwOnMissing = throwOnMissing;
@@ -39,6 +43,8 @@ namespace RM.Lib.Common.Localization
 
 		public int? DefaultLocale { get; set; }
 
+		public static LocalizationManager Instance => _instance ?? throw new InvalidOperationException("LocalizationManager must be initialized before use");
+		
 		public TypeLocalization GetTypeLocalization(Type type) => new(this, type);
 
 		public string GetAssemblyString(Assembly assembly, string key) => GetString(GetAssemblyName(assembly), key, true);
@@ -53,6 +59,21 @@ namespace RM.Lib.Common.Localization
 			}
 
 			return InternalGetString(providerKey, key);
+		}
+
+		public static void Initialize(IReadOnlyList<ILocalizationProvider> providers, bool throwOnMissing = false, bool enableFallbackLocale = false)
+		{
+			lock (_lock)
+			{
+				if (_instance is null)
+				{
+					_instance = new LocalizationManager(providers, throwOnMissing, enableFallbackLocale);
+				}
+				else
+				{
+					throw new InvalidOperationException("LocalizationManager is already initialized");
+				}
+			}
 		}
 
 		internal static string CombineKey(string keyPrefix, string key) => String.Concat(keyPrefix, KeySeparator, key);
