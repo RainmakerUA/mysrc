@@ -124,7 +124,6 @@ impl BytePartValue {
     }
 }
 
-#[inline]
 fn low_nibble(byte: u8) -> u8 {
     byte & 0xF0
 }
