@@ -8,8 +8,10 @@ namespace RM.Win.ServiceController.Settings
 
 		public new AppSettings Clone()
 		{
-			var clone = MemberwiseClone() as AppSettings;
+			var clone = (MemberwiseClone() as AppSettings)!;
+
 			clone.Geometry = Geometry.Clone();
+
 			return clone;
 		}
 	}

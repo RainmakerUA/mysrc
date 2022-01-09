@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
-using RM.Win.ServiceController.Common;
 using RM.Win.ServiceController.Model;
 
 namespace RM.Win.ServiceController
@@ -23,11 +22,11 @@ namespace RM.Win.ServiceController
 
 		public MainModel ViewModel
 		{
-			get => DataContext as MainModel;
+			get => (DataContext as MainModel)!;
 			set => DataContext = value;
 		}
 
-		private void ShowError(Exception exc)
+		private void ShowError(Exception? exc)
 		{
 			Dispatcher.Invoke(new Action<Exception>(ShowErrorUnsafe), DispatcherPriority.Normal, exc);
 		}

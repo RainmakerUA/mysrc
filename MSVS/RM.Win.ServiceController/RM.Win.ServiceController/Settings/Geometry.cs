@@ -14,6 +14,6 @@ namespace RM.Win.ServiceController.Settings
 
 		public WindowState State { get; set; }
 
-		public Geometry Clone() => MemberwiseClone() as Geometry;
+		public Geometry Clone() => (MemberwiseClone() as Geometry)!;
 	}
 }

@@ -15,11 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Resources\lng\en.json" />
-    <EmbeddedResource Include="Resources\lng\ru.json" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Resource Include="Resources\lng\en.json" />
+    <Resource Include="Resources\lng\ru.json" />
     <Resource Include="Resources\main.ico" />
   </ItemGroup>
 
@@ -32,6 +29,13 @@
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization\RM.Lib.Common.Localization.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings.JsonFileSerializer\RM.Lib.Common.Settings.JsonFileSerializer.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings\RM.Lib.Common.Settings.csproj" />
+    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common\RM.Lib.Common.csproj" />
+    <ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Common\RM.Lib.Wpf.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Localization.resx">
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

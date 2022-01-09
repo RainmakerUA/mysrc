@@ -7,6 +7,6 @@ namespace RM.Lib.Common.Settings.Providers
 
 		T? ReadFile<T>(string fileName);
 
-		void WriteFile(string fileName, object data);
+		void WriteFile<T>(string fileName, T data);
 	}
 }

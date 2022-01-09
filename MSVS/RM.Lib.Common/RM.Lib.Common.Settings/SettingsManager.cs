@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace RM.Lib.Common.Settings
 {
 	public sealed class SettingsManager<TUser, TApp> where TUser : class
@@ -17,6 +18,8 @@ namespace RM.Lib.Common.Settings
 
 		public TUser UserSettings => _userSettings ??= _provider.GetUserSettings();
 
+		public event EventHandler<EventArgs<TUser>>? SettingsUpdated;
+
 		public void SaveSettings()
 		{
 			SaveSettings(UserSettings);
@@ -25,6 +28,8 @@ namespace RM.Lib.Common.Settings
 		public void SaveSettings(TUser settings)
 		{
 			_provider.SaveUserSettings(settings);
+
+			SettingsUpdated?.Invoke(this, EventArgs.Create(settings));
 		}
 	}
 }

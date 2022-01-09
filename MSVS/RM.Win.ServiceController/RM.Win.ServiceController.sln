@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.Win.ServiceController", "RM.Win.ServiceController\RM.Win.ServiceController.csproj", "{7EA04102-9453-4F12-8CD4-574B75059737}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.Win.ServiceController", "RM.Win.ServiceController\RM.Win.ServiceController.csproj", "{7EA04102-9453-4F12-8CD4-574B75059737}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{CA55F984-7238-4DC5-A410-069DE64D9FE3}"
 EndProject
@@ -14,6 +14,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.Lib.Common.Localization", "..\RM.Lib.Common\RM.Lib.Common.Localization\RM.Lib.Common.Localization.csproj", "{E9331BD7-8032-404B-A9B5-C56FEE7C1ED2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.Lib.Common.Localization.JsonResourceProvider", "..\RM.Lib.Common\RM.Lib.Common.Localization.JsonResourceProvider\RM.Lib.Common.Localization.JsonResourceProvider.csproj", "{7096C174-1EFA-4078-BC64-EBFAF4BB9B47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.Lib.Common", "..\RM.Lib.Common\RM.Lib.Common\RM.Lib.Common.csproj", "{C8EB5A14-8E45-44A5-898F-E81943F479A7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RM.Lib.Wpf.Common", "..\RM.Lib.Wpf\RM.Lib.Wpf.Common\RM.Lib.Wpf.Common.csproj", "{B691A1CD-AA83-4322-86B3-7211966B913A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RM.Lib.Wpf.Localization", "..\RM.Lib.Wpf\RM.Lib.Wpf.Localization\RM.Lib.Wpf.Localization.csproj", "{EC90A4EE-D2B1-40E0-9394-E5381909081F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +47,18 @@ Global
 		{7096C174-1EFA-4078-BC64-EBFAF4BB9B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7096C174-1EFA-4078-BC64-EBFAF4BB9B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7096C174-1EFA-4078-BC64-EBFAF4BB9B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8EB5A14-8E45-44A5-898F-E81943F479A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8EB5A14-8E45-44A5-898F-E81943F479A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8EB5A14-8E45-44A5-898F-E81943F479A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8EB5A14-8E45-44A5-898F-E81943F479A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B691A1CD-AA83-4322-86B3-7211966B913A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B691A1CD-AA83-4322-86B3-7211966B913A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B691A1CD-AA83-4322-86B3-7211966B913A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B691A1CD-AA83-4322-86B3-7211966B913A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC90A4EE-D2B1-40E0-9394-E5381909081F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC90A4EE-D2B1-40E0-9394-E5381909081F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC90A4EE-D2B1-40E0-9394-E5381909081F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC90A4EE-D2B1-40E0-9394-E5381909081F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +68,9 @@ Global
 		{8F9A278F-F876-4821-9A6F-044053D152AD} = {CA55F984-7238-4DC5-A410-069DE64D9FE3}
 		{E9331BD7-8032-404B-A9B5-C56FEE7C1ED2} = {CA55F984-7238-4DC5-A410-069DE64D9FE3}
 		{7096C174-1EFA-4078-BC64-EBFAF4BB9B47} = {CA55F984-7238-4DC5-A410-069DE64D9FE3}
+		{C8EB5A14-8E45-44A5-898F-E81943F479A7} = {CA55F984-7238-4DC5-A410-069DE64D9FE3}
+		{B691A1CD-AA83-4322-86B3-7211966B913A} = {CA55F984-7238-4DC5-A410-069DE64D9FE3}
+		{EC90A4EE-D2B1-40E0-9394-E5381909081F} = {CA55F984-7238-4DC5-A410-069DE64D9FE3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE7C57AE-3C77-443B-808B-D3EB74C59DBD}
