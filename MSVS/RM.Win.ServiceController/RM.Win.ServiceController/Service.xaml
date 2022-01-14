@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d" d:DesignHeight="58" d:DesignWidth="500">
+			 xmlns:designModel="clr-namespace:RM.Win.ServiceController.Model.Design"
+             mc:Ignorable="d" d:DesignHeight="58" d:DesignWidth="500"
+             d:DataContext="{x:Static designModel:Service.DesignModel}">
 	<UserControl.Resources>
 		<Style TargetType="TextBlock">
 			<Setter Property="Margin" Value="3" />
@@ -26,9 +28,9 @@
 			</Grid.ColumnDefinitions>
 			<TextBlock Text="{Binding DisplayName}" FontSize="14" FontWeight="Bold" />
 			<TextBlock Text="{Binding StatusText}" Grid.Row="1" Grid.Column="0" />
-			<CheckBox IsChecked="{Binding IsEnabled,Mode=TwoWay}"
-				HorizontalAlignment="Center" VerticalAlignment="Center"
-				Margin="3" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" />
+			<CheckBox IsChecked="{Binding IsEnabled,Mode=TwoWay}" IsEnabled="{Binding IsValid}"
+			          HorizontalAlignment="Center" VerticalAlignment="Center"
+					  Margin="3" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" />
 			<Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
 			        Command="{Binding StartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},Path=DataContext}">
 				<ContentControl Style="{StaticResource StartIconContent}" />

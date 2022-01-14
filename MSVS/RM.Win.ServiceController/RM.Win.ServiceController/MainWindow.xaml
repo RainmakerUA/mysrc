@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RM.Win.ServiceController"
         xmlns:model="clr-namespace:RM.Win.ServiceController.Model"
+        xmlns:designModel="clr-namespace:RM.Win.ServiceController.Model.Design"
         mc:Ignorable="d" d:DesignWidth="595" d:DesignHeight="340"
         MinWidth="595" MinHeight="340" ResizeMode="CanResizeWithGrip" WindowStyle="ThreeDBorderWindow"
         WindowState="{Binding Geometry.State,Mode=TwoWay}" WindowStartupLocation="CenterScreen"
@@ -14,6 +15,9 @@
 	<Window.DataContext>
         <model:MainModel />
     </Window.DataContext>
+	<d:MainWindow.DataContext>
+		<designModel:MainModel />
+	</d:MainWindow.DataContext>
 	<Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
