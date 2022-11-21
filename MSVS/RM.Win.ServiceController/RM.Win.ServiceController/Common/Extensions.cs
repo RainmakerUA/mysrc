@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace RM.Win.ServiceController.Common
 {
-    internal static class Extensions
+    internal static partial class Extensions
     {
-		private static readonly Regex _enumRegex = new("([a-z])([A-Z])", RegexOptions.Compiled);
+		private static readonly Regex _enumRegex = CreateEnumRegex();
 
 		public static bool IsDefault(this double value)
 		{
@@ -35,5 +35,8 @@ namespace RM.Win.ServiceController.Common
 		}
 
 		public static Exception? GetInnerException(this AggregateException aggrExc) => aggrExc.Flatten().InnerException;
+		
+		[GeneratedRegex("([a-z])([A-Z])", RegexOptions.Compiled)]
+		private static partial Regex CreateEnumRegex();
 	}
 }

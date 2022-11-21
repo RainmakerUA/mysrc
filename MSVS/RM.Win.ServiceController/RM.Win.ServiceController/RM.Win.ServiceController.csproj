@@ -2,16 +2,21 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Resources\main.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Resources\lng\en.json" />
     <None Remove="Resources\lng\ru.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,16 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization.JsonResourceProvider\RM.Lib.Common.Localization.JsonResourceProvider.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization\RM.Lib.Common.Localization.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings.JsonFileSerializer\RM.Lib.Common.Settings.JsonFileSerializer.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings\RM.Lib.Common.Settings.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common\RM.Lib.Common.csproj" />
     <ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Common\RM.Lib.Wpf.Common.csproj" />
+    <ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Localization\RM.Lib.Wpf.Localization.csproj" />
   </ItemGroup>
 
   <ItemGroup>
