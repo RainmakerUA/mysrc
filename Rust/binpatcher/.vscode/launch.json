@@ -5,26 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(Windows) Launch",
-            "type": "cppvsdbg",
+            "name": "(Windows LLDB) Launch",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceRoot}/target/debug/${workspaceFolderBasename}.exe",
             "args": [],
-            "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true
+            "env": {},
+            "terminal": "integrated",
+			"sourceLanguages": ["rust"]
         },
         {
-            "name": "(Windows) Launch example\\default",
-            "type": "cppvsdbg",
+            "name": "(Windows LLDB) Launch example\\default",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceRoot}/target/debug/examples/default.exe",
             "args": [],
-            "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true
+            "env": {},
+            "terminal": "integrated",
+			"sourceLanguages": ["rust"]
         }
     ]
 }
