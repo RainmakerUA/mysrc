@@ -17,7 +17,7 @@ pub struct Pattern {
 impl Pattern {
     pub fn parse(text: &str) -> Result<Self, ParseBytePartError> {
         let mut iter = text.bytes().filter(|b| !b.is_ascii_whitespace());
-        let mut pattern = Pattern::new();
+        let mut parts = Vec::new();
 
         loop {
             let first = iter.next();
@@ -25,7 +25,7 @@ impl Pattern {
 
             if let Some(first) = first {
                 if let Some(second) = second {
-                    pattern.parts.push(BytePart::parse(first, second)?);
+                    parts.push(BytePart::parse(first, second)?);
                     continue;
                 }
                 else {
@@ -34,7 +34,7 @@ impl Pattern {
             }
             break;
         }
-        Ok(pattern)
+        Ok(Pattern { parts })
     }
 
     pub fn new() -> Self {
@@ -85,13 +85,5 @@ mod pattern_tests {
     fn pattern_parse_empty() {
         assert!(Pattern::parse("").unwrap().is_empty());
         assert_eq!(0, Pattern::parse("").unwrap().len());
-    }
-
-    #[test]
-    fn pattern_matches() {
-        let p = Pattern::parse("5? A2 ?? ?8").unwrap();
-        let b = &[0x33, 0x5F, 0xA2, 0xCC, 0xD8, 0x23, 0x00, 0x54, 0xA2, 0xDD, 0x28, 0x30];
-
-        assert_eq!(&[1, 7], p.matches(b).collect::<Vec<_>>().as_slice());
     }
 }

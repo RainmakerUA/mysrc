@@ -16,11 +16,11 @@ impl <R: Read> BufferedSliceIterator<R> {
     pub fn new(reader: R, slice_size: usize, advance_size: usize, buffer_size: usize) -> BufferedSliceIterator<R> {
         // TODO: Size validation
         BufferedSliceIterator {
-            reader: reader,
+            reader,
             buffer: Vec::new(),
-            slice_size: slice_size,
-            advance_size: advance_size,
-            buffer_size: buffer_size,
+            slice_size,
+            advance_size,
+            buffer_size,
             read_len: 0,
             reader_pos: 0,
             buffer_pos: 0,
