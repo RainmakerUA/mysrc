@@ -13,4 +13,3 @@ $y = 38
 $res = $rustfn::TestRust($x, $y)
 
 Write-Host "$x + $y = $res"
-

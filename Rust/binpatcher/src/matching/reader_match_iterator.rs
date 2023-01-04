@@ -9,7 +9,7 @@ pub struct ReaderMatchIterator<'a, R: Read> {
 
 impl <'a, R: Read> ReaderMatchIterator<'a, R> {
     pub fn new(pattern: &'a Pattern, bsi: BufferedSliceIterator<R>) -> ReaderMatchIterator<'a, R> {
-        ReaderMatchIterator { pattern: pattern, iterator: bsi }
+        ReaderMatchIterator { pattern, iterator: bsi }
     }
 }
 

@@ -8,7 +8,7 @@ pub struct PatternMatchIterator<'a> {
 
 impl<'a> PatternMatchIterator<'a> {
     pub fn new(source: &'a [u8], pattern: &'a Pattern, start_pos: usize) -> PatternMatchIterator<'a> {
-        PatternMatchIterator { source: source, pattern: pattern, position: start_pos }
+        PatternMatchIterator { source, pattern, position: start_pos }
     }
 }
 
