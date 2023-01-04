@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.IO.MemoryMappedFiles;
-using System.Linq;
+﻿using System.IO.MemoryMappedFiles;
 using RM.BinPatcher.Enumerators;
 using RM.BinPatcher.Model;
 

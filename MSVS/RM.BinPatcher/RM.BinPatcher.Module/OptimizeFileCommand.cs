@@ -1,12 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Management.Automation;
+﻿using System.Management.Automation;
 using RM.BinPatcher.Model;
 
 namespace RM.BinPatcher.Module
 {
 	// TODO: More Cmdlets: Find-Pattern(+), Test-File
-	
+
 	[Cmdlet(VerbsCommon.Optimize, "File")]
 	public class OptimizeFileCommand: Cmdlet
     {
