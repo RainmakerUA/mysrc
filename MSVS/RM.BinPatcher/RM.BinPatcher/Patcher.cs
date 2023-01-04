@@ -79,12 +79,14 @@ namespace RM.BinPatcher
 			foreach (var entry in patch.Entries)
 			{
 				var validateResult = ValidateEntry(entry);
+
 				if (!validateResult.Item1)
 				{
 					return PatchResult.MakeFail(validateResult.Item2);
 				}
 
 				var applyResult = ApplyEntry(entry, validateResult.Item3);
+
 				if (!applyResult.Item1)
 				{
 					return PatchResult.MakeFail(applyResult.Item2);
@@ -95,11 +97,11 @@ namespace RM.BinPatcher
 		}
 
 		// Tests required
-		private (bool, string, long[]) ValidateEntry(PatchEntry entry)
+		private (bool, string?, long[]?) ValidateEntry(PatchEntry entry)
 		{
 			bool isSuccess = false;
-			string message = null;
-			long[] addresses = null;
+			string? message = null;
+			long[]? addresses = null;
 
 			switch (entry.Match)
 			{
@@ -132,6 +134,7 @@ namespace RM.BinPatcher
 				case PatchEntry.MatchBy.EveryMatch:
 				case PatchEntry.MatchBy.FirstMatch:
 					var addrs = FindPattern(entry.OldData).ToArray();
+
 					if (addrs.Length > 0)
 					{
 						isSuccess = true;
@@ -151,6 +154,7 @@ namespace RM.BinPatcher
 				case PatchEntry.MatchBy.SingleMatch:
 					var take2 = FindPattern(entry.OldData).Take(2).ToArray();
 					var take2Count = take2.Length;
+
 					if (take2Count == 1)
 					{
 						isSuccess = true;
@@ -170,13 +174,13 @@ namespace RM.BinPatcher
 			return (isSuccess, message, addresses);
 		}
 
-		private (bool, string) ApplyEntry(PatchEntry entry, long[] addresses)
+		private (bool, string?) ApplyEntry(PatchEntry entry, long[]? addresses)
 		{
 			try
 			{
 				if (entry.Match == PatchEntry.MatchBy.Address)
 				{
-					addresses = entry.Address.HasValue ? new[] {entry.Address.Value} : null;
+					addresses = entry.Address.HasValue ? new[] { entry.Address.Value } : null;
 				}
 
 				if (addresses == null || addresses.Length == 0)
@@ -203,7 +207,7 @@ namespace RM.BinPatcher
 					}
 				}
 
-				return (true, (string)null);
+				return (true, null);
 			}
 			catch (Exception e)
 			{

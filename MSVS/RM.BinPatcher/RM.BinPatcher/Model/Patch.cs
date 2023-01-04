@@ -5,7 +5,7 @@ namespace RM.BinPatcher.Model
 {
 	public class Patch
 	{
-		internal Patch(IReadOnlyList<PatchEntry> entries, string title, string author, string url)
+		internal Patch(IReadOnlyList<PatchEntry> entries, string? title = null, string? author = null, string? url = null)
 		{
 			Entries = entries;
 			Title = title;
@@ -13,11 +13,11 @@ namespace RM.BinPatcher.Model
 			Url = url;
 		}
 
-		public string Title { get; }
+		public string? Title { get; }
 
-		public string Author { get; }
+		public string? Author { get; }
 
-		public string Url { get; }
+		public string? Url { get; }
 
 		public IReadOnlyList<PatchEntry> Entries { get; }
 

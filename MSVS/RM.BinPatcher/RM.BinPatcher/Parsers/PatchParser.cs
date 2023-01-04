@@ -22,11 +22,11 @@ namespace RM.BinPatcher.Parsers
 		{
 			public LineKind Kind { get; set; }
 
-			public string Comment { get; set; }
+			public string? Comment { get; set; }
 
-			public string Address { get; set; }
+			public string? Address { get; set; }
 
-			public string Pattern { get; set; }
+			public string? Pattern { get; set; }
 		}
 
 		private const char _addressSeparator = ':';
@@ -63,8 +63,9 @@ namespace RM.BinPatcher.Parsers
 			var entries = new List<PatchEntry>();
 			var inHeader = true;
 			var offset = 0L;
-			string title = null, author = null, url = null;
-			Line lineM1 = null, lineM2 = null;
+
+			string? title = null, author = null, url = null;
+			Line? lineM1 = null, lineM2 = null;
 
 			for (int i = 0; i < linesCount; i++)
 			{
@@ -82,29 +83,36 @@ namespace RM.BinPatcher.Parsers
 								ParseHeader(line.Comment, ref title, ref author, ref url);
 							}
 							break;
+
 						case LineKind.Address:
 						case LineKind.AddressWithPattern:
 							if (lineM2 != null || lineM1 != null)
 							{
 								throw new Exception("Unexpected address!");
 							}
+
 							inHeader = false;
 							lineM1 = line;
 							break;
+						
 						case LineKind.Offset:
 							if (lineM2 != null || lineM1 != null)
 							{
 								throw new Exception("Unexpected offset!");
 							}
+
 							inHeader = false;
-							offset = ParseOffset(line.Address);
+							offset = ParseOffset(line.Address!);
 							break;
+						
 						case LineKind.Pattern:
 							inHeader = false;
+
 							if (lineM1 == null)
 							{
 								throw new InvalidOperationException("Found pattern without address!");
 							}
+
 							if (lineM2 == null && lineM1.Kind == LineKind.Address)
 							{
 								lineM2 = lineM1;
@@ -113,11 +121,13 @@ namespace RM.BinPatcher.Parsers
 							else
 							{
 								var entry = ParseEntry(lineM2, lineM1, line, offset);
+
 								entries.Add(entry);
 								lineM2 = null;
 								lineM1 = null;
 							}
 							break;
+						
 						default:
 							throw new Exception("Cannot parse line!");
 					}
@@ -137,24 +147,18 @@ namespace RM.BinPatcher.Parsers
 		private static Line ParseLine(string line)
 		{
 			var result = new Line();
-			var commentPos = _commentChars.Select(
-												c =>
-												{
-													var idx = line.IndexOf(c);
-													return idx >= 0 ? idx : new int?();
-												}
-											).Min();
+			var commentPos = _commentChars.Select(c => line.IndexOf(c) is var idx and >= 0 ? idx : default(int?)).Min();
 
 			if (commentPos.HasValue)
 			{
-				var comment = line.Substring(commentPos.Value + 1).Trim();
+				var comment = line[(commentPos.Value + 1)..].Trim();
 
 				if (!String.IsNullOrEmpty(comment))
 				{
 					result.Comment = comment;
 				}
 
-				line = line.Substring(0, commentPos.Value);
+				line = line[..commentPos.Value];
 			}
 
 			line = line.Trim();
@@ -167,8 +171,8 @@ namespace RM.BinPatcher.Parsers
 			}
 			else if ((index = line.IndexOf(_addressSeparator)) >= 0)
 			{
-				var address = line.Substring(0, index).Trim();
-				var afterAddress = line.Substring(index + 1).Trim();
+				var address = line[..index].Trim();
+				var afterAddress = line[(index + 1)..].Trim();
 
 				result.Address = address;
 
@@ -196,25 +200,23 @@ namespace RM.BinPatcher.Parsers
 			return result;
 		}
 
-		private static void ParseHeader(string comment, ref string title, ref string author, ref string url)
+		private static void ParseHeader(string comment, ref string? title, ref string? author, ref string? url)
 		{
-			if (String.IsNullOrEmpty(author)
-				&& comment.StartsWith(_authorPrefix, StringComparison.OrdinalIgnoreCase))
+			if (String.IsNullOrEmpty(author) && comment.StartsWith(_authorPrefix, StringComparison.OrdinalIgnoreCase))
 			{
-				author = comment.Substring(_authorPrefix.Length + 1).Trim();
+				author = comment[(_authorPrefix.Length + 1)..].Trim();
 			}
 
-			if (String.IsNullOrEmpty(url)
-				&& comment.StartsWith(_urlPrefix, StringComparison.OrdinalIgnoreCase))
+			if (String.IsNullOrEmpty(url) && comment.StartsWith(_urlPrefix, StringComparison.OrdinalIgnoreCase))
 			{
-				url = comment.Substring(_urlPrefix.Length + 1).Trim();
+				url = comment[(_urlPrefix.Length + 1)..].Trim();
 			}
 
 			if (String.IsNullOrEmpty(title))
 			{
 				if (comment.StartsWith(_titlePrefix, StringComparison.OrdinalIgnoreCase))
 				{
-					author = comment.Substring(_authorPrefix.Length + 1).Trim();
+					author = comment[(_authorPrefix.Length + 1)..].Trim();
 				}
 				else if (String.IsNullOrEmpty(author) && String.IsNullOrEmpty(url))
 				{
@@ -226,44 +228,42 @@ namespace RM.BinPatcher.Parsers
 		private static long ParseOffset(string offset)
 		{
 			var negative = offset[0] == _offsetPrefixChars[1];
-			var hex = offset.Length > _hexPrefixLength + 1
-						&& offset.Substring(1, _hexPrefixLength).Equals(_hexPrefix, StringComparison.OrdinalIgnoreCase);
+			var hex = offset.Length > _hexPrefixLength + 1 && offset.Substring(1, _hexPrefixLength).Equals(_hexPrefix, StringComparison.OrdinalIgnoreCase);
 
 			var num = Int64.Parse(
-								hex ? offset.Substring(_hexPrefixLength + 1) : offset,
+								hex ? offset[(_hexPrefixLength + 1)..] : offset,
 								hex ? NumberStyles.HexNumber : NumberStyles.Integer
 							);
 			return hex && negative ? -num : num;
 		}
 
-		private static PatchEntry ParseEntry(Line lineM2, Line lineM1, Line line, long offset)
+		private static PatchEntry ParseEntry(Line? lineM2, Line lineM1, Line line, long offset)
 		{
-			var isOldDataWithAddress = lineM2 == null;
-			var addressData = ParseAddress(isOldDataWithAddress ? lineM1.Address : lineM2.Address);
-			var oldData = PatternParser.ParseBytes(lineM1.Pattern);
-			var newData = PatternParser.ParseBytes(line.Pattern);
+			var addressData = ParseAddress(lineM2 == null ? lineM1.Address! : lineM2.Address!);
+			var oldData = PatternParser.ParseBytes(lineM1.Pattern!);
+			var newData = PatternParser.ParseBytes(line.Pattern!);
+
 			AdjustNewDataLength(oldData, ref newData);
 
 			return new PatchEntry(addressData.Item1 + offset, addressData.Item2, new Pattern(oldData), new Pattern(newData));
 		}
 
-		private static Tuple<long?, PatchEntry.MatchBy> ParseAddress(string addr)
+		private static (long?, PatchEntry.MatchBy) ParseAddress(string addr)
 		{
 			if (_matchBys.ContainsKey(addr))
 			{
-				return Tuple.Create(new long?(), _matchBys[addr]);
+				return (null, _matchBys[addr]);
 			}
 
-			var hex = addr.Length > _hexPrefixLength + 1
-						&& addr.Substring(0, _hexPrefixLength).Equals(_hexPrefix, StringComparison.OrdinalIgnoreCase);
+			var hex = addr.Length > _hexPrefixLength + 1 && addr[.._hexPrefixLength].Equals(_hexPrefix, StringComparison.OrdinalIgnoreCase);
 			var address = Int64.Parse(
-									hex ? addr.Substring(_hexPrefixLength) : addr,
+									hex ? addr[_hexPrefixLength..] : addr,
 									hex ? NumberStyles.HexNumber : NumberStyles.Integer
 								);
-			return Tuple.Create(new long?(address), PatchEntry.MatchBy.Address);
+			return (address, PatchEntry.MatchBy.Address);
 		}
 
-		private static void AdjustNewDataLength<T>(T[] oldData, ref T[] newData) where T : struct
+		private static void AdjustNewDataLength<T>(T[] oldData, ref T[] newData)
 		{
 			var oldDataLength = oldData.Length;
 			var newDataLength = newData.Length;
@@ -273,7 +273,7 @@ namespace RM.BinPatcher.Parsers
 				throw new Exception("Old data is shorter than new data!");
 			}
 
-			if (oldDataLength  > newDataLength)
+			if (oldDataLength > newDataLength)
 			{
 				// TODO: Maybe a warning?
 				Array.Resize(ref newData, oldDataLength);

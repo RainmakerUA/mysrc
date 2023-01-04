@@ -71,20 +71,7 @@ namespace RM.BinPatcher.Parsers
 
 			return bytes.ToArray();
 
-			bool CharInRange(char ch, char low, char high)
-			{
-				return low <= ch && ch <= high;
-			}
-
-			bool CharIsHex(char c)
-			{
-				return CharInRange(c, _0, _9) || CharInRange(Char.ToLowerInvariant(c), _a, _f);
-			}
-
-			char SafeGetChar(string str, int charIndex)
-			{
-				return charIndex < str.Length ? str[charIndex] : '\0';
-			}
+			byte ParseHexes(char highHex, char lowHex) => (byte) (ParseHex(highHex) << 4 | ParseHex(lowHex));
 
 			byte ParseHex(char hex)
 			{
@@ -104,11 +91,24 @@ namespace RM.BinPatcher.Parsers
 				return 0; // never returns
 			}
 
-			byte ParseHexes(char highHex, char lowHex) => (byte)(ParseHex(highHex) << 4 | ParseHex(lowHex));
-			
 			void Throw()//(string patternStr, int patternIndex)
 			{
 				throw new PatternParseException(pattern, index);
+			}
+
+			static bool CharInRange(char ch, char low, char high)
+			{
+				return low <= ch && ch <= high;
+			}
+
+			static bool CharIsHex(char c)
+			{
+				return CharInRange(c, _0, _9) || CharInRange(Char.ToLowerInvariant(c), _a, _f);
+			}
+
+			static char SafeGetChar(string str, int charIndex)
+			{
+				return charIndex < str.Length ? str[charIndex] : '\0';
 			}
 		}
 	}

@@ -18,7 +18,7 @@ namespace RM.BinPatcher.Model
 
 		public override string ToString()
 		{
-			return Bytes == null ? "[Empty]" : String.Join("\u0020", Bytes);
+			return Length > 0 ? String.Join("\u0020", Bytes) : "[Empty]";
 		}
 
 		public static Pattern Parse(string pattern)

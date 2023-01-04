@@ -62,7 +62,7 @@ namespace RM.BinPatcher
 
 			for (int i = 0; i < length; i++)
 			{
-				if (patternBytes[i].IsMatch(streamBytes.Array[streamBytes.Offset + i]))
+				if (patternBytes[i].IsMatch(streamBytes.Array![streamBytes.Offset + i]))
 				{
 					return false;
 				}
