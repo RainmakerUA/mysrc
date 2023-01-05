@@ -13,15 +13,17 @@ namespace RM.Lib.Common.Localization
 		private const string _assemblyPrefix = "assembly";
 		private const string _missingStringFormat = "[!!!] {2}|{0}|{1}";
 
-		private static readonly object _lock = new();
+		private static readonly object _lock = new ();
 
 		private static LocalizationManager? _instance;
 
 		public static readonly string KeySeparator = Type.Delimiter.ToString();
 
+		// TODO: LocalizationManagerOptions class (struct?)
 		private readonly IReadOnlyDictionary<string, ILocalizationProvider> _providers;
 		private readonly bool _throwOnMissing;
 		private readonly bool _enableFallbackLocale;
+		// TODO: private readonly /*enum*/ MissingKeyHandling /*{ Special, DefaultLocale, Throw, UseKey, ??? }*/ _missingKeyHandling;
 
 		private IReadOnlyList<int>? _supportedLocales;
 		private CultureInfo? _currentUICulture;
@@ -45,7 +47,7 @@ namespace RM.Lib.Common.Localization
 
 		public static LocalizationManager Instance => _instance ?? throw new InvalidOperationException("LocalizationManager must be initialized before use");
 		
-		public TypeLocalization GetTypeLocalization(Type type) => new(this, type);
+		public TypeLocalization GetTypeLocalization(Type type) => new (this, type);
 
 		public string GetAssemblyString(Assembly assembly, string key) => GetString(GetAssemblyName(assembly), key, true);
 

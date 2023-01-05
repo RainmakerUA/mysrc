@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:l18n="clr-namespace:RM.Lib.Wpf.Localization;assembly=RM.Lib.Wpf.Localization"
 			 xmlns:designModel="clr-namespace:RM.Win.ServiceController.Model.Design"
              mc:Ignorable="d" d:DesignHeight="58" d:DesignWidth="500"
              d:DataContext="{x:Static designModel:Service.DesignModel}">
@@ -32,14 +33,17 @@
 			          HorizontalAlignment="Center" VerticalAlignment="Center"
 					  Margin="3" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" />
 			<Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+			        ToolTip="{l18n:Localization Start,IsAssemblyResource=True}"
 			        Command="{Binding StartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},Path=DataContext}">
 				<ContentControl Style="{StaticResource StartIconContent}" />
 			</Button>
 			<Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="3"
+			        ToolTip="{l18n:Localization Stop,IsAssemblyResource=True}"
 			        Command="{Binding StopCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},Path=DataContext}">
 				<ContentControl Style="{StaticResource StopIconContent}" />
 			</Button>
 			<Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="4"
+			        ToolTip="{l18n:Localization Restart,IsAssemblyResource=True}"
 			        Command="{Binding RestartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self},Path=DataContext}">
 				<ContentControl Style="{StaticResource RestartIconContent}" />
 			</Button>

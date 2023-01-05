@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 
@@ -11,7 +12,13 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 {
 	public abstract class JsonBaseResourceProvider : ILocalizationProvider
 	{
-		private const string _resNameRegex = @"([a-z]{2}(?:-;43[a-z]{2})?)(?:\.json)$";
+		private const string _resNameRegex = @"([a-z]{2}(?:-[a-z]{2})?)(?:\.json)$";
+
+		private static readonly JsonDocumentOptions _jsonDocumentOptions = new ()
+																			{
+																				AllowTrailingCommas = true,
+																				CommentHandling = JsonCommentHandling.Skip
+																			};
 
 		private readonly Assembly _resourceAssembly;
 		private readonly string? _resourcePrefix;
@@ -114,8 +121,8 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 		private static Dictionary<string, string> GetStringsFromJson(Stream stream)
 		{
 			var result = new Dictionary<string, string>();
-
-			if (JsonNode.Parse(stream) is JsonObject jsonObject)
+			
+			if (JsonNode.Parse(stream, documentOptions: _jsonDocumentOptions) is JsonObject jsonObject)
 			{
 				AddStrings(result, String.Empty, jsonObject);
 			}

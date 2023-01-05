@@ -13,7 +13,7 @@ namespace RM.Lib.Wpf.Common
 		public static bool IsDesignerMode(this DependencyObject depObj) => DesignerProperties.GetIsInDesignMode(depObj);
 
 		public static bool IsDesignerMode(this IServiceProvider provider) =>
-				provider.GetService<IProvideValueTarget>()?.TargetObject is DependencyObject target && target.IsDesignerMode();
+				provider.GetService<IProvideValueTarget>()?.TargetObject is DependencyObject target && IsDesignerMode(target);
 
 		public static DependencyObject GetVisualRoot(this DependencyObject depObject)
 		{

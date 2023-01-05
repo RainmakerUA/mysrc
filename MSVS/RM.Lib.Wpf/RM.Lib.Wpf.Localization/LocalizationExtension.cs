@@ -13,16 +13,15 @@ namespace RM.Lib.Wpf.Localization
 
 		private static readonly Type _type = typeof(LocalizationExtension);
 
-		private readonly LocalizationManager _localization;
 		private readonly string _key;
 
+		private LocalizationManager? _localization;
 		private Type? _resourceType;
 
 		public LocalizationExtension(Type? resourceType, string key)
 		{
 			_resourceType = resourceType;
 			_key = key;
-			_localization = LocalizationManager.Instance;
 		}
 
 		public LocalizationExtension(string key) : this(null, key)
@@ -30,6 +29,8 @@ namespace RM.Lib.Wpf.Localization
 		}
 
 		public bool IsAssemblyResource { get; init; }
+
+		private LocalizationManager Localization => _localization ??= LocalizationManager.Instance;
 
 		protected override object? GetValue(object target)
 		{
@@ -53,8 +54,8 @@ namespace RM.Lib.Wpf.Localization
 			}
 
 			return IsAssemblyResource
-					? _localization.GetAssemblyString(_resourceType.Assembly, _key)
-					: _localization.GetString(_resourceType, _key);
+					? Localization.GetAssemblyString(_resourceType.Assembly, _key)
+					: Localization.GetString(_resourceType, _key);
 		}
 
 		public static void Update()

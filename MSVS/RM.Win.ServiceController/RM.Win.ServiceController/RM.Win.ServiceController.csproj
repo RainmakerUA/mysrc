@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <None Remove="Resources\lng\en.json" />
-    <None Remove="Resources\lng\ru.json" />
+    <None Remove="Resources\lng\uk.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <Resource Include="Resources\lng\en.json" />
-    <Resource Include="Resources\lng\ru.json" />
+    <Resource Include="Resources\lng\uk.json" />
     <Resource Include="Resources\main.ico" />
   </ItemGroup>
 

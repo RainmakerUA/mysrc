@@ -15,13 +15,16 @@ namespace RM.Win.ServiceController.Model
 {
 	public sealed class MainModel : BindableBase
 	{
-		private static readonly string _newLine = Environment.NewLine;
-		private static readonly App _app = App.Current;
+		private static readonly string _newLine;
+		private static readonly App _app;
 
-		private static readonly ICommand _startCommand = new DelegateCommand<Panel>(StartServices);
-		private static readonly ICommand _stopCommand = new DelegateCommand<Panel>(StopServices);
-		private static readonly ICommand _restartCommand = new DelegateCommand<Panel>(RestartServices);
-		private static readonly ICommand _showSettingsCommand = new DelegateCommand<MainModel>(ShowSettings);
+		private static readonly ICommand _startCommand;
+		private static readonly ICommand _stopCommand;
+		private static readonly ICommand _restartCommand;
+		private static readonly ICommand _showSettingsCommand;
+
+		private static readonly TypeLocalization _l10n;
+		private static readonly Dictionary<string, SettingsModel.RefreshRateInfo[]> _refreshRatesLocalized;
 
 		private readonly UserSettings _userSettings;
 
@@ -29,6 +32,17 @@ namespace RM.Win.ServiceController.Model
 
 		static MainModel()
 		{
+			_newLine = Environment.NewLine;
+			_app = App.Current;
+
+			_startCommand = new DelegateCommand<Panel>(StartServices);
+			_stopCommand = new DelegateCommand<Panel>(StopServices);
+			_restartCommand = new DelegateCommand<Panel>(RestartServices);
+			_showSettingsCommand = new DelegateCommand<MainModel>(ShowSettings);
+
+			_l10n = _app.Localization.GetTypeLocalization(typeof(MainModel));
+			_refreshRatesLocalized = new Dictionary<string, SettingsModel.RefreshRateInfo[]>();
+
 			Service.SetServiceEnabled = SetServiceEnabledSetting;
 		}
 
@@ -62,8 +76,7 @@ namespace RM.Win.ServiceController.Model
 
 		private static Geometry AdjustGeometry(Geometry geometry)
 		{
-			if (geometry.Left.IsDefault() && geometry.Top.IsDefault() 
-				&& geometry.Width.IsDefault() && geometry.Height.IsDefault())
+			if (geometry.Left.IsDefault() && geometry.Top.IsDefault() && geometry.Width.IsDefault() && geometry.Height.IsDefault())
 			{
 				geometry.Left = geometry.Top = Double.NaN;
 				geometry.Width = geometry.Height = 0.0;
@@ -93,7 +106,7 @@ namespace RM.Win.ServiceController.Model
 			var localization = _app.Localization;
 			var languages = localization.SupportedLocales.Select(GetLanguageInfo).ToArray();
 			var userSettings = _app.UserSettings;
-			var settingsModel = new SettingsModel(languages)
+			var settingsModel = new SettingsModel(languages, GetRefreshRates())
 									{
 										Autostart = userSettings.LaunchAtStartup,
 										RefreshInterval = userSettings.RefreshInterval,
@@ -130,6 +143,31 @@ namespace RM.Win.ServiceController.Model
 				
 				return new SettingsModel.LanguageInfo(name, lcid);
 			}
+
+			static SettingsModel.RefreshRateInfo[] GetRefreshRates()
+			{
+				var locale = _app.UserSettings.Language;
+
+				if (String.IsNullOrEmpty(locale) || !_refreshRatesLocalized.TryGetValue(locale, out var rates))
+				{
+					rates = new[]
+							{
+								new SettingsModel.RefreshRateInfo(L("Rate.Low"), 5_000),
+								new SettingsModel.RefreshRateInfo(L("Rate.Medium"), 1_000),
+								new SettingsModel.RefreshRateInfo(L("Rate.Fast"), 500),
+								new SettingsModel.RefreshRateInfo(L("Rate.Ultrafast"), 100)
+							};
+
+					if (!String.IsNullOrEmpty(locale))
+					{
+						_refreshRatesLocalized.Add(locale, rates);
+					}
+				}
+
+				return rates;
+			}
+
+			static string L(string key) => _l10n.GetString(key);
 		}
 
 		private static async void StartServices(Panel? panel)

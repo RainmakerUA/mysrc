@@ -12,6 +12,6 @@ namespace RM.Lib.Common.Localization
 
 		public static string GetLanguageCode(int lcid) => Get(lcid).TwoLetterISOLanguageName;
 
-		public static string GetDisplayName(int lcid) => Get(lcid).DisplayName;
+		public static string GetDisplayName(int lcid) => Get(lcid).NativeName;
 	}
 }

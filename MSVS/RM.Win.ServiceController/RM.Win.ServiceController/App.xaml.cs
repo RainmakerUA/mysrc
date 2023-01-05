@@ -7,6 +7,7 @@ using RM.Lib.Common.Localization.JsonResourceProvider;
 using RM.Lib.Common.Settings;
 using RM.Lib.Common.Settings.Providers;
 using RM.Lib.Common.Settings.Serializers;
+using RM.Lib.Wpf.Localization;
 using RM.Win.ServiceController.Common;
 using RM.Win.ServiceController.Settings;
 
@@ -29,7 +30,7 @@ namespace RM.Win.ServiceController
 			_settingsManager = new SettingsManager<UserSettings, AppSettings>(provider);
 			_settingsManager.SettingsUpdated += OnSettingsSaved;
 
-			Localization = InitializeLocalization();
+			Localization = InitializeLocalization(_settingsManager.UserSettings.Language);
 		}
 
 		public AppSettings AppSettings => _settingsManager.AppSettings.Clone();
@@ -68,18 +69,24 @@ namespace RM.Win.ServiceController
 			if (!String.IsNullOrEmpty(language))
 			{
 				Current.Localization.CurrentUICulture = CultureHelper.Get(language);
+				LocalizationExtension.Update();
 			}
 
 			RegistryHelper.RegisterExecutableForStartup(!args.Data.LaunchAtStartup);
 		}
 
-		private static LocalizationManager InitializeLocalization()
+		private static LocalizationManager InitializeLocalization(string? currentLanguageName)
 		{
-			LocalizationManager.Initialize(new []{ new JsonResourceProvider(resourceEntryPrefix: "resources/lng") });
+			LocalizationManager.Initialize(new []{ new JsonResourceProvider(resourceEntryPrefix: "resources/lng") }, enableFallbackLocale: true);
 
 			var locMgr = LocalizationManager.Instance;
 
 			locMgr.DefaultLocale = 9;
+
+			if (!String.IsNullOrEmpty(currentLanguageName))
+			{
+				locMgr.CurrentUICulture = CultureHelper.Get(currentLanguageName);
+			}
 
 			return locMgr;
 		}

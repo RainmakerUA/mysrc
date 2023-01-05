@@ -26,7 +26,7 @@ namespace RM.Win.ServiceController.Common
 			task.ContinueWith(
 								t =>
 									{
-										if (t.IsFaulted && t.Exception != null)
+										if (t is { IsFaulted: true, Exception: { } })
 										{
 											handler?.Invoke(t.Exception?.GetBaseException());
 										}

@@ -3,8 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l10n="clr-namespace:RM.Lib.Wpf.Localization;assembly=RM.Lib.Wpf.Localization"
         mc:Ignorable="d"
-        Title="Settings" WindowStartupLocation="CenterScreen"
+        Title="{l10n:Localization Settings, IsAssemblyResource=True}" WindowStartupLocation="CenterScreen"
         Height="450" Width="500" ResizeMode="NoResize" ShowInTaskbar="False">
     <Window.Resources>
         <Style x:Key="ControlStyle" TargetType="Control">
@@ -40,24 +41,24 @@
 		</Grid.RowDefinitions>
 
         <CheckBox IsChecked="{Binding Autostart}"
-                  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">Start application on user logon</CheckBox>
+                  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Content="{l10n:Localization Autostart}" />
 
-        <Label Grid.Row="1" Grid.Column="0">Application language</Label>
+        <Label Grid.Row="1" Grid.Column="0" Content="{l10n:Localization Language}" />
         <ComboBox Grid.Row="1" Grid.Column="1" IsEditable="False"
                   ItemsSource="{Binding SupportedLanguages}" SelectedValue="{Binding Lcid}"
                   DisplayMemberPath="Name" SelectedValuePath="Lcid" />
 
-        <Label Grid.Row="1" Grid.Column="2">Refresh rate</Label>
+        <Label Grid.Row="1" Grid.Column="2" Content="{l10n:Localization RefreshRate}" />
         <ComboBox Grid.Row="1" Grid.Column="3" IsEditable="False"
                   ItemsSource="{Binding RefreshRates}" SelectedValue="{Binding RefreshInterval}"
                   DisplayMemberPath="Name" SelectedValuePath="Rate" />
 
-        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">Services</Label>
+		<Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" Content="{l10n:Localization Services}" />
         <TextBox TextWrapping="Wrap" AcceptsReturn="True"
                  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"
                  Text="{Binding Services}"
                  Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" />
-        <Button IsDefault="True" Grid.Row="4" Grid.Column="0" Click="OnSaveClick">Save</Button>
-        <Button IsCancel="True" Grid.Row="4" Grid.Column="3">Cancel</Button>
+		<Button IsDefault="True" Grid.Row="4" Grid.Column="0" Click="OnSaveClick" Content="{l10n:Localization Save}" />
+		<Button IsCancel="True" Grid.Row="4" Grid.Column="3" Content="{l10n:Localization Cancel}" />
 	</Grid>
 </Window>

@@ -3,7 +3,8 @@
 		"Start": "Start",
 		"Stop": "Stop",
 		"Restart": "Restart",
-		"Settings": "Settings"
+		"Settings": "Settings",
+		"Copyright": "© Rainmaker 2016-2023"
 	},
 	"RM.Win.ServiceController": {
 		"App": {
@@ -13,7 +14,27 @@
 			"Title": "RM® Service Controller"
 		},
 		"SettingsWindow": {
-
-		} 
+			"Autostart": "Start application on user logon",
+			"Language": "Application language",
+			"RefreshRate": "Refresh rate",
+			"Services": "Services",
+			"Save": "Save",
+			"Cancel": "Cancel"
+		},
+		"Model": {
+			"MainModel": {
+				"Rate": {
+					"Low": "Low",
+					"Medium": "Medium",
+					"Fast": "Fast",
+					"Ultrafast": "Ultra-Fast ⚠"
+				}
+			},
+			"Service": {
+				"NoStatus": "(no status text)",
+				"DuplicateService": "Duplicate service in list",
+				"Error": "Error: {0}"
+			}
+		}
 	}
 }

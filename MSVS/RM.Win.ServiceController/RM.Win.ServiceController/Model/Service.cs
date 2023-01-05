@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
+using RM.Lib.Common.Localization;
 using RM.Lib.Wpf.Common.Commands;
 using RM.Lib.Wpf.Common.ViewModel;
 using RM.Win.ServiceController.Common;
@@ -15,20 +16,20 @@ namespace RM.Win.ServiceController.Model
 {
 	public class Service : BindableBase
 	{
-		private const string _noStatus = "(no status text)";
+		private static readonly TimeSpan _waitTimeout;
 
-		private static readonly TimeSpan _waitTimeout = TimeSpan.FromMinutes(1);
+		private static readonly ConcurrentDictionary<string, Service> _services;
 
-		private static readonly ConcurrentDictionary<string, Service> _services = new();
+		private static readonly Action<Service?> _startExecute;
+		private static readonly Func<Service?, bool> _startCanExecute;
 
-		private static readonly Action<Service?> _startExecute = ExecuteStartCommand;
-		private static readonly Func<Service?, bool> _startCanExecute = CanExecuteStartCommand;
+		private static readonly Action<Service?> _stopExecute;
+		private static readonly Func<Service?, bool> _stopCanExecute;
 
-		private static readonly Action<Service?> _stopExecute = ExecuteStopCommand;
-		private static readonly Func<Service?, bool> _stopCanExecute = CanExecuteStopCommand;
+		private static readonly Action<Service?> _restartExecute;
+		private static readonly Func<Service?, bool> _restartCanExecute;
 
-		private static readonly Action<Service?> _restartExecute = ExecuteRestartCommand;
-		private static readonly Func<Service?, bool> _restartCanExecute = CanExecuteRestartCommand;
+		private static readonly TypeLocalization _l10n;
 
 		private static DispatcherTimer? _timer;
 		private static Dispatcher? _dispatcher;
@@ -45,6 +46,21 @@ namespace RM.Win.ServiceController.Model
 		private string? _errorText;
 		private bool _isEnabled;
 
+		static Service()
+		{
+			_waitTimeout = TimeSpan.FromMinutes(1);
+			_services = new ConcurrentDictionary<string, Service>();
+
+			_startExecute = ExecuteStartCommand;
+			_startCanExecute = CanExecuteStartCommand;
+			_stopExecute = ExecuteStopCommand;
+			_stopCanExecute = CanExecuteStopCommand;
+			_restartExecute = ExecuteRestartCommand;
+			_restartCanExecute = CanExecuteRestartCommand;
+
+			_l10n = App.Current.Localization.GetTypeLocalization(typeof(Service));
+		}
+
 		public Service(string serviceName)
 		{
 			_serviceName = serviceName;
@@ -60,7 +76,7 @@ namespace RM.Win.ServiceController.Model
 			else
 			{
 				_displayName = _serviceName;
-				_errorText = "Duplicate service in list";
+				_errorText = _l10n.GetString("DuplicateService");
 			}
 		}
 
@@ -106,7 +122,7 @@ namespace RM.Win.ServiceController.Model
 			}
 		}
 
-		public string StatusText => _status?.ToDisplayText() ?? _errorText ?? _noStatus;
+		public string StatusText => _status?.ToDisplayText() ?? _errorText ?? _l10n.GetString("NoStatus");
 
 		public static Dispatcher? Dispatcher
 		{
@@ -193,7 +209,7 @@ namespace RM.Win.ServiceController.Model
 				_errorText = e.Message;
 			}
 
-			DisplayName = displayName ?? $"Error: {_serviceName}";
+			DisplayName = displayName ?? String.Format(_l10n.GetString("Error"), _serviceName);
 			Status = status;
 
 			OnPropertyChanged(nameof(IsValid));

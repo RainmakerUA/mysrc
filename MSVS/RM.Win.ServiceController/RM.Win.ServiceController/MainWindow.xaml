@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:l10n="clr-namespace:RM.Lib.Wpf.Localization;assembly=RM.Lib.Wpf.Localization"
         xmlns:local="clr-namespace:RM.Win.ServiceController"
         xmlns:model="clr-namespace:RM.Win.ServiceController.Model"
         xmlns:designModel="clr-namespace:RM.Win.ServiceController.Model.Design"
@@ -11,7 +12,7 @@
         WindowState="{Binding Geometry.State,Mode=TwoWay}" WindowStartupLocation="CenterScreen"
         Left="{Binding Geometry.Left,Mode=TwoWay}" Top="{Binding Geometry.Top,Mode=TwoWay}"
         Width="{Binding Geometry.Width,Mode=TwoWay}" Height="{Binding Geometry.Height,Mode=TwoWay}"
-        Title="RM® Service Controller" Icon="Resources/main.ico">
+        Title="{l10n:Localization Title}" Icon="Resources/main.ico">
 	<Window.DataContext>
         <model:MainModel />
     </Window.DataContext>
@@ -40,20 +41,23 @@
 					<DockPanel.Resources>
 						<Style TargetType="Button" BasedOn="{StaticResource ControlButton}" />
 					</DockPanel.Resources>
-					<Button Command="{Binding RestartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
+					<Button Command="{Binding RestartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}"
+					        ToolTip="{l10n:Localization Restart,IsAssemblyResource=True}">
 						<ContentControl Style="{StaticResource RestartIconContent}" />
 		            </Button>
-					<Button Command="{Binding StopCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
+					<Button Command="{Binding StopCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}"
+					        ToolTip="{l10n:Localization Stop,IsAssemblyResource=True}">
 						<ContentControl Style="{StaticResource StopIconContent}" />
 					</Button>
-					<Button Command="{Binding StartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}">
+					<Button Command="{Binding StartCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Panel}}"
+					        ToolTip="{l10n:Localization Start,IsAssemblyResource=True}">
 						<ContentControl Style="{StaticResource StartIconContent}" />
 					</Button>
-					<Button Margin="20 3" Command="{Binding ShowSettingsCommand}" CommandParameter="{Binding}">
+					<Button Margin="20 3" Command="{Binding ShowSettingsCommand}" CommandParameter="{Binding}" ToolTip="{l10n:Localization Settings,IsAssemblyResource=True}">
 						<ContentControl Style="{StaticResource SettingsIconContent}" />
 					</Button>
 					<Image Source="Resources/main.ico" Width="40" Height="40" DockPanel.Dock="Left" />
-					<TextBlock Text="© Copyright"
+					<TextBlock Text="{l10n:Localization Copyright,IsAssemblyResource=True}"
 					           VerticalAlignment="Center" Margin="10 0"
 					           FontFamily="Consolas" FontSize="20" FontWeight="DemiBold">
 						<TextBlock.Effect>

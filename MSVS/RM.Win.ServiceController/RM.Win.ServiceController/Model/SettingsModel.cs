@@ -30,23 +30,10 @@ namespace RM.Win.ServiceController.Model
 			public ushort Rate { get; }
 		}
 
-		public static readonly IReadOnlyList<RefreshRateInfo> DefaultRefreshRates;
-
-		static SettingsModel()
-		{
-			DefaultRefreshRates = new[]
-									{
-										new RefreshRateInfo("Low", 5_000),
-										new RefreshRateInfo("Medium", 1_000),
-										new RefreshRateInfo("Fast", 500),
-										new RefreshRateInfo("Ultra-fast (!)", 100)
-									};
-		}
-
-		public SettingsModel(IReadOnlyList<LanguageInfo> languages, IReadOnlyList<RefreshRateInfo>? refreshRates = null)
+		public SettingsModel(IReadOnlyList<LanguageInfo> languages, IReadOnlyList<RefreshRateInfo> refreshRates)
 		{
 			SupportedLanguages = languages;
-			RefreshRates = refreshRates ?? DefaultRefreshRates;
+			RefreshRates = refreshRates;
 		}
 
 		public IReadOnlyList<LanguageInfo> SupportedLanguages { get; }

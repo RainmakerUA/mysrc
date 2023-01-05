@@ -1,0 +1,39 @@
+﻿{
+	"assembly": {
+		"Start": "Запуск",
+		"Stop": "Зупинка",
+		"Restart": "Перезапуск",
+		"Settings": "Налаштування"
+	},
+	"RM.Win.ServiceController": {
+		"App": {
+			"Global": "Глобально"
+		},
+		"MainWindow": {
+			"Title": "RM® Контроллер Сервісів"
+		},
+		"SettingsWindow": {
+			"Autostart": "Запускати застосунок при вході у систему",
+			"Language": "Мова / Language",
+			"RefreshRate": "Швидкість оновлення",
+			"Services": "Сервіси",
+			"Save": "Зберегти",
+			"Cancel": "Скасувати"
+		},
+		"Model": {
+			"MainModel": {
+				"Rate": {
+					"Low": "Низька",
+					"Medium": "Середня",
+					"Fast": "Висока",
+					"Ultrafast": "Дуже висока ⚠"
+				}
+			},
+			"Service": {
+				"NoStatus": "(немає тексту стану)",
+				"DuplicateService": "Повторний сервіс у списку",
+				"Error": "Помилка: {0}"
+			}
+		}
+	}
+}
