@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Microsoft.Win32;
+using RM.Lib.Common;
 
 namespace RM.Win.ServiceController.Common
 {
@@ -17,24 +18,24 @@ namespace RM.Win.ServiceController.Common
 			var currentUser = Registry.CurrentUser;
 			var subKey = currentUser.OpenSubKey(_runSubKeyPath, true) ?? currentUser.CreateSubKey(_runSubKeyPath);
 			var entryAssembly = Assembly.GetEntryAssembly();
-			var execPath = entryAssembly?.Location;
+			var exeLocation = ProcessLocation.ProcessExeLocation;
 
-			if (String.IsNullOrEmpty(execPath))
+			if (String.IsNullOrEmpty(exeLocation))
 			{
 				throw new NotSupportedException("Cannot find application executable path");
 			}
 
-			if (Path.GetExtension(execPath).Equals(_dll, StringComparison.OrdinalIgnoreCase))
+			if (Path.GetExtension(exeLocation).Equals(_dll, StringComparison.OrdinalIgnoreCase))
 			{
 				// If entry assembly is a DLL (for .NET `Core`), replace it with EXE
-				execPath = Path.ChangeExtension(execPath, _exe);
+				exeLocation = Path.ChangeExtension(exeLocation, _exe);
 			}
 
-			var autostartCommand = $"\"{execPath}\" /auto";
+			var autostartCommand = $"\"{exeLocation}\" /auto";
 			
 			if (unregister)
 			{
-				DeleteRegistration(subKey, execPath);
+				DeleteRegistration(subKey, exeLocation);
 			}
 			else
 			{
@@ -47,7 +48,7 @@ namespace RM.Win.ServiceController.Common
 									?? nameof(RegistryHelper) + $"_{DateTime.UtcNow.Ticks:08X}";
 				}
 
-				DeleteRegistration(subKey, execPath);
+				DeleteRegistration(subKey, exeLocation);
 
 				subKey.SetValue(entryName, autostartCommand);
 			}

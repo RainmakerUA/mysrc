@@ -9,7 +9,7 @@ namespace RM.Lib.Common.Settings.Providers
 			where TApp : class, TUser, IUseLocalAppData, new()
 			where TSerializer : class, IFileSerializer
 	{
-		private const string _localAppFolder = "%LOCALAPPDATA%\\RM\\";
+		private const string _localAppFolder = @"%LOCALAPPDATA%\RM\";
 
 		private readonly TSerializer _serializer;
 		private readonly Func<TApp>? _defaultAppSettings;
@@ -19,15 +19,14 @@ namespace RM.Lib.Common.Settings.Providers
 
 		public DefaultFileProvider(TSerializer? serializer = null, string? appName = null, bool? useAppData = null, Func<TApp>? defaultAppSettings = null)
 		{
-			var entryAssembly = Assembly.GetEntryAssembly();
 			_defaultAppSettings = defaultAppSettings;
 			_serializer = serializer ?? CreateSerializer();
 
 			var fileName = _serializer.FileName;
-			_appSettingsFile = Path.Combine(GetAppSettingsPath(entryAssembly), fileName);
+			_appSettingsFile = Path.Combine(ProcessLocation.ProcessExePath ?? AppContext.BaseDirectory, fileName);
 			_appSettings = GetApplicationSettingsInternal();
 			_userSettingsFile = useAppData ?? _appSettings.UseLocalAppData
-									? Path.Combine(GetAppDataUserSettingsPath(appName ?? GetApplicationName(entryAssembly)), fileName)
+									? Path.Combine(GetAppDataUserSettingsPath(appName ?? GetApplicationName()), fileName)
 									: _appSettingsFile;
 		}
 
@@ -60,23 +59,18 @@ namespace RM.Lib.Common.Settings.Providers
 						?? throw new ArgumentException($"Cannot instantiate serializer of class {serializerType.FullName}");
 		}
 
-		private static string GetApplicationName(Assembly? entryAssembly)
+		private static string GetApplicationName()
 		{
-			var name = entryAssembly?.GetName().Name;
+			var name = ProcessLocation.ProcessExeName;
 
 			if (!String.IsNullOrEmpty(name))
 			{
 				return name;
 			}
 
-			name = Assembly.GetExecutingAssembly().Location;
+			name = Assembly.GetExecutingAssembly().Location ?? AppContext.BaseDirectory;
 
 			return $"{name.GetHashCode():X8}";
-		}
-
-		private static string GetAppSettingsPath(Assembly? entryAssembly)
-		{
-			return Path.GetDirectoryName((entryAssembly ?? Assembly.GetExecutingAssembly()).Location)!;
 		}
 
 		private static string GetAppDataUserSettingsPath(string appName) => Directory.CreateDirectory(Environment.ExpandEnvironmentVariables(_localAppFolder + appName)).FullName;
