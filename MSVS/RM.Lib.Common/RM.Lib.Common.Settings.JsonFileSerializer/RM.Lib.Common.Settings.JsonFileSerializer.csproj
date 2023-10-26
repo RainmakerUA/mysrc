@@ -7,6 +7,14 @@
     <RootNamespace>RM.Lib.Common.Settings.Serializers</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\RM.Lib.Common.Settings\RM.Lib.Common.Settings.csproj" />
   </ItemGroup>
