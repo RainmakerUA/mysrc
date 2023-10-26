@@ -34,13 +34,6 @@ namespace RM.Win.ServiceController.Settings
 
 		public Geometry Geometry { get; set; }
 
-		public object Clone()
-		{
-			var result = (MemberwiseClone() as UserSettings)!;
-
-			result.Geometry = Geometry.Clone();
-
-			return result;
-		}
+		public object Clone() => new UserSettings(this);
 	}
 }

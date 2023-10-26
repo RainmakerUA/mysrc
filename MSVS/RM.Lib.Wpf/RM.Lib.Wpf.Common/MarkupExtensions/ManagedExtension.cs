@@ -15,7 +15,7 @@ namespace RM.Lib.Wpf.Common.MarkupExtensions
 
 		private static readonly Dispatcher _dispatcher = Application.Current.Dispatcher;
 
-		private static readonly ConcurrentDictionary<Type, List<ManagedExtension>> _extensionRegistry = new();
+		private static readonly ConcurrentDictionary<Type, List<ManagedExtension>> _extensionRegistry = new ();
 		private static readonly Func<Type, ManagedExtension, List<ManagedExtension>> _getExtensionListFunc = GetExtensionList;
 
 		private static bool? _designerMode;
@@ -39,23 +39,12 @@ namespace RM.Lib.Wpf.Common.MarkupExtensions
 
 		protected object? TargetProperty { get; private set; }
 
-		protected Type? TargetPropertyType
-		{
-			get
-			{
-				switch (TargetProperty)
-				{
-					case DependencyProperty depProperty:
-						return depProperty.PropertyType;
-
-					case PropertyInfo propertyInfo:
-						return propertyInfo.PropertyType;
-
-					default:
-						return TargetProperty?.GetType();
-				}
-			}
-		}
+		protected Type? TargetPropertyType => TargetProperty switch
+												{
+													DependencyProperty depProperty => depProperty.PropertyType,
+													PropertyInfo propertyInfo => propertyInfo.PropertyType,
+													_ => TargetProperty?.GetType()
+												};
 
 		protected static bool? DesignerMode => _designerMode;
 
@@ -139,7 +128,7 @@ namespace RM.Lib.Wpf.Common.MarkupExtensions
 			}
 		}
 
-		private static List<ManagedExtension> GetExtensionList(Type _, ManagedExtension ext) => new() { ext };
+		private static List<ManagedExtension> GetExtensionList(Type _, ManagedExtension ext) => new () { ext };
 		
 		private static void RunInDispatcher<T1, T2, T3>(Action<T1, T2, T3> action, bool async, DispatcherPriority priority, T1 arg1, T2 arg2, T3 arg3)
 		{

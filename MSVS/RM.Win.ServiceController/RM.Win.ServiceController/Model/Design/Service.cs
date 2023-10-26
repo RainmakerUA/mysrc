@@ -35,6 +35,6 @@ namespace RM.Win.ServiceController.Model.Design
 
 		public string StatusText { get; }
 
-		public static Service DesignModel { get; } = new("Design One X", true);
+		public static Service DesignModel { get; } = new ("Design One X", true);
 	}
 }

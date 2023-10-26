@@ -12,6 +12,6 @@
 
 	public static class EventArgs
 	{
-		public static EventArgs<T> Create<T>(T data) => new EventArgs<T>(data);
+		public static EventArgs<T> Create<T>(T data) => new (data);
 	}
 }

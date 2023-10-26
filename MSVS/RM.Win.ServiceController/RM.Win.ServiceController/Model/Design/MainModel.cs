@@ -18,7 +18,7 @@ namespace RM.Win.ServiceController.Model.Design
 
 		public IEnumerable<Service> Services => _services;
 
-		public Geometry Geometry { get; } = new Geometry
+		public Geometry Geometry { get; } = new ()
 												{
 													Left = Double.NaN,
 													Top = Double.NaN,

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Xaml;
 using RM.Lib.Common.Localization;
 using RM.Lib.Wpf.Common;

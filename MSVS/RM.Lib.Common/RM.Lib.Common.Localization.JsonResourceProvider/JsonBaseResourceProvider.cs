@@ -150,9 +150,7 @@ namespace RM.Lib.Common.Localization.JsonResourceProvider
 							case JsonValue jValue when jValue.TryGetValue<string>(out var str):
 								strings.Add(fullKey, str);
 								break;
-							default:
-								// TODO: Do nothing?
-								break;
+							// default: TODO: Do nothing?
 						}
 					}
 				}

@@ -33,7 +33,7 @@ namespace RM.Lib.Common.Settings.Serializers
 
 		private const string _defaultFileName = "config.json";
 
-		private static readonly JsonSerializerOptions _options = new()
+		private static readonly JsonSerializerOptions _options = new ()
 																	{
 																		PropertyNameCaseInsensitive = true,
 																		Converters = { new DoubleNanToNullConverter() }

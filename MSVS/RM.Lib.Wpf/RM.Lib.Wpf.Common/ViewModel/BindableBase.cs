@@ -45,8 +45,7 @@ namespace RM.Lib.Wpf.Common.ViewModel
 				throw new ArgumentNullException(nameof(propertyExpression));
 			}
 
-			if (propertyExpression.Body is MemberExpression { Member: PropertyInfo property } memberExpression
-					&& property.GetMethod != null && !property.GetMethod.IsStatic)
+			if (propertyExpression.Body is MemberExpression { Member: PropertyInfo { GetMethod.IsStatic: false } } memberExpression)
 			{
 				return memberExpression.Member.Name;
 			}
