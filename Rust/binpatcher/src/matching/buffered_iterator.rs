@@ -1,5 +1,4 @@
-
-use std::io::{ Read, Result };
+use std::io::{Read, Result};
 
 pub struct BufferedSliceIterator<R: Read> {
     reader: R,
@@ -12,8 +11,13 @@ pub struct BufferedSliceIterator<R: Read> {
     buffer_pos: usize,
 }
 
-impl <R: Read> BufferedSliceIterator<R> {    
-    pub fn new(reader: R, slice_size: usize, advance_size: usize, buffer_size: usize) -> BufferedSliceIterator<R> {
+impl<R: Read> BufferedSliceIterator<R> {
+    pub fn new(
+        reader: R,
+        slice_size: usize,
+        advance_size: usize,
+        buffer_size: usize,
+    ) -> BufferedSliceIterator<R> {
         // TODO: Size validation
         BufferedSliceIterator {
             reader,
@@ -32,7 +36,7 @@ impl <R: Read> BufferedSliceIterator<R> {
     }
 
     pub fn slice(&self, start: usize) -> &[u8] {
-        &self.buffer[start..start+self.slice_size]
+        &self.buffer[start..start + self.slice_size]
     }
 
     pub fn boxed_slice(&self, start: usize) -> Box<[u8]> {
@@ -44,11 +48,11 @@ impl <R: Read> BufferedSliceIterator<R> {
     }
 }
 
-impl <R: Read> Iterator for BufferedSliceIterator<R> {
+impl<R: Read> Iterator for BufferedSliceIterator<R> {
     type Item = (usize, Box<[u8]>);
 
-    fn next(&mut self) -> Option<Self::Item> {        
-        if self.buffer.len() == 0 {
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.buffer.is_empty() {
             self.buffer.resize(self.buffer_size, 0);
             self.read_len = self.fill_buffer(0).ok()?;
             self.buffer_size = self.read_len;
@@ -62,7 +66,8 @@ impl <R: Read> Iterator for BufferedSliceIterator<R> {
                     return Some((self.pos(), self.boxed_slice(old_buf_pos)));
                 } else {
                     let remaining_len = self.buffer_size - self.buffer_pos;
-                    self.buffer.copy_within(self.buffer_pos..self.buffer_size, 0);
+                    self.buffer
+                        .copy_within(self.buffer_pos..self.buffer_size, 0);
                     self.reader_pos += self.read_len;
                     self.read_len = self.fill_buffer(remaining_len).ok()?;
                     self.buffer_size = self.read_len;

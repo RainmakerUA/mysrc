@@ -3,11 +3,8 @@
 extern crate winapi;
 
 use winapi::{
-    shared::minwindef::{ self, BOOL, DWORD, HINSTANCE, LPVOID },
-    um::winnt::{
-        DLL_PROCESS_ATTACH,
-        DLL_PROCESS_DETACH
-    }
+    shared::minwindef::{self, BOOL, DWORD, HINSTANCE, LPVOID},
+    um::winnt::{DLL_PROCESS_ATTACH, DLL_PROCESS_DETACH},
 };
 
 #[no_mangle]
@@ -16,7 +13,7 @@ pub extern "system" fn DllMain(hmodule: HINSTANCE, reason: DWORD, reserved: LPVO
     match reason {
         DLL_PROCESS_ATTACH => lib_init(),
         DLL_PROCESS_DETACH => lib_deinit(),
-        _ => ()
+        _ => (),
     }
     minwindef::TRUE
 }

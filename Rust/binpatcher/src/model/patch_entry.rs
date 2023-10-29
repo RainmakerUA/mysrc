@@ -1,30 +1,33 @@
 use super::Pattern;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub enum MatchBy
-{
+pub enum MatchBy {
     Address(usize),
     FirstMatch,
     SingleMatch,
-    EveryMatch
+    EveryMatch,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PatchEntry {
     match_by: MatchBy,
     old_data: Pattern,
-    new_data: Pattern
+    new_data: Pattern,
 }
 
 impl PatchEntry {
     pub fn new(match_by: MatchBy, old_data: Pattern, new_data: Pattern) -> Self {
-        PatchEntry{ match_by, old_data, new_data }
+        PatchEntry {
+            match_by,
+            old_data,
+            new_data,
+        }
     }
 
     pub fn address(&self) -> Option<usize> {
         match self.match_by {
             MatchBy::Address(addr) => Some(addr),
-            _ => None
+            _ => None,
         }
     }
 

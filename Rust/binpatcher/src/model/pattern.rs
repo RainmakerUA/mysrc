@@ -1,17 +1,11 @@
-use super::{
-            BytePart,
-            ParseBytePartError,
-            BytePartErrorKind,
-            PatternError,
-            PatternErrorKind
-        };
+use super::{BytePart, BytePartErrorKind, ParseBytePartError, PatternError, PatternErrorKind};
 
 type PatternMatchResult = Result<bool, PatternError>;
 type PatternApplyResult = Result<(), PatternError>;
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct Pattern {
-    parts: Vec<BytePart>
+    parts: Vec<BytePart>,
 }
 
 impl Pattern {
@@ -27,9 +21,10 @@ impl Pattern {
                 if let Some(second) = second {
                     parts.push(BytePart::parse(first, second)?);
                     continue;
-                }
-                else {
-                    return Err(ParseBytePartError::from_kind(BytePartErrorKind::WrongLength));
+                } else {
+                    return Err(ParseBytePartError::from_kind(
+                        BytePartErrorKind::WrongLength,
+                    ));
                 }
             }
             break;
@@ -60,18 +55,23 @@ impl Pattern {
     pub fn is_match(&self, bytes: &[u8]) -> PatternMatchResult {
         if self.len() != bytes.len() {
             Err(PatternError::from_kind(PatternErrorKind::SizeMismatch))
-        }
-        else {
-            Ok(self.parts.iter().zip(bytes.iter()).all(|pair| pair.0.is_match(*pair.1)))
+        } else {
+            Ok(self
+                .parts
+                .iter()
+                .zip(bytes.iter())
+                .all(|pair| pair.0.is_match(*pair.1)))
         }
     }
 
     pub fn apply(&self, bytes: &mut [u8]) -> PatternApplyResult {
         if self.len() != bytes.len() {
             Err(PatternError::from_kind(PatternErrorKind::SizeMismatch))
-        }
-        else {
-            self.parts.iter().zip(bytes.iter_mut()).for_each(|pair| *(pair.1) = pair.0.apply(*pair.1));
+        } else {
+            self.parts
+                .iter()
+                .zip(bytes.iter_mut())
+                .for_each(|pair| *(pair.1) = pair.0.apply(*pair.1));
             Ok(())
         }
     }

@@ -1,8 +1,8 @@
 //extern crate binpatcher;
 
-use binpatcher::model::{ BytePart/*, ParseBytePartError*/ };
+use binpatcher::model::BytePart;
 
-mod common; 
+mod common;
 
 #[test]
 fn sample_test_bytepart() {

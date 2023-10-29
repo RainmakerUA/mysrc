@@ -2,23 +2,23 @@ use std::fmt;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ParseBytePartError {
-    kind: BytePartErrorKind
+    kind: BytePartErrorKind,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(super) enum BytePartErrorKind {
     InvalidChar(u8),
-    WrongLength
+    WrongLength,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PatternError {
-    kind: PatternErrorKind
+    kind: PatternErrorKind,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(super) enum PatternErrorKind {
-    SizeMismatch
+    SizeMismatch,
 }
 
 impl ParseBytePartError {
