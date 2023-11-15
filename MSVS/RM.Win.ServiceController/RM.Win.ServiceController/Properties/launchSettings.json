@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "RM.Win.ServiceController": {
+      "commandName": "Project"
+    },
+    "Published Debug": {
+        "commandName": "Executable",
+        "executablePath": "D:\\DEV-Extra\\mysrc\\MSVS\\RM.Win.ServiceController\\RM.Win.ServiceController\\bin\\Debug\\net8.0-windows7.0\\publish\\win-x64\\RM.Win.ServiceController.exe"
+    }
+  }
+}
