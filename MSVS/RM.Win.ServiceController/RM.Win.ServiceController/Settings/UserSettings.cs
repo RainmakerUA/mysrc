@@ -26,6 +26,8 @@ namespace RM.Win.ServiceController.Settings
 
 		public bool LaunchAtStartup { get; set; }
 
+		public bool RegisterHotkeys { get; set; }
+
 		public string? Language { get; set; }
 
 		public IDictionary<string, bool> Services { get; set; }

@@ -19,6 +19,15 @@
 	<d:MainWindow.DataContext>
 		<designModel:MainModel />
 	</d:MainWindow.DataContext>
+	<Window.TaskbarItemInfo>
+		<TaskbarItemInfo>
+			<TaskbarItemInfo.ThumbButtonInfos>
+				<ThumbButtonInfo Command="{Binding StartCommand}" Description="{l10n:Localization Start, IsAssemblyResource=True}" ImageSource="{StaticResource StartImage}" />
+				<ThumbButtonInfo Command="{Binding StopCommand}" Description="{l10n:Localization Stop, IsAssemblyResource=True}" ImageSource="{StaticResource StopImage}" />
+				<ThumbButtonInfo Command="{Binding RestartCommand}" Description="{l10n:Localization Restart, IsAssemblyResource=True}" ImageSource="{StaticResource RestartImage}" />
+			</TaskbarItemInfo.ThumbButtonInfos>
+		</TaskbarItemInfo>
+	</Window.TaskbarItemInfo>
 	<Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

@@ -14,6 +14,7 @@
 		},
 		"SettingsWindow": {
 			"Autostart": "Запускати застосунок при вході у систему",
+			"RegisterHotkeys": "Реєструвати глобальні сполучення клавіш",
 			"Language": "Мова / Language",
 			"RefreshRate": "Швидкість оновлення",
 			"Services": "Сервіси",

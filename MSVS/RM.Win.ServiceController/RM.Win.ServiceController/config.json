@@ -1,5 +1,6 @@
 {
 	"LaunchAtStartup": false,
+	"RegisterHotkeys":  false,
 	"Language": "en",
 	"Services": {
 		"MSSQLSERVER": false,

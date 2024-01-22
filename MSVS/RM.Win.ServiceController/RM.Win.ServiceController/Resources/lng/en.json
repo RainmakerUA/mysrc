@@ -15,6 +15,7 @@
 		},
 		"SettingsWindow": {
 			"Autostart": "Start application on user logon",
+			"RegisterHotkeys": "Register global hotkeys",
 			"Language": "Application language",
 			"RefreshRate": "Refresh rate",
 			"Services": "Services",

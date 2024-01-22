@@ -46,6 +46,8 @@ namespace RM.Win.ServiceController.Model
 
 		public bool Autostart { get; set; }
 
+		public bool RegisterHotkeys { get; set; }
+
 		public string? Services { get; set; }
 	}
 }

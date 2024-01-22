@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using RM.Lib.Common.Localization;
 using RM.Lib.Wpf.Common.Commands;
+using RM.Lib.Wpf.Common.Input;
 using RM.Lib.Wpf.Common.ViewModel;
 using RM.Win.ServiceController.Common;
 using RM.Win.ServiceController.Settings;
@@ -23,12 +24,19 @@ namespace RM.Win.ServiceController.Model
 		private static readonly ICommand _restartCommand;
 		private static readonly ICommand _showSettingsCommand;
 
+		private static readonly Action<Hotkey> _startAllAction;
+		private static readonly Action<Hotkey> _stopAllAction;
+		private static readonly Action<Hotkey> _restartAllAction;
+
 		private static readonly TypeLocalization _l10n;
 		private static readonly Dictionary<string, SettingsModel.RefreshRateInfo[]> _refreshRatesLocalized;
 
 		private readonly UserSettings _userSettings;
 
 		private Service[]? _services;
+		private Hotkey? _startAllHotkey;
+		private Hotkey? _stopAllHotkey;
+		private Hotkey? _restartAllHotkey;
 
 		static MainModel()
 		{
@@ -40,8 +48,12 @@ namespace RM.Win.ServiceController.Model
 			_restartCommand = new DelegateCommand<Panel>(RestartServices);
 			_showSettingsCommand = new DelegateCommand<MainModel>(ShowSettings);
 
+			_startAllAction = _ => StartServices(null);
+			_stopAllAction = _ => StopServices(null);
+			_restartAllAction = _ => RestartServices(null);
+
 			_l10n = _app.Localization.GetTypeLocalization(typeof(MainModel));
-			_refreshRatesLocalized = new Dictionary<string, SettingsModel.RefreshRateInfo[]>();
+			_refreshRatesLocalized = [];
 
 			Service.SetServiceEnabled = SetServiceEnabledSetting;
 		}
@@ -72,6 +84,19 @@ namespace RM.Win.ServiceController.Model
 			Service.Reset();
 			SetProperty(ref _services, _userSettings.Services.Select(CreateService).ToArray(), nameof(Services));
 			Service.UpdateTimer(TimeSpan.FromMilliseconds(_userSettings.RefreshInterval));
+
+			if (_userSettings.RegisterHotkeys)
+			{
+				(_startAllHotkey ??= new Hotkey(Key.E, KeyModifiers.Ctrl | KeyModifiers.Alt, _startAllAction, false)).Register();
+				(_stopAllHotkey ??= new Hotkey(Key.T, KeyModifiers.Ctrl | KeyModifiers.Alt, _stopAllAction, false)).Register();
+				(_restartAllHotkey ??= new Hotkey(Key.R, KeyModifiers.Ctrl | KeyModifiers.Alt, _restartAllAction, false)).Register();
+			}
+			else
+			{
+				_startAllHotkey?.Unregister();
+				_stopAllHotkey?.Unregister();
+				_restartAllHotkey?.Unregister();
+			}
 		}
 
 		private static Geometry AdjustGeometry(Geometry geometry)
@@ -109,6 +134,7 @@ namespace RM.Win.ServiceController.Model
 			var settingsModel = new SettingsModel(languages, GetRefreshRates())
 									{
 										Autostart = userSettings.LaunchAtStartup,
+										RegisterHotkeys = userSettings.RegisterHotkeys,
 										RefreshInterval = userSettings.RefreshInterval,
 										Lcid = String.IsNullOrEmpty(userSettings.Language)
 												? localization.DefaultLocale ?? 9
@@ -120,10 +146,11 @@ namespace RM.Win.ServiceController.Model
 			if (settingsWindow.ShowDialog() is true)
 			{
 				userSettings.LaunchAtStartup = settingsModel.Autostart;
+				userSettings.RegisterHotkeys = settingsModel.RegisterHotkeys;
 				userSettings.RefreshInterval = settingsModel.RefreshInterval;
 				userSettings.Language = CultureHelper.GetLanguageCode(settingsModel.Lcid);
 				userSettings.Services = String.IsNullOrWhiteSpace(settingsModel.Services)
-										? new Dictionary<string, bool>()
+										? []
 										: settingsModel.Services.Split(_newLine, StringSplitOptions.RemoveEmptyEntries)
 												.ToDictionary(svcName => svcName.Trim(), _ => true);
 				try
@@ -136,6 +163,8 @@ namespace RM.Win.ServiceController.Model
 					ErrorAction?.Invoke(e);
 				}
 			}
+
+			return;
 
 			static SettingsModel.LanguageInfo GetLanguageInfo(int lcid)
 			{
@@ -150,13 +179,13 @@ namespace RM.Win.ServiceController.Model
 
 				if (String.IsNullOrEmpty(locale) || !_refreshRatesLocalized.TryGetValue(locale, out var rates))
 				{
-					rates = new[]
-							{
+					rates =
+							[
 								new SettingsModel.RefreshRateInfo(L("Rate.Low"), 5_000),
 								new SettingsModel.RefreshRateInfo(L("Rate.Medium"), 1_000),
 								new SettingsModel.RefreshRateInfo(L("Rate.Fast"), 500),
 								new SettingsModel.RefreshRateInfo(L("Rate.Ultrafast"), 100)
-							};
+							];
 
 					if (!String.IsNullOrEmpty(locale))
 					{
