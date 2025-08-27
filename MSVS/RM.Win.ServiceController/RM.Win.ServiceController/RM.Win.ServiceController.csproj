@@ -1,57 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows7.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <ApplicationIcon>Resources\main.ico</ApplicationIcon>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ImplicitUsings>disable</ImplicitUsings>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net9.0-windows10.0.22000.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<ApplicationIcon>Resources\main.ico</ApplicationIcon>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<ImplicitUsings>disable</ImplicitUsings>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
+	<PropertyGroup>
+		<NoWarn>$(NoWarn);WPF0001</NoWarn>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DebugType>none</DebugType>
-  </PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Resources\lng\en.json" />
-    <None Remove="Resources\lng\uk.json" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DebugType>none</DebugType>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<None Remove="Resources\lng\en.json" />
+		<None Remove="Resources\lng\uk.json" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="Resources\lng\en.json" />
-    <Resource Include="Resources\lng\uk.json" />
-    <Resource Include="Resources\main.ico" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.ServiceProcess.ServiceController" Version="7.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization.JsonResourceProvider\RM.Lib.Common.Localization.JsonResourceProvider.csproj" />
-    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization\RM.Lib.Common.Localization.csproj" />
-    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings.JsonFileSerializer\RM.Lib.Common.Settings.JsonFileSerializer.csproj" />
-    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings\RM.Lib.Common.Settings.csproj" />
-    <ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common\RM.Lib.Common.csproj" />
-    <ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Common\RM.Lib.Wpf.Common.csproj" />
-    <ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Localization\RM.Lib.Wpf.Localization.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\lng\en.json" />
+		<Resource Include="Resources\lng\uk.json" />
+		<Resource Include="Resources\main.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Localization.resx">
-    </EmbeddedResource>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization.JsonResourceProvider\RM.Lib.Common.Localization.JsonResourceProvider.csproj" />
+		<ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Localization\RM.Lib.Common.Localization.csproj" />
+		<ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings.JsonFileSerializer\RM.Lib.Common.Settings.JsonFileSerializer.csproj" />
+		<ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common.Settings\RM.Lib.Common.Settings.csproj" />
+		<ProjectReference Include="..\..\RM.Lib.Common\RM.Lib.Common\RM.Lib.Common.csproj" />
+		<ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Common\RM.Lib.Wpf.Common.csproj" />
+		<ProjectReference Include="..\..\RM.Lib.Wpf\RM.Lib.Wpf.Localization\RM.Lib.Wpf.Localization.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="Resources\Localization.resx">
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="config.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>
